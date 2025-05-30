@@ -6,3 +6,4 @@ This repository contains resources and notes related to microservices architectu
 
 - [Introduction to Microservices](./_notes/01-introduction-to-microservices.md)
 - [Microservices Architecture](./_notes/02-microservices-architecture.md)
+- [Designing Microservices Architecture](./_notes/03-designing-microservices-architecture.md)
