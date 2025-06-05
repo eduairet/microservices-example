@@ -93,3 +93,14 @@
     - Used to store large files and unstructured data.
     - Examples: AWS S3, Google Cloud Storage, Azure Blob Storage.
     - This is a good choice for services that require high availability and durability of data.
+
+## Design the Architecture
+
+- It is not different from software architecture.
+- It's based in the layers paradigm, where each layer has a specific responsibility.
+  - Layers represent a horizontal functionality of the components.
+    ```
+    Save / Retrieve Data -> Execute Logic -> Expose User Interface / API
+    ```
+- It forces the design of well-defined interfaces between the layers, which is a good practice.
+- It's modular, meaning that each layer can be developed and tested independently.
