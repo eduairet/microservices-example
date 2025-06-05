@@ -40,3 +40,56 @@
 - And the last thing to consider are the Cross-Cutting Services like logging, caching, user management, etc. These services are shared across multiple microservices and should be defined in a way that they can be reused without creating dependencies between the services.
 
 ## Defining Communication Patterns
+
+- Efficient communication between microservices is crucial for system performance and reliability.
+- The main patterns for communication are:
+
+  - **1-to-1 Synchronous Communication:**
+    - Services communicate directly with each other in real-time (thread blocking).
+    - Suitable for scenarios where immediate response is required.
+    - This approach can lead to tight coupling and potential bottlenecks, it's recommended to implement a gateway to handle the services interactions.
+    - Example: RESTful APIs, gRPC.
+  - **1-to-1 Asynchronous Communication:**
+    - Services communicate with each other without waiting for a response (non-blocking, fire and forget).
+    - It's useful when we need to send messages between services and the responsibility of processing the message is on the receiver.
+    - It usually involves a message broker or queue to handle the messages.
+  - **Publish-Subscribe or Event-Driven Communication:**
+    - A service notifies other services about events without expecting a response.
+    - It does not track the notification receivers and does not know anything about them.
+    - This pattern is commonly implemented using message brokers like RabbitMQ, Kafka, or AWS SNS.
+
+- Choosing the wrong communication pattern can lead to performance issues, and it's almost impossible to change it later.
+
+## Selecting Technology Stack
+
+- This architecture allows to select the most suitable technology stack for each service based on its requirements.
+- There is no right or wrong technology stack, everything will depend on each necessity.
+- The stack should be chosen based on hard evidence, not just personal preferences.
+- Backend technologies:
+
+  | Technology  | App Types                | Typed Language | Cross Platform | Community  | Performance      | Learning Curve |
+  | ----------- | ------------------------ | -------------- | -------------- | ---------- | ---------------- | -------------- |
+  | Node.js     | APIs, Web, Microservices | No (JS/TS)     | Yes            | Very Large | High (I/O bound) | Easy/Moderate  |
+  | Spring Boot | APIs, Web, Microservices | Yes (Java)     | Yes            | Large      | High             | Moderate       |
+  | .NET Core   | APIs, Web, Microservices | Yes (C#)       | Yes            | Large      | High             | Moderate       |
+  | Django      | APIs, Web                | No (Python)    | Yes            | Large      | Moderate         | Easy           |
+  | Go (Golang) | APIs, Microservices      | Yes            | Yes            | Growing    | Very High        | Moderate       |
+
+- Storage:
+  - **Relational Databases:**
+    - Stores data in structured tables with relationships.
+    - Examples: PostgreSQL, MySQL, SQL Server.
+    - This is a good choice for services that require complex queries and structured data.
+  - **NoSQL Databases:**
+    - Stores data in a flexible, schema-less format.
+    - Examples: MongoDB, Cassandra, Redis.
+    - This is a good choice for services that require high scalability and flexibility in data storage.
+  - **Cache:**
+    - Used to store frequently accessed data for faster retrieval.
+    - It stores only serialized data, which can be deserialized when needed.
+    - Examples: Redis, Memcached.
+    - This is a good choice for services that require high performance and low latency.
+  - **Object Storage:**
+    - Used to store large files and unstructured data.
+    - Examples: AWS S3, Google Cloud Storage, Azure Blob Storage.
+    - This is a good choice for services that require high availability and durability of data.
