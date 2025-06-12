@@ -10,6 +10,7 @@ This repository contains resources and notes related to microservices architectu
 4. [Deploying Microservices](./_notes/04-deploying-microservices.md)
 5. [Testing Microservices](./_notes/05-testing-microservices.md)
 6. [Service Mesh](./_notes/06-service-mesh.md)
+7. [Logging and Monitoring](./_notes/07-logging-and-monitoring.md)
 
 ### References
 
