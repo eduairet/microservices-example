@@ -11,6 +11,7 @@ This repository contains resources and notes related to microservices architectu
 5. [Testing Microservices](./_notes/05-testing-microservices.md)
 6. [Service Mesh](./_notes/06-service-mesh.md)
 7. [Logging and Monitoring](./_notes/07-logging-and-monitoring.md)
+8. [When not to use Microservices](./_notes/08-when-not-to-use-microservices.md)
 
 ### References
 
