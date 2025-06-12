@@ -1,4 +1,4 @@
-## When not to use Microservices
+# When not to use Microservices
 
 - **Small Systems:** If the system is small and simple, using microservices can add unnecessary complexity.
   - Rule of thumb, if the system just needs two or three services, it's better to use a monolithic architecture.

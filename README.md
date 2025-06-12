@@ -12,6 +12,8 @@ This repository contains resources and notes related to microservices architectu
 6. [Service Mesh](./_notes/06-service-mesh.md)
 7. [Logging and Monitoring](./_notes/07-logging-and-monitoring.md)
 8. [When not to use Microservices](./_notes/08-when-not-to-use-microservices.md)
+9. [Microservices and the Organization](./_notes/09-microservices-and-the-organization.md)
+10. [Anti-Patterns and Common Mistakes](./_notes/10-anti-patterns-and-common-mistakes.md)
 
 ### References
 
