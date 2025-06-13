@@ -14,6 +14,7 @@ This repository contains resources and notes related to microservices architectu
 8. [When not to use Microservices](./_notes/08-when-not-to-use-microservices.md)
 9. [Microservices and the Organization](./_notes/09-microservices-and-the-organization.md)
 10. [Anti-Patterns and Common Mistakes](./_notes/10-anti-patterns-and-common-mistakes.md)
+11. [Breaking Monoliths into Microservices](./_notes/11-breaking-monoliths-into-microservices.md)
 
 ### References
 
