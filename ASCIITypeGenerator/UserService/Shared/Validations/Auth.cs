@@ -1,8 +1,8 @@
 namespace UserService.Shared.Validations;
 
-public partial class Validations
+public static partial class Validations
 {
-    public static partial class Auth
+    public static class Auth
     {
         public const string UserNamePattern = @"^[a-zA-Z\d]+$";
         public const string UserNameErrorMessage = "Username can only contain letters and digits.";

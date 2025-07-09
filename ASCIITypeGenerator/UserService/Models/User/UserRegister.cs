@@ -1,13 +1,11 @@
 using System.ComponentModel.DataAnnotations;
 using UserService.Shared.Validations;
 
-namespace UserService.Models;
+namespace UserService.Models.User;
 
 public class UserRegister
 {
-    [Required]
-    [EmailAddress]
-    public string Email { get; set; }
+    [Required] [EmailAddress] public string Email { get; set; }
 
     [Required]
     [MinLength(3)]
@@ -31,6 +29,7 @@ public class UserRegister
     [MaxLength(100)]
     public string LastName { get; set; }
 
-    [Phone]
-    public string PhoneNumber { get; set; }
+    [Phone] public string PhoneNumber { get; set; }
+
+    [Url] public string AvatarUrl { get; set; }
 }

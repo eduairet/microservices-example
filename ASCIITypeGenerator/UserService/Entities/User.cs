@@ -1,13 +1,15 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
+
 namespace UserService.Entities;
 
-public class User
+[Table("Users")] // Specify the table name in the database
+public class User : IdentityUser
 {
-    public int Id { get; set; }
-    public string Email { get; set; }
-    public string UserName { get; set; }
-    public string PasswordHash { get; set; }
-    public string PasswordSalt { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string PhoneNumber { get; set; }
+    [MaxLength(100)] public string FirstName { get; set; }
+
+    [MaxLength(100)] public string LastName { get; set; }
+
+    [MaxLength(Int32.MaxValue)] public string AvatarUrl { get; set; }
 }
