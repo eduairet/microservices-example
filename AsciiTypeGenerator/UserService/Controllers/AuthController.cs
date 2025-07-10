@@ -1,4 +1,3 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UserService.Entities;
@@ -8,15 +7,13 @@ using UserService.Shared.Helpers;
 
 namespace UserService.Controllers;
 
-[Route($"{Constants.ApiUrls.BasePath}/[controller]")]
 [ApiController]
+[Route($"{Constants.ApiRoutes.BasePath}/[controller]")]
 public class AuthController(
     IConfiguration configuration,
-    IMapper mapper,
-    UserManager<User> userManager,
-    RoleManager<IdentityRole> roleManager) : ControllerBase
+    UserManager<User> userManager) : ControllerBase
 {
-    [HttpPost]
+    [HttpPost(Constants.ApiRoutes.Auth.Register)]
     public async Task<IActionResult> Register([FromBody] UserRegister userRegister)
     {
         if (userRegister is null) return BadRequest(Constants.ErrorMessages.EmptyUserRegistration);
@@ -30,28 +27,18 @@ public class AuthController(
 
         try
         {
-            var newUser = mapper.Map<User>(userRegister);
+            var newUser = userRegister.ToUser();
             newUser.PasswordHash = Helpers.Password.Hash(newUser, userRegister.Password);
 
             var newUserResult = await userManager.CreateAsync(newUser, userRegister.Password);
 
-            if (newUserResult.Succeeded == false)
-            {
-                foreach (var error in newUserResult.Errors)
-                    ModelState.AddModelError(error.Code, error.Description);
+            if (newUserResult.Succeeded)
+                return CreatedAtAction(nameof(Register), new { id = newUser.Id }, newUser);
 
-                return BadRequest(ModelState);
-            }
+            foreach (var error in newUserResult.Errors)
+                ModelState.AddModelError(error.Code, error.Description);
 
-            const string roleName = nameof(UserRoles.User);
-            var roleExists = await roleManager.RoleExistsAsync(roleName);
-
-            if (!roleExists)
-                return BadRequest(Constants.ErrorMessages.UserRoleNotFound);
-
-            await userManager.AddToRoleAsync(newUser, roleName);
-
-            return CreatedAtAction(nameof(Register), new { id = newUser.Id }, newUser);
+            return BadRequest(ModelState);
         }
         catch (Exception ex)
         {
@@ -59,7 +46,7 @@ public class AuthController(
         }
     }
 
-    [HttpPost]
+    [HttpPost(Constants.ApiRoutes.Auth.Login)]
     public async Task<IActionResult> Login([FromBody] UserLogin userLogin)
     {
         if (userLogin == null) return BadRequest(Constants.ErrorMessages.EmptyUserLogin);
@@ -79,7 +66,7 @@ public class AuthController(
 
             if (!passwordResult) return Unauthorized(Constants.ErrorMessages.InvalidCredentials);
 
-            var token = Helpers.Jwt.CreateToken(user, configuration, userManager);
+            var token = await Helpers.Jwt.CreateToken(user, configuration, userManager);
 
             return Ok(token);
         }

@@ -39,4 +39,18 @@ public class UserRegister
     [Phone] public string PhoneNumber { get; set; }
 
     [Url] public string AvatarUrl { get; set; }
+
+    public Entities.User ToUser()
+    {
+        return new Entities.User
+        {
+            Email = Email,
+            UserName = UserName,
+            FirstName = FirstName,
+            LastName = LastName,
+            PhoneNumber = PhoneNumber,
+            AvatarUrl = AvatarUrl,
+            RoleId = ((int)Entities.IdentityRoles.User).ToString()
+        };
+    }
 }

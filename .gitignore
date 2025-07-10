@@ -1,6 +1,7 @@
 # Repo specific ignores
 .DS_Store
 _reference/
+postgres_data/
 
 # .NET
 ## Ignore Visual Studio temporary files, build results, and

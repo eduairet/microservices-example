@@ -1,42 +1,54 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using UserService.Entities;
 
 namespace UserService.Data;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class AppDbContext : IdentityDbContext<User>
 {
+    public AppDbContext()
+    {
+    }
+
+    public AppDbContext(DbContextOptions<AppDbContext> options)
+        : base(options)
+    {
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<IdentityRole>().HasData(
-            new IdentityRole
-            {
-                Id = ((int)UserRoles.SuperAdmin).ToString(),
-                Name = nameof(UserRoles.SuperAdmin),
-                NormalizedName = nameof(UserRoles.SuperAdmin).ToUpper()
-            },
-            new IdentityRole
-            {
-                Id = ((int)UserRoles.Admin).ToString(),
-                Name = nameof(UserRoles.Admin),
-                NormalizedName = nameof(UserRoles.Admin).ToUpper()
-            },
-            new IdentityRole
-            {
-                Id = ((int)UserRoles.User).ToString(),
-                Name = nameof(UserRoles.User),
-                NormalizedName = nameof(UserRoles.User).ToUpper()
-            },
-            new IdentityRole
-            {
-                Id = ((int)UserRoles.Guest).ToString(),
-                Name = nameof(UserRoles.Guest),
-                NormalizedName = nameof(UserRoles.Guest).ToUpper()
-            }
-        );
-    }
+        modelBuilder.Entity<IdentityRole>()
+            .ToTable("IdentityRoles")
+            .HasData(
+                new IdentityRole
+                {
+                    Id = ((int)IdentityRoles.SuperAdmin).ToString(),
+                    Name = nameof(IdentityRoles.SuperAdmin),
+                    NormalizedName = nameof(IdentityRoles.SuperAdmin).ToUpper()
+                },
+                new IdentityRole
+                {
+                    Id = ((int)IdentityRoles.Admin).ToString(),
+                    Name = nameof(IdentityRoles.Admin),
+                    NormalizedName = nameof(IdentityRoles.Admin).ToUpper()
+                },
+                new IdentityRole
+                {
+                    Id = ((int)IdentityRoles.User).ToString(),
+                    Name = nameof(IdentityRoles.User),
+                    NormalizedName = nameof(IdentityRoles.User).ToUpper()
+                },
+                new IdentityRole
+                {
+                    Id = ((int)IdentityRoles.Guest).ToString(),
+                    Name = nameof(IdentityRoles.Guest),
+                    NormalizedName = nameof(IdentityRoles.Guest).ToUpper()
+                }
+            );
 
-    public DbSet<User> Users { get; set; }
+        modelBuilder.Entity<User>().ToTable("Users");
+    }
 }

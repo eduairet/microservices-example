@@ -1,6 +1,6 @@
 namespace UserService.Entities;
 
-public enum UserRoles
+public enum IdentityRoles
 {
     SuperAdmin,
     Admin,

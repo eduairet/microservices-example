@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
-using UserService.Configurations;
 using UserService.Data;
 using UserService.Entities;
 using UserService.Shared.Helpers;
@@ -18,7 +17,6 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
-builder.Services.AddAutoMapper(cfg => { cfg.AddProfile<UserMapper>(); });
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -42,7 +40,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi($"/openapi/{UserService.Shared.Constants.Constants.ApiUrls.ApiVersion}.json");
+    app.MapOpenApi($"/openapi/{UserService.Shared.Constants.Constants.ApiRoutes.ApiVersion}.json");
     app.MapScalarApiReference();
 }
 
