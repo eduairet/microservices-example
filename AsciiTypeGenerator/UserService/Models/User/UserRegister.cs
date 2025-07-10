@@ -20,6 +20,13 @@ public class UserRegister
     public string Password { get; set; }
 
     [Required]
+    [MinLength(6)]
+    [MaxLength(100)]
+    [Compare(nameof(Password), ErrorMessage = Validations.Auth.ConfirmPasswordErrorMessage)]
+    [RegularExpression(Validations.Auth.PasswordPattern, ErrorMessage = Validations.Auth.PasswordErrorMessage)]
+    public string ConfirmPassword { get; set; }
+
+    [Required]
     [MinLength(2)]
     [MaxLength(100)]
     public string FirstName { get; set; }

@@ -11,5 +11,13 @@ public class User : IdentityUser
 
     [MaxLength(100)] public string LastName { get; set; }
 
-    [MaxLength(Int32.MaxValue)] public string AvatarUrl { get; set; }
+    [MaxLength(201)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    public string FullName { get; private set; }
+
+    [MaxLength(int.MaxValue)] public string AvatarUrl { get; set; }
+
+    [Required] public string RoleId { get; set; } = ((int)UserRoles.User).ToString();
+
+    [ForeignKey("RoleId")] public IdentityRole Role { get; set; }
 }

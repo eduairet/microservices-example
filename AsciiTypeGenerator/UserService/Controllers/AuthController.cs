@@ -1,9 +1,10 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UserService.Entities;
 using UserService.Models.User;
 using UserService.Shared.Constants;
-using UserService.Shared.Utils;
+using UserService.Shared.Helpers;
 
 namespace UserService.Controllers;
 
@@ -11,30 +12,26 @@ namespace UserService.Controllers;
 [ApiController]
 public class AuthController(
     IConfiguration configuration,
+    IMapper mapper,
     UserManager<User> userManager,
     RoleManager<IdentityRole> roleManager) : ControllerBase
 {
-    [HttpPost(Constants.ApiUrls.Auth.Register)]
+    [HttpPost]
     public async Task<IActionResult> Register([FromBody] UserRegister userRegister)
     {
         if (userRegister is null) return BadRequest(Constants.ErrorMessages.EmptyUserRegistration);
 
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
+        var userExists = await userManager.FindByEmailAsync(userRegister.Email);
+
+        if (userExists is not null)
+            return BadRequest(Constants.ErrorMessages.UserAlreadyExists);
+
         try
         {
-            // TODO Implement Automapper
-            var newUser = new User
-            {
-                Email = userRegister.Email,
-                UserName = userRegister.UserName,
-                FirstName = userRegister.FirstName,
-                LastName = userRegister.LastName,
-                PhoneNumber = userRegister.PhoneNumber,
-                AvatarUrl = userRegister.AvatarUrl,
-            };
-
-            newUser.PasswordHash = Utils.Password.Hash(newUser, userRegister.Password);
+            var newUser = mapper.Map<User>(userRegister);
+            newUser.PasswordHash = Helpers.Password.Hash(newUser, userRegister.Password);
 
             var newUserResult = await userManager.CreateAsync(newUser, userRegister.Password);
 
@@ -62,7 +59,7 @@ public class AuthController(
         }
     }
 
-    [HttpPost(Constants.ApiUrls.Auth.Login)]
+    [HttpPost]
     public async Task<IActionResult> Login([FromBody] UserLogin userLogin)
     {
         if (userLogin == null) return BadRequest(Constants.ErrorMessages.EmptyUserLogin);
@@ -75,14 +72,14 @@ public class AuthController(
 
             if (user is null) return NotFound(Constants.ErrorMessages.UserNotFound);
 
-            if (!Utils.Password.Verify(user, userLogin.Password))
+            if (!Helpers.Password.Verify(user, userLogin.Password))
                 return Unauthorized(Constants.ErrorMessages.InvalidCredentials);
 
             var passwordResult = await userManager.CheckPasswordAsync(user, userLogin.Password);
 
             if (!passwordResult) return Unauthorized(Constants.ErrorMessages.InvalidCredentials);
 
-            var token = Utils.Jwt.CreateToken(user, configuration, userManager);
+            var token = Helpers.Jwt.CreateToken(user, configuration, userManager);
 
             return Ok(token);
         }

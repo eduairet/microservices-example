@@ -34,7 +34,9 @@ namespace UserService.Data.Migrations
                     Id = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
+                    FullName = table.Column<string>(type: "character varying(201)", maxLength: 201, nullable: true),
                     AvatarUrl = table.Column<string>(type: "text", maxLength: 2147483647, nullable: true),
+                    RoleId = table.Column<string>(type: "text", nullable: false),
                     UserName = table.Column<string>(type: "text", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "text", nullable: true),
                     Email = table.Column<string>(type: "text", nullable: true),
@@ -53,6 +55,12 @@ namespace UserService.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_IdentityRole_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "IdentityRole",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -65,16 +73,21 @@ namespace UserService.Data.Migrations
                     { "2", null, "User", "USER" },
                     { "3", null, "Guest", "GUEST" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_RoleId",
+                table: "Users",
+                column: "RoleId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "IdentityRole");
+                name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "IdentityRole");
         }
     }
 }

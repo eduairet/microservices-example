@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using UserService.Entities;
 
-namespace UserService.Shared.Utils;
+namespace UserService.Shared.Helpers;
 
-public static partial class Utils
+public static partial class Helpers
 {
     public static class Password
     {
@@ -16,8 +16,7 @@ public static partial class Utils
         {
             if (user is null || string.IsNullOrEmpty(user.PasswordHash)) return false;
 
-            var passwordHasher = new PasswordHasher<User>();
-            var result = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+            var result = new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, password);
             return result == PasswordVerificationResult.Success;
         }
     }

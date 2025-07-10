@@ -1,6 +1,12 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using UserService.Configurations;
 using UserService.Data;
+using UserService.Entities;
+using UserService.Shared.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +18,24 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+builder.Services.AddAutoMapper(cfg => { cfg.AddProfile<UserMapper>(); });
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = Helpers.Jwt.GetTokenValidationParameters(builder.Configuration);
+});
+builder.Services.AddIdentityCore<User>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddRouting(options =>
+    options.LowercaseUrls = true);
+builder.Services.AddControllers(options =>
+    options.Conventions.Add(
+        new RouteTokenTransformerConvention(new Helpers.Routing.SlugifyParameterTransformer())
+    ));
 
 var app = builder.Build();
 
