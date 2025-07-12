@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using UserService.Shared.Helpers;
 using UserService.Shared.Validations;
 
 namespace UserService.Models.User;
 
-public class UserRegister
+public class UserRegisterDto
 {
     [Required] [EmailAddress] public string Email { get; set; }
 
@@ -42,7 +43,7 @@ public class UserRegister
 
     public Entities.User ToUser()
     {
-        return new Entities.User
+        var newUser = new Entities.User
         {
             Email = Email,
             UserName = UserName,
@@ -52,5 +53,9 @@ public class UserRegister
             AvatarUrl = AvatarUrl,
             RoleId = ((int)Entities.IdentityRoles.User).ToString()
         };
+
+        newUser.PasswordHash = Helpers.Password.Hash(newUser, Password);
+
+        return newUser;
     }
 }

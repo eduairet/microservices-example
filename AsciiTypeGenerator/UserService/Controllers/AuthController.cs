@@ -14,7 +14,7 @@ public class AuthController(
     UserManager<User> userManager) : ControllerBase
 {
     [HttpPost(Constants.ApiRoutes.Auth.Register)]
-    public async Task<IActionResult> Register([FromBody] UserRegister userRegister)
+    public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegister)
     {
         if (userRegister is null) return BadRequest(Constants.ErrorMessages.EmptyUserRegistration);
 
@@ -28,8 +28,6 @@ public class AuthController(
         try
         {
             var newUser = userRegister.ToUser();
-            newUser.PasswordHash = Helpers.Password.Hash(newUser, userRegister.Password);
-
             var newUserResult = await userManager.CreateAsync(newUser, userRegister.Password);
 
             if (newUserResult.Succeeded)
@@ -47,7 +45,7 @@ public class AuthController(
     }
 
     [HttpPost(Constants.ApiRoutes.Auth.Login)]
-    public async Task<IActionResult> Login([FromBody] UserLogin userLogin)
+    public async Task<IActionResult> Login([FromBody] UserLoginDto userLogin)
     {
         if (userLogin == null) return BadRequest(Constants.ErrorMessages.EmptyUserLogin);
 

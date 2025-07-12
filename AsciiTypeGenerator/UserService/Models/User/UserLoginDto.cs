@@ -3,7 +3,7 @@ using UserService.Shared.Validations;
 
 namespace UserService.Models.User;
 
-public class UserLogin
+public class UserLoginDto
 {
     [Required] [EmailAddress] public string Email { get; set; }
 
