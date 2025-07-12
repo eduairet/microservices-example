@@ -10,20 +10,14 @@ public static partial class Constants
 
         #endregion
 
-        #region JWT
-
-        public static string InvalidJwtUser(string user) => $"{user} is not valid";
-
-        #endregion
-
         #region API
 
+        public const string EmptyUserLogin = "User login data cannot be empty.";
         public const string EmptyUserRegistration = "User registration data cannot be empty.";
         public const string InvalidCredentials = "Invalid username or password.";
-        public const string EmptyUserLogin = "User login data cannot be empty.";
+        public static string InvalidUser(string user) => $"{user} is not valid";
         public const string UserAlreadyExists = "User with this email already exists.";
         public const string UserNotFound = "User not found.";
-        public const string UserRoleNotFound = "User role not found.";
 
         #endregion
     }

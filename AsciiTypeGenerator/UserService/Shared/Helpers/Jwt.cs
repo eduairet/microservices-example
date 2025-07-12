@@ -16,7 +16,7 @@ public static partial class Helpers
         {
             if (user is null || string.IsNullOrEmpty(user.Id) || string.IsNullOrEmpty(user.Email) ||
                 string.IsNullOrEmpty(user.UserName))
-                throw new NullReferenceException(Constants.Constants.ErrorMessages.InvalidJwtUser(nameof(user)));
+                throw new NullReferenceException(Constants.Constants.ErrorMessages.InvalidUser(nameof(user)));
 
             var (jwtKey, jwtIssuer, jwtAudience) = GetJwtSettings(configuration);
 
@@ -68,15 +68,9 @@ public static partial class Helpers
         private static (string jwtKey, string jwtIssuer, string jwtAudience) GetJwtSettings(
             IConfiguration configuration)
         {
-            var jwtKey = configuration[Constants.Constants.Jwt.JwtKeyKey] ??
-                         throw new InvalidOperationException(
-                             Constants.Constants.ErrorMessages.KeyNotSet(Constants.Constants.Jwt.JwtKeyKey));
-            var jwtIssuer = configuration[Constants.Constants.Jwt.JwtIssuerKey] ??
-                            throw new InvalidOperationException(
-                                Constants.Constants.ErrorMessages.KeyNotSet(Constants.Constants.Jwt.JwtIssuerKey));
-            var jwtAudience = configuration[Constants.Constants.Jwt.JwtAudienceKey] ??
-                              throw new InvalidOperationException(
-                                  Constants.Constants.ErrorMessages.KeyNotSet(Constants.Constants.Jwt.JwtAudienceKey));
+            var jwtKey = new Constants.Constants.Environment(configuration).JwtKey;
+            var jwtIssuer = new Constants.Constants.Environment(configuration).JwtIssuer;
+            var jwtAudience = new Constants.Constants.Environment(configuration).JwtAudience;
 
             return (jwtKey, jwtIssuer, jwtAudience);
         }

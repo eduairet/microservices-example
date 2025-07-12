@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using UserService.Data;
 using UserService.Entities;
+using UserService.Shared.Constants;
 using UserService.Shared.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +16,7 @@ builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+    options.UseNpgsql(new Constants.Environment(builder.Configuration).ConnectionString)
 );
 builder.Services.AddAuthentication(options =>
 {
@@ -40,11 +41,21 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi($"/openapi/{UserService.Shared.Constants.Constants.ApiRoutes.ApiVersion}.json");
+    app.MapOpenApi(Constants.ApiRoutes.OpenApiPath);
     app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
+try
+{
+    await DbInitializer.InitDb(app);
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.Message);
+}
+
 app.Run();
