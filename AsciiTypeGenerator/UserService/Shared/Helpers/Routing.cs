@@ -10,7 +10,10 @@ public static partial class Helpers
         {
             public string TransformOutbound(object value)
             {
-                if (value == null) { return null; }
+                if (value == null)
+                {
+                    return null;
+                }
 
                 var str = value.ToString();
 
