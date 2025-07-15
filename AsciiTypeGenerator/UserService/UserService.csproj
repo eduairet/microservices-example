@@ -16,16 +16,16 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
-    <PackageReference Include="Scalar.AspNetCore" Version="2.5.6" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.6.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.12.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AsciiTypeGenerator.Common\AsciiTypeGenerator.Common.csproj" />
+    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Migrations\" />
+    <ProjectReference Include="..\AsciiTypeGenerator.Common\AsciiTypeGenerator.Common.csproj" />
   </ItemGroup>
 
 </Project>

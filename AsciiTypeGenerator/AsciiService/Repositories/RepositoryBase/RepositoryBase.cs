@@ -1,11 +1,10 @@
-using AutoMapper;
 using AsciiTypeGenerator.Common.Models.Virtualize;
-using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
+using AsciiService.Shared.Constants;
 
-namespace AsciiTypeGenerator.Common.Repositories.RepositoryBase;
+namespace AsciiService.Repositories.RepositoryBase;
 
-public class RepositoryBase<T>(DbContext context, IMapper mapper) : IRepositoryBase<T> where T : class
+public class RepositoryBase<T>(DbContext context) : IRepositoryBase<T> where T : class
 {
     public async Task<List<T>> GetAllAsync()
     {
@@ -20,7 +19,7 @@ public class RepositoryBase<T>(DbContext context, IMapper mapper) : IRepositoryB
         var items = await context.Set<T>()
             .Skip(queryParameters.StartIndex)
             .Take(queryParameters.PageSize)
-            .ProjectTo<TResult>(mapper.ConfigurationProvider)
+            .Cast<TResult>()
             .ToListAsync();
 
         return new VirtualizeResponse<TResult> { Items = items, TotalCount = totalCount };
@@ -30,7 +29,7 @@ public class RepositoryBase<T>(DbContext context, IMapper mapper) : IRepositoryB
     {
         if (id is null) return null;
         var entity = await context.Set<T>().FindAsync(id) ??
-                     throw new KeyNotFoundException(EntityNotFoundMessage(id.ToString()));
+                     throw new KeyNotFoundException(Constants.ErrorMessages.EntityIdNotFound(id.ToString()));
         return entity;
     }
 
@@ -50,7 +49,7 @@ public class RepositoryBase<T>(DbContext context, IMapper mapper) : IRepositoryB
     public async Task DeleteAsync(object id)
     {
         var entity = await context.FindAsync<T>(id) ??
-                     throw new KeyNotFoundException(EntityNotFoundMessage(id.ToString()));
+                     throw new KeyNotFoundException(Constants.ErrorMessages.EntityIdNotFound(id.ToString()));
         context.Set<T>().Remove(entity);
         await context.SaveChangesAsync();
     }
@@ -60,6 +59,4 @@ public class RepositoryBase<T>(DbContext context, IMapper mapper) : IRepositoryB
         var entity = await context.Set<T>().FindAsync(id);
         return entity is not null;
     }
-
-    private static string EntityNotFoundMessage(string id) => $"Entity with id {id} not found.";
 }

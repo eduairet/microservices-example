@@ -1,6 +1,6 @@
 using AsciiTypeGenerator.Common.Models.Virtualize;
 
-namespace AsciiTypeGenerator.Common.Repositories.RepositoryBase;
+namespace AsciiService.Repositories.RepositoryBase;
 
 public interface IRepositoryBase<T> where T : class
 {
