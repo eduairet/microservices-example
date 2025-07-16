@@ -8,6 +8,6 @@ public class UserLoginDto
     [Required] [EmailAddress] public string Email { get; set; }
 
     [Required]
-    [RegularExpression(Validations.Auth.PasswordPattern, ErrorMessage = Validations.Auth.PasswordErrorMessage)]
+    [RegularExpression(AuthValidations.PasswordPattern, ErrorMessage = AuthValidations.PasswordErrorMessage)]
     public string Password { get; set; }
 }

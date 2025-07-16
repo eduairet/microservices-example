@@ -24,8 +24,8 @@ public static class DbInitializer
             return;
         }
 
-        var superAdminEmail = new Constants.Environment(configuration).SuperAdminEmail;
-        var superAdminPassword = new Constants.Environment(configuration).SuperAdminPassword;
+        var superAdminEmail = new EnvironmentConstants(configuration).SuperAdminEmail;
+        var superAdminPassword = new EnvironmentConstants(configuration).SuperAdminPassword;
 
         var superAdmin = new User
         {
@@ -36,7 +36,7 @@ public static class DbInitializer
             RoleId = ((int)IdentityRoles.SuperAdmin).ToString()
         };
 
-        superAdmin.PasswordHash = Helpers.Password.Hash(superAdmin, superAdminPassword);
+        superAdmin.PasswordHash = PasswordHelpers.Hash(superAdmin, superAdminPassword);
 
         await context.AddAsync(superAdmin);
         await context.SaveChangesAsync();

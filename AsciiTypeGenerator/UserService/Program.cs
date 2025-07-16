@@ -17,7 +17,7 @@ builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(new Constants.Environment(builder.Configuration).ConnectionString)
+    options.UseNpgsql(new EnvironmentConstants(builder.Configuration).ConnectionString)
 );
 builder.Services.AddAuthentication(options =>
 {
@@ -25,7 +25,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
-    options.TokenValidationParameters = Helpers.Jwt.GetTokenValidationParameters(builder.Configuration);
+    options.TokenValidationParameters = JwtHelpers.GetTokenValidationParameters(builder.Configuration);
 });
 builder.Services.AddIdentityCore<User>()
     .AddRoles<IdentityRole>()
@@ -40,7 +40,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi(Constants.ApiRoutes.OpenApiPath);
+    app.MapOpenApi(ApiRoutes.OpenApiPath);
     app.MapScalarApiReference();
 }
 

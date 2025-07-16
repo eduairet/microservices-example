@@ -8,22 +8,22 @@ using UserService.Shared.Helpers;
 namespace UserService.Controllers;
 
 [ApiController]
-[Route($"{Constants.ApiRoutes.BasePath}/[controller]")]
+[Route($"{ApiRoutes.BasePath}/[controller]")]
 public class AuthController(
     IConfiguration configuration,
     UserManager<User> userManager) : ControllerBase
 {
-    [HttpPost(Constants.ApiRoutes.Auth.Register)]
+    [HttpPost(ApiRoutes.Auth.Register)]
     public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegister)
     {
-        if (userRegister is null) return BadRequest(Constants.ErrorMessages.EmptyUserRegistration);
+        if (userRegister is null) return BadRequest(ErrorMessages.EmptyUserRegistration);
 
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
         var userExists = await userManager.FindByEmailAsync(userRegister.Email);
 
         if (userExists is not null)
-            return BadRequest(Constants.ErrorMessages.UserAlreadyExists);
+            return BadRequest(ErrorMessages.UserAlreadyExists);
 
         try
         {
@@ -44,10 +44,10 @@ public class AuthController(
         }
     }
 
-    [HttpPost(Constants.ApiRoutes.Auth.Login)]
+    [HttpPost(ApiRoutes.Auth.Login)]
     public async Task<IActionResult> Login([FromBody] UserLoginDto userLogin)
     {
-        if (userLogin == null) return BadRequest(Constants.ErrorMessages.EmptyUserLogin);
+        if (userLogin == null) return BadRequest(ErrorMessages.EmptyUserLogin);
 
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -55,16 +55,16 @@ public class AuthController(
         {
             var user = await userManager.FindByEmailAsync(userLogin.Email);
 
-            if (user is null) return NotFound(Constants.ErrorMessages.UserNotFound);
+            if (user is null) return NotFound(ErrorMessages.UserNotFound);
 
-            if (!Helpers.Password.Verify(user, userLogin.Password))
-                return Unauthorized(Constants.ErrorMessages.InvalidCredentials);
+            if (!PasswordHelpers.Verify(user, userLogin.Password))
+                return Unauthorized(ErrorMessages.InvalidCredentials);
 
             var passwordResult = await userManager.CheckPasswordAsync(user, userLogin.Password);
 
-            if (!passwordResult) return Unauthorized(Constants.ErrorMessages.InvalidCredentials);
+            if (!passwordResult) return Unauthorized(ErrorMessages.InvalidCredentials);
 
-            var token = await Helpers.Jwt.CreateToken(user, configuration, userManager);
+            var token = await JwtHelpers.CreateToken(user, configuration, userManager);
 
             return Ok(token);
         }

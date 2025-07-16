@@ -11,20 +11,20 @@ public class UserRegisterDto
     [Required]
     [MinLength(3)]
     [MaxLength(100)]
-    [RegularExpression(Validations.Auth.UserNamePattern, ErrorMessage = Validations.Auth.UserNameErrorMessage)]
+    [RegularExpression(AuthValidations.UserNamePattern, ErrorMessage = AuthValidations.UserNameErrorMessage)]
     public string UserName { get; set; }
 
     [Required]
     [MinLength(6)]
     [MaxLength(100)]
-    [RegularExpression(Validations.Auth.PasswordPattern, ErrorMessage = Validations.Auth.PasswordErrorMessage)]
+    [RegularExpression(AuthValidations.PasswordPattern, ErrorMessage = AuthValidations.PasswordErrorMessage)]
     public string Password { get; set; }
 
     [Required]
     [MinLength(6)]
     [MaxLength(100)]
-    [Compare(nameof(Password), ErrorMessage = Validations.Auth.ConfirmPasswordErrorMessage)]
-    [RegularExpression(Validations.Auth.PasswordPattern, ErrorMessage = Validations.Auth.PasswordErrorMessage)]
+    [Compare(nameof(Password), ErrorMessage = AuthValidations.ConfirmPasswordErrorMessage)]
+    [RegularExpression(AuthValidations.PasswordPattern, ErrorMessage = AuthValidations.PasswordErrorMessage)]
     public string ConfirmPassword { get; set; }
 
     [Required]
@@ -54,7 +54,7 @@ public class UserRegisterDto
             RoleId = ((int)Entities.IdentityRoles.User).ToString()
         };
 
-        newUser.PasswordHash = Helpers.Password.Hash(newUser, Password);
+        newUser.PasswordHash = PasswordHelpers.Hash(newUser, Password);
 
         return newUser;
     }
