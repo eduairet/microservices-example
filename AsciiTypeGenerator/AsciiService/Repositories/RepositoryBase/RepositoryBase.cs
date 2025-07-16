@@ -29,7 +29,7 @@ public class RepositoryBase<T>(DbContext context) : IRepositoryBase<T> where T :
     {
         if (id is null) return null;
         var entity = await context.Set<T>().FindAsync(id) ??
-                     throw new KeyNotFoundException(Constants.ErrorMessages.EntityIdNotFound(id.ToString()));
+                     throw new KeyNotFoundException(ErrorMessages.EntityIdNotFound(id.ToString()));
         return entity;
     }
 
@@ -49,7 +49,7 @@ public class RepositoryBase<T>(DbContext context) : IRepositoryBase<T> where T :
     public async Task DeleteAsync(object id)
     {
         var entity = await context.FindAsync<T>(id) ??
-                     throw new KeyNotFoundException(Constants.ErrorMessages.EntityIdNotFound(id.ToString()));
+                     throw new KeyNotFoundException(ErrorMessages.EntityIdNotFound(id.ToString()));
         context.Set<T>().Remove(entity);
         await context.SaveChangesAsync();
     }

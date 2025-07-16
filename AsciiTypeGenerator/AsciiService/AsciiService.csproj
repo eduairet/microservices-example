@@ -14,14 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
     <Folder Include="Shared\Helpers\" />
     <Folder Include="Shared\Validations\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\AsciiTypeGenerator.Common\AsciiTypeGenerator.Common.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,8 @@
 using AsciiService.Data;
 using AsciiService.Shared.Constants;
-using AsciiService.Shared.Extensions.DependencyInjection;
-using AsciiTypeGenerator.Common.Transformers;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using AsciiService.Shared.Extensions.DependencyInjectionExtensions;
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,12 +12,8 @@ builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(new Constants.Environment(builder.Configuration).ConnectionString)
+    options.UseNpgsql(new EnvironmentConstants(builder.Configuration).ConnectionString)
 );
-builder.Services.AddControllers(options =>
-    options.Conventions.Add(
-        new RouteTokenTransformerConvention(new SlugifyParameterTransformer())
-    ));
 builder.Services.AddRepositories();
 
 var app = builder.Build();
@@ -26,7 +21,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.MapOpenApi(ApiRoutes.OpenApiPath);
+    app.MapScalarApiReference();
 }
 
 app.UseHttpsRedirection();

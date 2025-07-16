@@ -1,7 +1,5 @@
-using AsciiTypeGenerator.Common.Transformers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 using IdentityService.Data;
 using IdentityService.Entities;
@@ -30,10 +28,6 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddIdentityCore<User>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
-builder.Services.AddControllers(options =>
-    options.Conventions.Add(
-        new RouteTokenTransformerConvention(new SlugifyParameterTransformer())
-    ));
 
 var app = builder.Build();
 
