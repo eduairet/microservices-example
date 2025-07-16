@@ -1,0 +1,29 @@
+@IdentityService_HostAddress = http://localhost:5197
+
+### Register a new user
+POST {{IdentityService_HostAddress}}/api/v1/Auth/register
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "user@example.com",
+  "userName": "testuser",
+  "password": "Password123!",
+  "confirmPassword": "Password123!",
+  "firstName": "Test",
+  "lastName": "User",
+  "phoneNumber": "+1234567890",
+  "avatarUrl": "https://example.com/avatar.png"
+}
+
+### Login
+POST {{IdentityService_HostAddress}}/api/v1/Auth/login
+Content-Type: application/json
+Accept: application/json
+
+{
+  "email": "user@example.com",
+  "password": "Password123!"
+}
+
+###

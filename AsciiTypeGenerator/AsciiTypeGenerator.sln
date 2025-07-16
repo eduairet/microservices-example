@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsciiService", "AsciiService\AsciiService.csproj", "{8454B671-B0EB-F302-A855-EF29619A2593}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService", "UserService\UserService.csproj", "{AE8B3E5B-A5A2-46C2-83E1-8B000FDC33F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService", "IdentityService\IdentityService.csproj", "{AE8B3E5B-A5A2-46C2-83E1-8B000FDC33F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsciiTypeGenerator.Common", "AsciiTypeGenerator.Common\AsciiTypeGenerator.Common.csproj", "{328D4171-8BED-46B3-A49C-94117DAF86FB}"
 EndProject
