@@ -1,11 +1,14 @@
-using AsciiTypeGenerator.Common.Models.Virtualize;
+using AsciiService.Models.Virtualize;
 
 namespace AsciiService.Repositories.RepositoryBase;
 
 public interface IRepositoryBase<T> where T : class
 {
     Task<List<T>> GetAllAsync();
-    Task<VirtualizeResponse<TResult>> GetAllAsync<TResult>(VirtualizeQueryParameters queryParam) where TResult : class;
+
+    Task<VirtualizeResponse<T>> GetAllAsync(VirtualizeQueryParameters queryParameters,
+        string searchText = null);
+
     Task<T> GetAsync(object id);
     Task<T> AddAsync(T entity);
     Task UpdateAsync(T entity);

@@ -1,4 +1,5 @@
 using AsciiService.Models.Alphabets;
+using AsciiService.Models.Virtualize;
 using AsciiService.Repositories.AlphabetsRepository;
 using AsciiService.Shared.Constants;
 using Microsoft.AspNetCore.Mvc;
@@ -10,33 +11,92 @@ namespace AsciiService.Controllers;
 public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : ControllerBase
 {
     [HttpGet(ApiRoutes.Alphabets.GetAll)]
-    public async Task<IActionResult> GetAllAlphabets([FromQuery] GetAllAlphabetsRequest request)
+    public async Task<ActionResult<VirtualizeResponse<AlphabetDetailsDto>>> GetAllAlphabets(
+        [FromQuery] GetAllAlphabetsRequest request)
     {
         try
         {
-            var alphabets = await alphabetsRepository.GetAllAsync();
+            var parameters = new VirtualizeQueryParameters();
+            parameters.StartIndex = request.Page * parameters.PageSize;
 
-            if (alphabets is null || alphabets.Count == 0)
-                return NotFound("No alphabets found.");
+            var alphabets = await alphabetsRepository.GetAllAsync(parameters, request.SearchText);
 
-            if (!string.IsNullOrWhiteSpace(request.SearchText))
-                alphabets = alphabets
-                    .Where(a => a.Title.Contains(request.SearchText, StringComparison.OrdinalIgnoreCase) ||
-                                a.Description.Contains(request.SearchText, StringComparison.OrdinalIgnoreCase))
-                    .ToList();
+            if (alphabets.TotalCount == 0)
+                return NotFound(ErrorMessages.AlphabetsNotFound(request.SearchText));
 
-            if (request.Take > alphabets.Count)
-                request.Take = alphabets.Count;
+            return Ok(alphabets.Items.Select(AlphabetDetailsDto.FromEntity));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 
-            if (request.Skip < 0)
-                request.Skip = 0;
+    [HttpGet(ApiRoutes.Alphabets.GetById)]
+    public async Task<ActionResult<AlphabetDetailsDto>> GetAlphabetById([FromRoute] string id)
+    {
+        try
+        {
+            var alphabet = await alphabetsRepository.GetAsync(id);
 
-            alphabets = alphabets
-                .Skip(request.Skip)
-                .Take(request.Take)
-                .ToList();
+            if (alphabet is null)
+                return NotFound(ErrorMessages.AlphabetNotFound(id));
 
-            return Ok(alphabets);
+            return Ok(AlphabetDetailsDto.FromEntity(alphabet));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPost(ApiRoutes.Alphabets.Create)]
+    public async Task<ActionResult<AlphabetDetailsDto>> CreateAlphabet([FromBody] AlphabetUpsertDto upsertDto)
+    {
+        if (upsertDto is null)
+            return BadRequest(ErrorMessages.InvalidRequestBody);
+
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        try
+        {
+            // TODO: Get author ID from authentication context
+            const string authorId = "system";
+
+            var alphabet = await alphabetsRepository.AddAsync(upsertDto.ToEntity(authorId));
+
+            return CreatedAtAction(nameof(GetAlphabetById), new { id = alphabet.Id },
+                AlphabetDetailsDto.FromEntity(alphabet));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    
+    [HttpPut(ApiRoutes.Alphabets.Update)]
+    public async Task<ActionResult<AlphabetDetailsDto>> UpdateAlphabet([FromRoute] string id,
+        [FromBody] AlphabetUpsertDto updateDto)
+    {
+        if (updateDto is null)
+            return BadRequest(ErrorMessages.InvalidRequestBody);
+
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
+        // TODO: Check the author is the same as the one who created the alphabet
+
+        try
+        {
+            var alphabet = await alphabetsRepository.GetAsync(id);
+
+            if (alphabet is null)
+                return NotFound(ErrorMessages.AlphabetNotFound(id));
+
+            await alphabetsRepository.UpdateAsync(updateDto.ToEntity(id, alphabet.AuthorId));
+
+            return Ok(AlphabetDetailsDto.FromEntity(alphabet));
         }
         catch (Exception ex)
         {

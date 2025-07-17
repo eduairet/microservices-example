@@ -1,4 +1,4 @@
-using AsciiTypeGenerator.Common.Models.Virtualize;
+using AsciiService.Models.Virtualize;
 using Microsoft.EntityFrameworkCore;
 using AsciiService.Shared.Constants;
 
@@ -8,21 +8,33 @@ public class RepositoryBase<T>(DbContext context) : IRepositoryBase<T> where T :
 {
     public async Task<List<T>> GetAllAsync()
     {
-        var entities = await context.Set<T>().ToListAsync();
+        var entities = await context.Set<T>().AsNoTracking().ToListAsync();
         return entities;
     }
 
-    public async Task<VirtualizeResponse<TResult>> GetAllAsync<TResult>(VirtualizeQueryParameters queryParameters)
-        where TResult : class
+    public async Task<VirtualizeResponse<T>> GetAllAsync(VirtualizeQueryParameters queryParameters,
+        string searchText = null)
     {
-        var totalCount = await context.Set<T>().CountAsync();
-        var items = await context.Set<T>()
+        var query = context.Set<T>().AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(searchText))
+        {
+            var stringProperties = typeof(T).GetProperties()
+                .Where(p => p.PropertyType == typeof(string));
+
+            query = stringProperties.Aggregate(query,
+                (current, prop) =>
+                    current.Where(e => EF.Functions.Like(EF.Property<string>(e, prop.Name), $"%{searchText}%")));
+        }
+
+        var totalCount = await query.CountAsync();
+        var items = await query
             .Skip(queryParameters.StartIndex)
             .Take(queryParameters.PageSize)
-            .Cast<TResult>()
+            .AsNoTracking()
             .ToListAsync();
 
-        return new VirtualizeResponse<TResult> { Items = items, TotalCount = totalCount };
+        return new VirtualizeResponse<T> { Items = items, TotalCount = totalCount };
     }
 
     public async Task<T> GetAsync(object id)

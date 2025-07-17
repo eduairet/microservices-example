@@ -13,7 +13,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<Alphabet>().ToTable("Alphabets");
+        modelBuilder.Entity<Alphabet>().ToTable("Alphabets").HasIndex(a => a.Title).IsUnique();
         modelBuilder.Entity<Artwork>().ToTable("Artworks");
         modelBuilder.Entity<User>().ToTable("Users");
     }

@@ -1,11 +1,7 @@
-namespace AsciiTypeGenerator.Common.Models.Virtualize;
+namespace AsciiService.Models.Virtualize;
 
-public class VirtualizeResponse<T>(List<T> items)
+public class VirtualizeResponse<T>
 {
-    public VirtualizeResponse() : this([])
-    {
-    }
-
-    public List<T> Items { get; set; } = items;
+    public List<T> Items { get; set; } = [];
     public int TotalCount { get; set; }
 }
