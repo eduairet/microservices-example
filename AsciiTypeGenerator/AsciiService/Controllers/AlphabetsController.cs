@@ -11,7 +11,24 @@ namespace AsciiService.Controllers;
 public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : ControllerBase
 {
     [HttpGet(ApiRoutes.Alphabets.GetAll)]
-    public async Task<ActionResult<VirtualizeResponse<AlphabetDetailsDto>>> GetAllAlphabets(
+    public async Task<ActionResult<List<AlphabetDetailsDto>>> GetAll()
+    {
+        try
+        {
+            var alphabets = await alphabetsRepository.GetAllAsync();
+            return alphabets.Count == 0
+                ? Accepted(ErrorMessages.AlphabetsNotFound(null))
+                : Accepted(alphabets.Select(AlphabetDetailsDto.FromEntity).ToList());
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            throw;
+        }
+    }
+
+    [HttpGet(ApiRoutes.Alphabets.Search)]
+    public async Task<ActionResult<VirtualizeResponse<AlphabetDetailsDto>>> Search(
         [FromQuery] GetAllAlphabetsRequest request)
     {
         try
@@ -74,7 +91,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
             return BadRequest(ex.Message);
         }
     }
-    
+
     [HttpPut(ApiRoutes.Alphabets.Update)]
     public async Task<ActionResult<AlphabetDetailsDto>> UpdateAlphabet([FromRoute] string id,
         [FromBody] AlphabetUpsertDto updateDto)
@@ -84,7 +101,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
 
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
-        
+
         // TODO: Check the author is the same as the one who created the alphabet
 
         try

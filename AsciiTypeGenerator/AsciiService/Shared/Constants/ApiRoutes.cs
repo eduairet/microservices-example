@@ -8,12 +8,13 @@ public static class ApiRoutes
 
     public static class Alphabets
     {
-        public const string GetAll = $"{BasePath}/alphabets";
-        public const string GetById = $"{BasePath}/alphabets/{{id}}";
-        public const string Create = $"{BasePath}/alphabets";
-        public const string Update = $"{BasePath}/alphabets/{{id}}";
-        public const string Delete = $"{BasePath}/alphabets/{{id}}";
-        public const string UserAlphabets = $"{BasePath}/alphabets/user";
+        public const string GetAll = "";
+        public const string Search = "search";
+        public const string GetById = "{{id}}";
+        public const string Create = "";
+        public const string Update = "{{id}}";
+        public const string Delete = "{{id}}";
+        public const string UserAlphabets = "user";
     }
 
     public static class Artworks
