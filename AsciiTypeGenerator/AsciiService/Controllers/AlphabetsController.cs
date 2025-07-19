@@ -103,4 +103,21 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
             return BadRequest(ex.Message);
         }
     }
+
+    [HttpDelete(ApiRoutes.Alphabets.Delete)]
+    public async Task<IActionResult> DeleteAlphabet([FromRoute] string id)
+    {
+        try
+        {
+            if (!await alphabetsRepository.Exists(id))
+                return NotFound(ErrorMessages.AlphabetNotFound(id));
+
+            await alphabetsRepository.DeleteAsync(id);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }
