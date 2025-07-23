@@ -6,17 +6,14 @@ namespace AsciiService.Entities;
 public class Artwork
 {
     [Key]
-    [MaxLength(int.MaxValue)]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 
     [Required] [MaxLength(100)] public string Title { get; set; } = string.Empty;
-
     [Required] [MaxLength(2000)] public string Description { get; set; } = string.Empty;
-
-    [Required] [MaxLength(int.MaxValue)] public string Drawing { get; set; } = string.Empty;
-
-    [Required] [MaxLength(int.MaxValue)] public string AuthorId { get; set; } = string.Empty;
-
+    [Required] public DateTime CreatedAt { get; set; }
+    [Required] public DateTime UpdatedAt { get; set; }
+    [Required] public int AuthorId { get; set; }
     [ForeignKey("AuthorId")] public User Author { get; set; }
+    [Required] [MaxLength(int.MaxValue)] public List<Glyph> Text { get; set; } = [];
 }

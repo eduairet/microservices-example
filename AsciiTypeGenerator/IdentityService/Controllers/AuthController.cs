@@ -27,7 +27,7 @@ public class AuthController(
 
         try
         {
-            var newUser = userRegister.ToUser();
+            var newUser = userRegister.ToEntity();
             var newUserResult = await userManager.CreateAsync(newUser, userRegister.Password);
 
             if (newUserResult.Succeeded)

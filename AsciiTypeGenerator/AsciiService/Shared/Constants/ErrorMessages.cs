@@ -30,5 +30,22 @@ public static class ErrorMessages
 
     public static string AlphabetNotFound(string id) => $"Alphabet with ID {id} not found.";
 
+    public static string NoAlphabetsForUser(string userId)
+        => $"No alphabets found for user ID {userId}.";
+
     # endregion
+
+    #region Artworks
+
+    public static string ArtworksNotFound(string searchText)
+        => string.IsNullOrWhiteSpace(searchText)
+            ? "No artworks found."
+            : $"No artworks found for search text '{searchText}'.";
+
+    public static string ArtworkNotFound(string id) => $"Artwork with ID {id} not found.";
+
+    public static string NoArtworksForUser(string userId)
+        => $"No artworks found for user ID {userId}.";
+
+    #endregion
 }

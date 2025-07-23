@@ -18,7 +18,7 @@ public static class DbInitializer
     {
         await context.Database.MigrateAsync();
 
-        if (context.Users.Any(u => u.Role.Name == nameof(IdentityRoles.SuperAdmin)))
+        if (context.Users.Any(u => u.Role.Name == nameof(IdentityRolesEnum.SuperAdmin)))
         {
             Console.WriteLine("Database already has SuperAdmin user. Skipping seeding.");
             return;
@@ -29,11 +29,11 @@ public static class DbInitializer
 
         var superAdmin = new User
         {
-            UserName = nameof(IdentityRoles.SuperAdmin),
-            NormalizedUserName = nameof(IdentityRoles.SuperAdmin).ToUpper(),
+            UserName = nameof(IdentityRolesEnum.SuperAdmin),
+            NormalizedUserName = nameof(IdentityRolesEnum.SuperAdmin).ToUpper(),
             Email = superAdminEmail,
             NormalizedEmail = superAdminEmail.ToUpper(),
-            RoleId = ((int)IdentityRoles.SuperAdmin).ToString()
+            RoleId = ((int)IdentityRolesEnum.SuperAdmin).ToString()
         };
 
         superAdmin.PasswordHash = PasswordHelpers.Hash(superAdmin, superAdminPassword);

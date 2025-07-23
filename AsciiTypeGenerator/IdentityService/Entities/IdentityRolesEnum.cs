@@ -1,6 +1,6 @@
 namespace IdentityService.Entities;
 
-public enum IdentityRoles
+public enum IdentityRolesEnum
 {
     SuperAdmin,
     Admin,

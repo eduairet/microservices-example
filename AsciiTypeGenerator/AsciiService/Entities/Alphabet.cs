@@ -6,17 +6,14 @@ namespace AsciiService.Entities;
 public class Alphabet
 {
     [Key]
-    [MaxLength(int.MaxValue)]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public string Id { get; set; }
+    public int Id { get; set; }
 
     [Required] [MaxLength(100)] public string Title { get; set; } = string.Empty;
-
     [Required] [MaxLength(2000)] public string Description { get; set; } = string.Empty;
-
-    [Required] [MaxLength(int.MaxValue)] public string Characters { get; set; } = string.Empty;
-
-    [Required] [MaxLength(int.MaxValue)] public string AuthorId { get; set; } = string.Empty;
-
+    [Required] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    [Required] public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    [Required] public int AuthorId { get; set; }
     [ForeignKey("AuthorId")] public User Author { get; set; }
+    public virtual ICollection<Glyph> Glyphs { get; set; } = new List<Glyph>();
 }

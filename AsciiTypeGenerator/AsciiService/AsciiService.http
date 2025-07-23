@@ -1,6 +1,0 @@
-@AsciiService_HostAddress = http://localhost:5163
-
-GET {{AsciiService_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

@@ -25,27 +25,27 @@ public class AppDbContext : IdentityDbContext<User>
             .HasData(
                 new IdentityRole
                 {
-                    Id = ((int)IdentityRoles.SuperAdmin).ToString(),
-                    Name = nameof(IdentityRoles.SuperAdmin),
-                    NormalizedName = nameof(IdentityRoles.SuperAdmin).ToUpper()
+                    Id = ((int)IdentityRolesEnum.SuperAdmin).ToString(),
+                    Name = nameof(IdentityRolesEnum.SuperAdmin),
+                    NormalizedName = nameof(IdentityRolesEnum.SuperAdmin).ToUpper()
                 },
                 new IdentityRole
                 {
-                    Id = ((int)IdentityRoles.Admin).ToString(),
-                    Name = nameof(IdentityRoles.Admin),
-                    NormalizedName = nameof(IdentityRoles.Admin).ToUpper()
+                    Id = ((int)IdentityRolesEnum.Admin).ToString(),
+                    Name = nameof(IdentityRolesEnum.Admin),
+                    NormalizedName = nameof(IdentityRolesEnum.Admin).ToUpper()
                 },
                 new IdentityRole
                 {
-                    Id = ((int)IdentityRoles.User).ToString(),
-                    Name = nameof(IdentityRoles.User),
-                    NormalizedName = nameof(IdentityRoles.User).ToUpper()
+                    Id = ((int)IdentityRolesEnum.User).ToString(),
+                    Name = nameof(IdentityRolesEnum.User),
+                    NormalizedName = nameof(IdentityRolesEnum.User).ToUpper()
                 },
                 new IdentityRole
                 {
-                    Id = ((int)IdentityRoles.Guest).ToString(),
-                    Name = nameof(IdentityRoles.Guest),
-                    NormalizedName = nameof(IdentityRoles.Guest).ToUpper()
+                    Id = ((int)IdentityRolesEnum.Guest).ToString(),
+                    Name = nameof(IdentityRolesEnum.Guest),
+                    NormalizedName = nameof(IdentityRolesEnum.Guest).ToUpper()
                 }
             );
 

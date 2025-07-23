@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 using AsciiService.Shared.Constants;
 
-namespace AsciiService.Models.Alphabets;
+namespace AsciiService.Models.Virtualize;
 
-public class GetAllAlphabetsRequest
+public class VirtualizeRequest
 {
     public string SearchText { get; set; }
 

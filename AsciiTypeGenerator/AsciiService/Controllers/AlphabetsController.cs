@@ -29,7 +29,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
 
     [HttpGet(ApiRoutes.Alphabets.Search)]
     public async Task<ActionResult<VirtualizeResponse<AlphabetDetailsDto>>> Search(
-        [FromQuery] GetAllAlphabetsRequest request)
+        [FromQuery] VirtualizeRequest request)
     {
         try
         {
@@ -79,9 +79,10 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
         try
         {
             // TODO: Get author ID from authentication context
-            const string authorId = "system";
+            const int authorId = 0;
 
-            var alphabet = await alphabetsRepository.AddAsync(upsertDto.ToEntity(authorId));
+            var now = DateTime.UtcNow;
+            var alphabet = await alphabetsRepository.AddAsync(upsertDto.ToEntity(authorId, now, now));
 
             return CreatedAtAction(nameof(GetAlphabetById), new { id = alphabet.Id },
                 AlphabetDetailsDto.FromEntity(alphabet));
@@ -93,7 +94,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
     }
 
     [HttpPut(ApiRoutes.Alphabets.Update)]
-    public async Task<ActionResult<AlphabetDetailsDto>> UpdateAlphabet([FromRoute] string id,
+    public async Task<ActionResult<AlphabetDetailsDto>> UpdateAlphabet([FromRoute] int id,
         [FromBody] AlphabetUpsertDto updateDto)
     {
         if (updateDto is null)
@@ -109,9 +110,10 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
             var alphabet = await alphabetsRepository.GetAsync(id);
 
             if (alphabet is null)
-                return NotFound(ErrorMessages.AlphabetNotFound(id));
+                return NotFound(ErrorMessages.AlphabetNotFound(id.ToString()));
 
-            await alphabetsRepository.UpdateAsync(updateDto.ToEntity(id, alphabet.AuthorId));
+            await alphabetsRepository.UpdateAsync(updateDto.ToEntity(id, alphabet.AuthorId, alphabet.CreatedAt,
+                DateTime.UtcNow));
 
             return Ok(AlphabetDetailsDto.FromEntity(alphabet));
         }

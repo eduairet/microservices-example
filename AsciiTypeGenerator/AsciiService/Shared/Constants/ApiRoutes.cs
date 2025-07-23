@@ -19,9 +19,12 @@ public static class ApiRoutes
 
     public static class Artworks
     {
-    }
-
-    public static class Users
-    {
+        public const string GetAll = "";
+        public const string Search = "search";
+        public const string GetById = "{{id}}";
+        public const string Create = "";
+        public const string Update = "{{id}}";
+        public const string Delete = "{{id}}";
+        public const string UserArtworks = "user";
     }
 }

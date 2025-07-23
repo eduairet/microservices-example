@@ -12,7 +12,7 @@ public class User : IdentityUser
 
     [MaxLength(int.MaxValue)] public string AvatarUrl { get; set; }
 
-    [Required] [MaxLength(50)] public string RoleId { get; set; } = ((int)IdentityRoles.User).ToString();
+    [Required] [MaxLength(50)] public string RoleId { get; set; } = ((int)IdentityRolesEnum.User).ToString();
 
     [ForeignKey("RoleId")] public IdentityRole Role { get; set; }
 }

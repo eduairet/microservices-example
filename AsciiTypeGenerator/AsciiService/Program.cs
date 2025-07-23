@@ -28,4 +28,14 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
+try
+{
+    await DbInitializer.InitDb(app);
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.Message);
+}
+
 app.Run();

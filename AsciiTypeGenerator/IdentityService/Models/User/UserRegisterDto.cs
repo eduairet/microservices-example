@@ -41,7 +41,7 @@ public class UserRegisterDto
 
     [Url] public string AvatarUrl { get; set; }
 
-    public Entities.User ToUser()
+    public Entities.User ToEntity()
     {
         var newUser = new Entities.User
         {
@@ -51,7 +51,7 @@ public class UserRegisterDto
             LastName = LastName,
             PhoneNumber = PhoneNumber,
             AvatarUrl = AvatarUrl,
-            RoleId = ((int)Entities.IdentityRoles.User).ToString()
+            RoleId = ((int)Entities.IdentityRolesEnum.User).ToString()
         };
 
         newUser.PasswordHash = PasswordHelpers.Hash(newUser, Password);

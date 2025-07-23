@@ -11,10 +11,7 @@ public class User
     public int Id { get; set; }
 
     [Required] [MaxLength(int.MaxValue)] public string UserId { get; set; } = string.Empty;
-
     [Required] [MaxLength(256)] public string UserName { get; set; } = string.Empty;
-
     public virtual ICollection<Artwork> Artworks { get; set; } = new List<Artwork>();
-
     public virtual ICollection<Alphabet> Alphabets { get; set; } = new List<Alphabet>();
 }
