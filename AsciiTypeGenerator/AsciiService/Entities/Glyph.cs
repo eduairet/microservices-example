@@ -11,7 +11,7 @@ public class Glyph
     [Required] public int MatrixId { get; set; }
     [ForeignKey("MatrixId")] public Matrix Matrix { get; set; } = new();
     [Required] public int AlphabetId { get; set; }
-    [ForeignKey("AlphabetId")] public Alphabet Alphabet { get; set; }
+    [ForeignKey("AlphabetId")] public Alphabet Alphabet { get; set; } = new();
 
     [Required]
     [MaxLength(int.MaxValue)]
