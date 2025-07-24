@@ -14,6 +14,6 @@ public class Alphabet
     [Required] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     [Required] public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     [Required] public int AuthorId { get; set; }
-    [ForeignKey("AuthorId")] public User Author { get; set; }
+    [ForeignKey("AuthorId")] public User Author { get; set; } = new();
     public virtual ICollection<Glyph> Glyphs { get; set; } = new List<Glyph>();
 }
