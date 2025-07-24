@@ -6,7 +6,6 @@ namespace AsciiService.Entities;
 public class User
 {
     [Key]
-    [MaxLength(int.MaxValue)]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
 

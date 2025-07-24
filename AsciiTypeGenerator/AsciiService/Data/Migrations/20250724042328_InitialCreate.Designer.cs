@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AsciiService.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250723064821_InitialCreate")]
+    [Migration("20250724042328_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -113,6 +113,7 @@ namespace AsciiService.Data.Migrations
 
                     b.Property<string>("DrawingSerialized")
                         .IsRequired()
+                        .HasMaxLength(2147483647)
                         .HasColumnType("text");
 
                     b.Property<int>("MatrixId")
@@ -163,7 +164,6 @@ namespace AsciiService.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(2147483647)
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));

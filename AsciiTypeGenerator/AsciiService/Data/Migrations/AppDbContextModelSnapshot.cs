@@ -110,6 +110,7 @@ namespace AsciiService.Data.Migrations
 
                     b.Property<string>("DrawingSerialized")
                         .IsRequired()
+                        .HasMaxLength(2147483647)
                         .HasColumnType("text");
 
                     b.Property<int>("MatrixId")
@@ -160,7 +161,6 @@ namespace AsciiService.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(2147483647)
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));

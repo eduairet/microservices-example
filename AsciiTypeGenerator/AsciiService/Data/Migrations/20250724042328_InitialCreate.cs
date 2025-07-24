@@ -30,7 +30,7 @@ namespace AsciiService.Data.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", maxLength: 2147483647, nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(type: "text", maxLength: 2147483647, nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
@@ -94,7 +94,7 @@ namespace AsciiService.Data.Migrations
                     Unicode = table.Column<int>(type: "integer", nullable: false),
                     MatrixId = table.Column<int>(type: "integer", nullable: false),
                     AlphabetId = table.Column<int>(type: "integer", nullable: false),
-                    DrawingSerialized = table.Column<string>(type: "text", nullable: false),
+                    DrawingSerialized = table.Column<string>(type: "text", maxLength: 2147483647, nullable: false),
                     ArtworkId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>

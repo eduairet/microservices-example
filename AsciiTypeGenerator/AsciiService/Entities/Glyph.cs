@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace AsciiService.Entities;
 
@@ -13,6 +14,7 @@ public class Glyph
     [ForeignKey("AlphabetId")] public Alphabet Alphabet { get; set; }
 
     [Required]
+    [MaxLength(int.MaxValue)]
     public string DrawingSerialized
     {
         get => SerializeDrawing(Drawing);
@@ -23,11 +25,11 @@ public class Glyph
 
     private static string SerializeDrawing(List<List<char>> drawing)
     {
-        return System.Text.Json.JsonSerializer.Serialize(drawing);
+        return JsonConvert.SerializeObject(drawing);
     }
 
     private static List<List<char>> DeserializeDrawing(string serialized)
     {
-        return System.Text.Json.JsonSerializer.Deserialize<List<List<char>>>(serialized) ?? [];
+        return JsonConvert.DeserializeObject<List<List<char>>>(serialized) ?? new List<List<char>>();
     }
 }

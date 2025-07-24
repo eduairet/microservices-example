@@ -15,5 +15,5 @@ public class Artwork
     [Required] public DateTime UpdatedAt { get; set; }
     [Required] public int AuthorId { get; set; }
     [ForeignKey("AuthorId")] public User Author { get; set; }
-    [Required] [MaxLength(int.MaxValue)] public List<Glyph> Text { get; set; } = [];
+    [Required] public List<Glyph> Text { get; set; } = [];
 }
