@@ -1,5 +1,4 @@
 using AsciiService.Models.Artworks;
-using AsciiService.Models.Virtualize;
 using AsciiService.Repositories.ArtworksRepository;
 using AsciiService.Shared.Constants;
 using Microsoft.AspNetCore.Mvc;
@@ -24,28 +23,6 @@ public class ArtworksController(IArtworksRepository artworksRepository) : Contro
         {
             Console.WriteLine(ex);
             throw;
-        }
-    }
-
-    [HttpGet(ApiRoutes.Artworks.Search)]
-    public async Task<ActionResult<VirtualizeResponse<ArtworkDetailsDto>>> Search(
-        [FromQuery] VirtualizeRequest request)
-    {
-        try
-        {
-            var parameters = new VirtualizeQueryParameters();
-            parameters.StartIndex = request.Page * parameters.PageSize;
-
-            var artworks = await artworksRepository.GetAllAsync(parameters, request.SearchText);
-
-            if (artworks.TotalCount == 0)
-                return NotFound(ErrorMessages.ArtworksNotFound(request.SearchText));
-
-            return Ok(artworks.Items.Select(ArtworkDetailsDto.FromEntity));
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
         }
     }
 

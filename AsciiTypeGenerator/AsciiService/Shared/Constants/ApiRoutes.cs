@@ -9,7 +9,6 @@ public static class ApiRoutes
     public static class Alphabets
     {
         public const string GetAll = "";
-        public const string Search = "search";
         public const string GetById = "{{id}}";
         public const string Create = "";
         public const string Update = "{{id}}";
@@ -20,7 +19,6 @@ public static class ApiRoutes
     public static class Artworks
     {
         public const string GetAll = "";
-        public const string Search = "search";
         public const string GetById = "{{id}}";
         public const string Create = "";
         public const string Update = "{{id}}";

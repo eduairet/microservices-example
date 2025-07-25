@@ -1,6 +1,6 @@
-using AsciiService.Shared.Constants;
+using SearchService.Shared.Constants;
 
-namespace AsciiService.Models.Virtualize;
+namespace SearchService.Models.Virtualize;
 
 public class VirtualizeQueryParameters
 {

@@ -1,5 +1,4 @@
 using AsciiService.Models.Alphabets;
-using AsciiService.Models.Virtualize;
 using AsciiService.Repositories.AlphabetsRepository;
 using AsciiService.Shared.Constants;
 using Microsoft.AspNetCore.Mvc;
@@ -24,28 +23,6 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
         {
             Console.WriteLine(ex);
             throw;
-        }
-    }
-
-    [HttpGet(ApiRoutes.Alphabets.Search)]
-    public async Task<ActionResult<VirtualizeResponse<AlphabetDetailsDto>>> Search(
-        [FromQuery] VirtualizeRequest request)
-    {
-        try
-        {
-            var parameters = new VirtualizeQueryParameters();
-            parameters.StartIndex = request.Page * parameters.PageSize;
-
-            var alphabets = await alphabetsRepository.GetAllAsync(parameters, request.SearchText);
-
-            if (alphabets.TotalCount == 0)
-                return NotFound(ErrorMessages.AlphabetsNotFound(request.SearchText));
-
-            return Ok(alphabets.Items.Select(AlphabetDetailsDto.FromEntity));
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
         }
     }
 

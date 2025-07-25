@@ -1,7 +1,7 @@
-namespace AsciiService.Models.Virtualize;
+namespace SearchService.Models.Virtualize;
 
 public class VirtualizeResponse<T>
 {
     public List<T> Items { get; set; } = [];
-    public int TotalCount { get; set; }
+    public long TotalCount { get; set; }
 }

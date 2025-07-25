@@ -18,9 +18,4 @@
     <PackageReference Include="Scalar.AspNetCore" Version="2.6.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Shared\Helpers\" />
-    <Folder Include="Shared\Validations\" />
-  </ItemGroup>
-
 </Project>

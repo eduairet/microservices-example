@@ -9,12 +9,6 @@ public static class ErrorMessages
 
     #endregion
 
-    #region Data Annotations
-
-    public const string PositivePageNumber = "Page must be a positive integer.";
-
-    #endregion
-
     #region Api
 
     public const string InvalidRequestBody = "Invalid request body";
