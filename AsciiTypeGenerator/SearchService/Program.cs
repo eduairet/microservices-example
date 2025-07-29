@@ -1,6 +1,7 @@
 using Scalar.AspNetCore;
 using SearchService.Data;
 using SearchService.Shared.Constants;
+using SearchService.Shared.Extensions.DependencyInjectionExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddRepositories();
 
 var app = builder.Build();
 

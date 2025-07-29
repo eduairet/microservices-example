@@ -12,14 +12,11 @@ public class SearchController(ISearchRepository searchRepository) : ControllerBa
 {
     [HttpGet(ApiRoutes.Search.Alphabets)]
     public async Task<ActionResult<VirtualizeResponse<Alphabet>>> Alphabets(
-        [FromQuery] VirtualizeRequest request)
+        [FromQuery] VirtualizeQueryParameters request)
     {
         try
         {
-            var parameters = new VirtualizeQueryParameters();
-            parameters.StartIndex = request.Page * parameters.PageSize;
-
-            var alphabets = await searchRepository.SearchAsync(parameters, request.SearchText);
+            var alphabets = await searchRepository.SearchAsync(request);
 
             if (alphabets.TotalCount == 0)
                 return NotFound(ErrorMessages.AlphabetsNotFound(request.SearchText));
@@ -34,14 +31,11 @@ public class SearchController(ISearchRepository searchRepository) : ControllerBa
 
     [HttpGet(ApiRoutes.Search.Artworks)]
     public async Task<ActionResult<VirtualizeResponse<Artwork>>> Search(
-        [FromQuery] VirtualizeRequest request)
+        [FromQuery] VirtualizeQueryParameters request)
     {
         try
         {
-            var parameters = new VirtualizeQueryParameters();
-            parameters.StartIndex = request.Page * parameters.PageSize;
-
-            var artworks = await searchRepository.SearchAsync(parameters, request.SearchText);
+            var artworks = await searchRepository.SearchAsync(request);
 
             if (artworks.TotalCount == 0)
                 return NotFound(ErrorMessages.ArtworksNotFound(request.SearchText));

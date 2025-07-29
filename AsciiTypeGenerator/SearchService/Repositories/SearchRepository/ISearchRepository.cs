@@ -5,6 +5,5 @@ namespace SearchService.Repositories.SearchRepository;
 
 public interface ISearchRepository
 {
-    Task<VirtualizeResponse<Entity>> SearchAsync(VirtualizeQueryParameters queryParameters,
-        string searchText = null);
+    Task<VirtualizeResponse<Entity>> SearchAsync(VirtualizeQueryParameters queryParameters);
 }
