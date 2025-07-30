@@ -12,9 +12,14 @@ public class EnvironmentConstants(IConfiguration configuration)
                                   ?? throw new NullReferenceException(
                                       ErrorMessages.KeyNotSet("DB_NAME"));
 
-    public string DatabasePort => configuration["DB_PORT"]
-                                  ?? throw new NullReferenceException(
-                                      ErrorMessages.KeyNotSet("DB_PORT"));
+    #endregion
+
+
+    #region Services
+
+    public string AsciiServiceUrl => configuration["ASCII_SERVICE_URL"]
+                                     ?? throw new NullReferenceException(
+                                         ErrorMessages.KeyNotSet("ASCII_SERVICE_URL"));
 
     #endregion
 }

@@ -90,7 +90,9 @@ namespace AsciiService.Data.Migrations
                 name: "Glyphs",
                 columns: table => new
                 {
-                    Name = table.Column<string>(type: "text", maxLength: 2147483647, nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", maxLength: 2147483647, nullable: true),
                     Unicode = table.Column<int>(type: "integer", nullable: false),
                     MatrixId = table.Column<int>(type: "integer", nullable: false),
                     AlphabetId = table.Column<int>(type: "integer", nullable: false),
@@ -99,7 +101,7 @@ namespace AsciiService.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Glyphs", x => x.Name);
+                    table.PrimaryKey("PK_Glyphs", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Glyphs_Alphabets_AlphabetId",
                         column: x => x.AlphabetId,

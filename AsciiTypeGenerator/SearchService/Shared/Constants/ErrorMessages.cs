@@ -5,6 +5,7 @@ public static class ErrorMessages
     #region Configuration
 
     public static string KeyNotSet(string key) => $"Configuration key '{key}' is not set.";
+    public const string InvalidConfiguration = "Invalid configuration.";
 
     #endregion
 

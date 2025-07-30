@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AsciiService.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250724043059_InitialCreate")]
+    [Migration("20250730043234_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -101,9 +101,11 @@ namespace AsciiService.Data.Migrations
 
             modelBuilder.Entity("AsciiService.Entities.Glyph", b =>
                 {
-                    b.Property<string>("Name")
-                        .HasMaxLength(2147483647)
-                        .HasColumnType("text");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AlphabetId")
                         .HasColumnType("integer");
@@ -119,10 +121,14 @@ namespace AsciiService.Data.Migrations
                     b.Property<int>("MatrixId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Name")
+                        .HasMaxLength(2147483647)
+                        .HasColumnType("text");
+
                     b.Property<int>("Unicode")
                         .HasColumnType("integer");
 
-                    b.HasKey("Name");
+                    b.HasKey("Id");
 
                     b.HasIndex("AlphabetId");
 
