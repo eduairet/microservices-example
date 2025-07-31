@@ -1,4 +1,5 @@
 using SearchService.Repositories.SearchRepository;
+using SearchService.Shared.Constants.Policies;
 using SearchService.Shared.Helpers.Services;
 
 namespace SearchService.Shared.Extensions.DependencyInjectionExtensions;
@@ -9,9 +10,9 @@ public static class ServiceCollection
     {
         services.AddScoped<ISearchRepository, SearchRepository>();
     }
-    
+
     public static void AddHttpClients(this IServiceCollection services)
     {
-        services.AddHttpClient<AsciiServiceHttpClient>();
+        services.AddHttpClient<AsciiServiceHttpClient>().AddPolicyHandler(HttpClientPolicies.RetryWhenNotFound());
     }
 }

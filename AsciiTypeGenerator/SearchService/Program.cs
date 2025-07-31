@@ -2,7 +2,6 @@ using Scalar.AspNetCore;
 using SearchService.Data;
 using SearchService.Shared.Constants;
 using SearchService.Shared.Extensions.DependencyInjectionExtensions;
-using SearchService.Shared.Helpers.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,14 +26,16 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-try
+app.Lifetime.ApplicationStarted.Register(async void () =>
 {
-    var mongoDbInitializer = new DbInitializer(app);
-    await mongoDbInitializer.Initialize();
-}
-catch (Exception ex)
-{
-    Console.WriteLine(ex.Message);
-}
+    try
+    {
+        await new DbInitializer(app).Initialize();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
+    }
+});
 
 app.Run();
