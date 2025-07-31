@@ -33,10 +33,6 @@ public class DbInitializer(WebApplication app)
             .Key(x => x.Unicode, KeyType.Text)
             .CreateAsync();
 
-        await DB.Index<Matrix>()
-            .Key(x => x.Name, KeyType.Text)
-            .CreateAsync();
-
         await DB.Index<User>()
             .Key(x => x.UserName, KeyType.Text)
             .CreateAsync();

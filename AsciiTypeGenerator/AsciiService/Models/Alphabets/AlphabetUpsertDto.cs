@@ -22,7 +22,7 @@ public class AlphabetUpsertDto
         };
     }
 
-    public Alphabet ToEntity(int id, int authorId, DateTime createdAt, DateTime updatedAt)
+    public Alphabet ToEntity(int id, int? authorId, DateTime createdAt, DateTime updatedAt)
     {
         return new Alphabet
         {

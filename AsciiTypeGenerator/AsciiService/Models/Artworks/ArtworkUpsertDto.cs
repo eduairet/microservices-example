@@ -7,7 +7,7 @@ public class ArtworkUpsertDto
 {
     [Required] [MaxLength(100)] private string Title { get; set; } = string.Empty;
     [Required] [MaxLength(2000)] private string Description { get; set; } = string.Empty;
-    [Required] private List<Glyph> Text { get; set; } = [];
+    [Required] private List<ArtworkGlyph> Text { get; set; } = [];
 
     public Artwork ToEntity(int authorId, DateTime createdAt, DateTime updatedAt)
     {

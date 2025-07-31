@@ -13,7 +13,7 @@ public class Alphabet
     [Required] [MaxLength(2000)] public string Description { get; set; } = string.Empty;
     [Required] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     [Required] public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    [Required] public int AuthorId { get; set; }
-    [ForeignKey("AuthorId")] public User Author { get; set; } = new();
+    public int? AuthorId { get; set; }
+    [ForeignKey("AuthorId")] public User Author { get; set; }
     public virtual ICollection<Glyph> Glyphs { get; set; } = new List<Glyph>();
 }

@@ -13,20 +13,6 @@ namespace AsciiService.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Matrices",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Depth = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Matrices", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -50,7 +36,7 @@ namespace AsciiService.Data.Migrations
                     Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    AuthorId = table.Column<int>(type: "integer", nullable: false)
+                    AuthorId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -94,10 +80,8 @@ namespace AsciiService.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", maxLength: 2147483647, nullable: true),
                     Unicode = table.Column<int>(type: "integer", nullable: false),
-                    MatrixId = table.Column<int>(type: "integer", nullable: false),
                     AlphabetId = table.Column<int>(type: "integer", nullable: false),
-                    DrawingSerialized = table.Column<string>(type: "text", maxLength: 2147483647, nullable: false),
-                    ArtworkId = table.Column<int>(type: "integer", nullable: true)
+                    Drawing = table.Column<string>(type: "text", maxLength: 2147483647, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -108,15 +92,31 @@ namespace AsciiService.Data.Migrations
                         principalTable: "Alphabets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ArtworkGlyph",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Index = table.Column<int>(type: "integer", nullable: false),
+                    ArtworkId = table.Column<int>(type: "integer", nullable: false),
+                    GlyphId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ArtworkGlyph", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Glyphs_Artworks_ArtworkId",
+                        name: "FK_ArtworkGlyph_Artworks_ArtworkId",
                         column: x => x.ArtworkId,
                         principalTable: "Artworks",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Glyphs_Matrices_MatrixId",
-                        column: x => x.MatrixId,
-                        principalTable: "Matrices",
+                        name: "FK_ArtworkGlyph_Glyphs_GlyphId",
+                        column: x => x.GlyphId,
+                        principalTable: "Glyphs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -131,6 +131,16 @@ namespace AsciiService.Data.Migrations
                 table: "Alphabets",
                 column: "Title",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ArtworkGlyph_ArtworkId",
+                table: "ArtworkGlyph",
+                column: "ArtworkId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ArtworkGlyph_GlyphId",
+                table: "ArtworkGlyph",
+                column: "GlyphId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Artworks_AuthorId",
@@ -149,28 +159,6 @@ namespace AsciiService.Data.Migrations
                 column: "AlphabetId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Glyphs_ArtworkId",
-                table: "Glyphs",
-                column: "ArtworkId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Glyphs_MatrixId",
-                table: "Glyphs",
-                column: "MatrixId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Matrices_Depth",
-                table: "Matrices",
-                column: "Depth",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Matrices_Name",
-                table: "Matrices",
-                column: "Name",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Users_UserName",
                 table: "Users",
                 column: "UserName",
@@ -181,16 +169,16 @@ namespace AsciiService.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Glyphs");
-
-            migrationBuilder.DropTable(
-                name: "Alphabets");
+                name: "ArtworkGlyph");
 
             migrationBuilder.DropTable(
                 name: "Artworks");
 
             migrationBuilder.DropTable(
-                name: "Matrices");
+                name: "Glyphs");
+
+            migrationBuilder.DropTable(
+                name: "Alphabets");
 
             migrationBuilder.DropTable(
                 name: "Users");

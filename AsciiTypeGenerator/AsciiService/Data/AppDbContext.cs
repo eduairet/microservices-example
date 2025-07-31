@@ -9,7 +9,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<Alphabet> Alphabets { get; set; }
     public DbSet<Artwork> Artworks { get; set; }
     public DbSet<Glyph> Glyphs { get; set; }
-    public DbSet<Matrix> Matrices { get; set; }
     public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -69,17 +68,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             .WithMany(a => a.Glyphs)
             .HasForeignKey(g => g.AlphabetId)
             .OnDelete(DeleteBehavior.Cascade);
-
-        #endregion
-
-        #region Matrix
-
-        modelBuilder.Entity<Matrix>().ToTable("Matrices")
-            .HasIndex(m => m.Name)
-            .IsUnique();
-        modelBuilder.Entity<Matrix>()
-            .HasIndex(m => m.Depth)
-            .IsUnique();
 
         #endregion
     }

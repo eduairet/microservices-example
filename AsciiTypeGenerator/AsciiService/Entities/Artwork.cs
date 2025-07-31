@@ -15,5 +15,5 @@ public class Artwork
     [Required] public DateTime UpdatedAt { get; set; }
     [Required] public int AuthorId { get; set; }
     [ForeignKey("AuthorId")] public User Author { get; set; } = new();
-    [Required] public List<Glyph> Text { get; set; } = [];
+    public virtual ICollection<ArtworkGlyph> Text { get; set; } = new List<ArtworkGlyph>();
 }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AsciiService.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250730043234_InitialCreate")]
+    [Migration("20250731050129_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -33,7 +33,7 @@ namespace AsciiService.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AuthorId")
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -99,6 +99,32 @@ namespace AsciiService.Data.Migrations
                     b.ToTable("Artworks", (string)null);
                 });
 
+            modelBuilder.Entity("AsciiService.Entities.ArtworkGlyph", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ArtworkId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("GlyphId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Index")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArtworkId");
+
+                    b.HasIndex("GlyphId");
+
+                    b.ToTable("ArtworkGlyph");
+                });
+
             modelBuilder.Entity("AsciiService.Entities.Glyph", b =>
                 {
                     b.Property<int>("Id")
@@ -110,16 +136,10 @@ namespace AsciiService.Data.Migrations
                     b.Property<int>("AlphabetId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("ArtworkId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("DrawingSerialized")
+                    b.Property<string>("Drawing")
                         .IsRequired()
                         .HasMaxLength(2147483647)
                         .HasColumnType("text");
-
-                    b.Property<int>("MatrixId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .HasMaxLength(2147483647)
@@ -132,38 +152,7 @@ namespace AsciiService.Data.Migrations
 
                     b.HasIndex("AlphabetId");
 
-                    b.HasIndex("ArtworkId");
-
-                    b.HasIndex("MatrixId");
-
                     b.ToTable("Glyphs", (string)null);
-                });
-
-            modelBuilder.Entity("AsciiService.Entities.Matrix", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Depth")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Depth")
-                        .IsUnique();
-
-                    b.HasIndex("Name")
-                        .IsUnique();
-
-                    b.ToTable("Matrices", (string)null);
                 });
 
             modelBuilder.Entity("AsciiService.Entities.User", b =>
@@ -197,8 +186,7 @@ namespace AsciiService.Data.Migrations
                     b.HasOne("AsciiService.Entities.User", "Author")
                         .WithMany("Alphabets")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Author");
                 });
@@ -214,6 +202,25 @@ namespace AsciiService.Data.Migrations
                     b.Navigation("Author");
                 });
 
+            modelBuilder.Entity("AsciiService.Entities.ArtworkGlyph", b =>
+                {
+                    b.HasOne("AsciiService.Entities.Artwork", "Artwork")
+                        .WithMany("Text")
+                        .HasForeignKey("ArtworkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AsciiService.Entities.Glyph", "Glyph")
+                        .WithMany()
+                        .HasForeignKey("GlyphId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Artwork");
+
+                    b.Navigation("Glyph");
+                });
+
             modelBuilder.Entity("AsciiService.Entities.Glyph", b =>
                 {
                     b.HasOne("AsciiService.Entities.Alphabet", "Alphabet")
@@ -222,19 +229,7 @@ namespace AsciiService.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AsciiService.Entities.Artwork", null)
-                        .WithMany("Text")
-                        .HasForeignKey("ArtworkId");
-
-                    b.HasOne("AsciiService.Entities.Matrix", "Matrix")
-                        .WithMany()
-                        .HasForeignKey("MatrixId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Alphabet");
-
-                    b.Navigation("Matrix");
                 });
 
             modelBuilder.Entity("AsciiService.Entities.Alphabet", b =>

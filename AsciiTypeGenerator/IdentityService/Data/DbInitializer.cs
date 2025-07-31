@@ -1,6 +1,5 @@
+using IdentityService.Data.SeedDataObjects;
 using IdentityService.Entities;
-using IdentityService.Shared.Constants;
-using IdentityService.Shared.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityService.Data;
@@ -24,21 +23,7 @@ public static class DbInitializer
             return;
         }
 
-        var superAdminEmail = new EnvironmentConstants(configuration).SuperAdminEmail;
-        var superAdminPassword = new EnvironmentConstants(configuration).SuperAdminPassword;
-
-        var superAdmin = new User
-        {
-            UserName = nameof(IdentityRolesEnum.SuperAdmin),
-            NormalizedUserName = nameof(IdentityRolesEnum.SuperAdmin).ToUpper(),
-            Email = superAdminEmail,
-            NormalizedEmail = superAdminEmail.ToUpper(),
-            RoleId = ((int)IdentityRolesEnum.SuperAdmin).ToString()
-        };
-
-        superAdmin.PasswordHash = PasswordHelpers.Hash(superAdmin, superAdminPassword);
-
-        await context.AddAsync(superAdmin);
+        await context.AddAsync(new SeedDataUsers(configuration).SuperAdmin());
         await context.SaveChangesAsync();
     }
 }
