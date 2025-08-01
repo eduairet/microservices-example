@@ -1,8 +1,7 @@
 namespace SearchService.Shared.Constants.ServicesRoutes;
 
-public class AsciiServiceRoutes(IConfiguration configuration)
+public static class AsciiServiceRoutes
 {
-    private string BaseUrl => new EnvironmentConstants(configuration).AsciiServiceUrl;
-    public string GetAllAlphabets => $"{BaseUrl}/alphabets";
-    public string GetAllArtworks => $"{BaseUrl}/artworks";
+    public const string GetAllAlphabets = "alphabets";
+    public const string GetAllArtworks = "artworks";
 }

@@ -15,9 +15,7 @@ public class ArtworksController(IArtworksRepository artworksRepository) : Contro
         try
         {
             var artworks = await artworksRepository.GetAllAsync();
-            return artworks.Count == 0
-                ? Accepted(ErrorMessages.ArtworksNotFound(null))
-                : Accepted(artworks.Select(ArtworkDetailsDto.FromEntity).ToList());
+            return Accepted(artworks.Select(ArtworkDetailsDto.FromEntity).ToList());
         }
         catch (Exception ex)
         {

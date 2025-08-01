@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AsciiService.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250731050129_InitialCreate")]
+    [Migration("20250801032356_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -122,7 +122,7 @@ namespace AsciiService.Data.Migrations
 
                     b.HasIndex("GlyphId");
 
-                    b.ToTable("ArtworkGlyph");
+                    b.ToTable("ArtworkGlyphs", (string)null);
                 });
 
             modelBuilder.Entity("AsciiService.Entities.Glyph", b =>
@@ -205,13 +205,13 @@ namespace AsciiService.Data.Migrations
             modelBuilder.Entity("AsciiService.Entities.ArtworkGlyph", b =>
                 {
                     b.HasOne("AsciiService.Entities.Artwork", "Artwork")
-                        .WithMany("Text")
+                        .WithMany("ArtworkGlyphs")
                         .HasForeignKey("ArtworkId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AsciiService.Entities.Glyph", "Glyph")
-                        .WithMany()
+                        .WithMany("ArtworkGlyphs")
                         .HasForeignKey("GlyphId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -239,7 +239,12 @@ namespace AsciiService.Data.Migrations
 
             modelBuilder.Entity("AsciiService.Entities.Artwork", b =>
                 {
-                    b.Navigation("Text");
+                    b.Navigation("ArtworkGlyphs");
+                });
+
+            modelBuilder.Entity("AsciiService.Entities.Glyph", b =>
+                {
+                    b.Navigation("ArtworkGlyphs");
                 });
 
             modelBuilder.Entity("AsciiService.Entities.User", b =>

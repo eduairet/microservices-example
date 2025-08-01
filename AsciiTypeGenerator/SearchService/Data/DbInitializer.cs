@@ -22,18 +22,26 @@ public class DbInitializer(WebApplication app)
         );
 
         await DB.Index<Alphabet>()
-            .Key(x => x.Title, KeyType.Text)
+            .Key(x => x.ID, KeyType.Text)
             .CreateAsync();
 
         await DB.Index<Artwork>()
-            .Key(x => x.Title, KeyType.Text)
+            .Key(x => x.ID, KeyType.Text)
             .CreateAsync();
 
         await DB.Index<Glyph>()
-            .Key(x => x.Unicode, KeyType.Text)
+            .Key(x => x.ID, KeyType.Text)
+            .CreateAsync();
+
+        await DB.Index<ArtworkGlyph>()
+            .Key(x => x.Index, KeyType.Ascending)
+            .Key(x => x.ID, KeyType.Text)
+            .Key(x => x.Artwork.ID, KeyType.Text)
+            .Key(x => x.Glyph.ID, KeyType.Text)
             .CreateAsync();
 
         await DB.Index<User>()
+            .Key(x => x.ID, KeyType.Text)
             .Key(x => x.UserName, KeyType.Text)
             .CreateAsync();
 

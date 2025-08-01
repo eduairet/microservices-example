@@ -11,7 +11,14 @@ public class ArtworkGlyph
 
     [Required] public int Index { get; set; }
     [Required] public int ArtworkId { get; set; }
-    [ForeignKey("ArtworkId")] public Artwork Artwork { get; set; } = new();
+
+    [System.Text.Json.Serialization.JsonIgnore]
+    [ForeignKey("ArtworkId")]
+    public Artwork Artwork { get; set; } = new();
+
     [Required] public int GlyphId { get; set; }
-    [ForeignKey("GlyphId")] public Glyph Glyph { get; set; } = new();
+
+    [System.Text.Json.Serialization.JsonIgnore]
+    [ForeignKey("GlyphId")]
+    public Glyph Glyph { get; set; } = new();
 }

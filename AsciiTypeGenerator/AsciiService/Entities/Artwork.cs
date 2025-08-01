@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AsciiService.Entities;
 
-public class Artwork
+public sealed class Artwork
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -14,6 +14,11 @@ public class Artwork
     [Required] public DateTime CreatedAt { get; set; }
     [Required] public DateTime UpdatedAt { get; set; }
     [Required] public int AuthorId { get; set; }
-    [ForeignKey("AuthorId")] public User Author { get; set; } = new();
-    public virtual ICollection<ArtworkGlyph> Text { get; set; } = new List<ArtworkGlyph>();
+
+    [System.Text.Json.Serialization.JsonIgnore]
+    [ForeignKey("AuthorId")]
+    public User Author { get; set; } = new();
+
+    [System.Text.Json.Serialization.JsonIgnore]
+    public ICollection<ArtworkGlyph> ArtworkGlyphs { get; set; } = new List<ArtworkGlyph>();
 }

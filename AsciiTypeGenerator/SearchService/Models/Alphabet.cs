@@ -1,3 +1,4 @@
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Entities;
 
 namespace SearchService.Models;
@@ -8,6 +9,6 @@ public class Alphabet : Entity
     public string Description { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+    public User Author { get; set; } = new();
     public List<Glyph> Glyphs { get; set; } = [];
-    public int AuthorId { get; set; }
 }

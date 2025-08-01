@@ -11,6 +11,10 @@ public class User
 
     [Required] [MaxLength(int.MaxValue)] public string UserId { get; set; } = string.Empty;
     [Required] [MaxLength(256)] public string UserName { get; set; } = string.Empty;
+
+    [System.Text.Json.Serialization.JsonIgnore]
     public virtual ICollection<Artwork> Artworks { get; set; } = new List<Artwork>();
+
+    [System.Text.Json.Serialization.JsonIgnore]
     public virtual ICollection<Alphabet> Alphabets { get; set; } = new List<Alphabet>();
 }

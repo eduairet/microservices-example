@@ -12,9 +12,8 @@ public class AlphabetDetailsDto
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    public List<Glyph> Glyphs { get; set; } = [];
-
     public User Author { get; set; } = new();
+    public List<Glyph> Glyphs { get; set; } = [];
 
     public static AlphabetDetailsDto FromEntity(Alphabet alphabet)
     {
@@ -25,8 +24,8 @@ public class AlphabetDetailsDto
             Description = alphabet.Description,
             CreatedAt = alphabet.CreatedAt,
             UpdatedAt = alphabet.UpdatedAt,
-            Glyphs = (List<Glyph>)alphabet.Glyphs,
-            Author = alphabet.Author
+            Author = alphabet.Author,
+            Glyphs = alphabet.Glyphs.ToList()
         };
     }
 }

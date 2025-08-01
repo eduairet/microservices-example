@@ -95,7 +95,7 @@ namespace AsciiService.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ArtworkGlyph",
+                name: "ArtworkGlyphs",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -106,15 +106,15 @@ namespace AsciiService.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ArtworkGlyph", x => x.Id);
+                    table.PrimaryKey("PK_ArtworkGlyphs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ArtworkGlyph_Artworks_ArtworkId",
+                        name: "FK_ArtworkGlyphs_Artworks_ArtworkId",
                         column: x => x.ArtworkId,
                         principalTable: "Artworks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ArtworkGlyph_Glyphs_GlyphId",
+                        name: "FK_ArtworkGlyphs_Glyphs_GlyphId",
                         column: x => x.GlyphId,
                         principalTable: "Glyphs",
                         principalColumn: "Id",
@@ -133,13 +133,13 @@ namespace AsciiService.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ArtworkGlyph_ArtworkId",
-                table: "ArtworkGlyph",
+                name: "IX_ArtworkGlyphs_ArtworkId",
+                table: "ArtworkGlyphs",
                 column: "ArtworkId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ArtworkGlyph_GlyphId",
-                table: "ArtworkGlyph",
+                name: "IX_ArtworkGlyphs_GlyphId",
+                table: "ArtworkGlyphs",
                 column: "GlyphId");
 
             migrationBuilder.CreateIndex(
@@ -169,7 +169,7 @@ namespace AsciiService.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ArtworkGlyph");
+                name: "ArtworkGlyphs");
 
             migrationBuilder.DropTable(
                 name: "Artworks");

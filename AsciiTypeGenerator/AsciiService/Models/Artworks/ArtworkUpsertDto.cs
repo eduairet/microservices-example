@@ -7,7 +7,7 @@ public class ArtworkUpsertDto
 {
     [Required] [MaxLength(100)] private string Title { get; set; } = string.Empty;
     [Required] [MaxLength(2000)] private string Description { get; set; } = string.Empty;
-    [Required] private List<ArtworkGlyph> Text { get; set; } = [];
+    [Required] private List<ArtworkGlyph> ArtworkGlyphs { get; set; } = [];
 
     public Artwork ToEntity(int authorId, DateTime createdAt, DateTime updatedAt)
     {
@@ -15,10 +15,10 @@ public class ArtworkUpsertDto
         {
             Title = Title,
             Description = Description,
-            Text = Text,
             CreatedAt = createdAt,
             UpdatedAt = updatedAt,
-            AuthorId = authorId
+            AuthorId = authorId,
+            ArtworkGlyphs = ArtworkGlyphs
         };
     }
 
@@ -29,10 +29,10 @@ public class ArtworkUpsertDto
             Id = id,
             Title = Title,
             Description = Description,
-            Text = Text,
             CreatedAt = createdAt,
             UpdatedAt = updatedAt,
-            AuthorId = authorId
+            AuthorId = authorId,
+            ArtworkGlyphs = ArtworkGlyphs
         };
     }
 }

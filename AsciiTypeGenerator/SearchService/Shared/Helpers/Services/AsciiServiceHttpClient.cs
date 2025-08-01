@@ -4,20 +4,23 @@ using SearchService.Shared.Constants.ServicesRoutes;
 
 namespace SearchService.Shared.Helpers.Services;
 
-public class AsciiServiceHttpClient(IConfiguration configuration) : ServiceHttpClient(configuration,
-    new EnvironmentConstants(configuration).AsciiServiceUrl)
+public class AsciiServiceHttpClient(HttpClient httpClient, IConfiguration configuration)
 {
-    private readonly AsciiServiceRoutes _asciiServiceRoutes = new(configuration);
+    private readonly string _asciiServiceUrl = new EnvironmentConstants(configuration).AsciiServiceUrl;
 
     public async Task<List<Alphabet>> GetAlphabetsForSearchDb()
     {
-        var alphabets = await HttpClient.GetFromJsonAsync<List<Alphabet>>(_asciiServiceRoutes.GetAllAlphabets);
-        return alphabets;
+        var endpoint = $"{_asciiServiceUrl}/{AsciiServiceRoutes.GetAllAlphabets}";
+        var alphabets = await httpClient.GetFromJsonAsync<object>(endpoint);
+        // TODO Solve Deserialization issue with Alphabet
+        return [];
     }
 
     public async Task<List<Artwork>> GetArtworksForSearchDb()
     {
-        var alphabets = await HttpClient.GetFromJsonAsync<List<Artwork>>(_asciiServiceRoutes.GetAllArtworks);
-        return alphabets;
+        var endpoint = $"{_asciiServiceUrl}/{AsciiServiceRoutes.GetAllArtworks}";
+        var artworks = await httpClient.GetFromJsonAsync<object>(endpoint);
+        // TODO Solve Deserialization issue with Artwork
+        return [];
     }
 }

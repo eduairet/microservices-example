@@ -7,10 +7,10 @@ public class ArtworkDetailsDto
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public List<ArtworkGlyph> Text { get; set; } = [];
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public User Author { get; set; } = new();
+    private List<ArtworkGlyph> ArtworkGlyphs { get; set; } = [];
 
     public static ArtworkDetailsDto FromEntity(Artwork artwork)
     {
@@ -19,10 +19,10 @@ public class ArtworkDetailsDto
             Id = artwork.Id,
             Title = artwork.Title,
             Description = artwork.Description,
-            Text = artwork.Text.ToList(),
             CreatedAt = artwork.CreatedAt,
             UpdatedAt = artwork.UpdatedAt,
-            Author = artwork.Author
+            Author = artwork.Author,
+            ArtworkGlyphs = artwork.ArtworkGlyphs.ToList()
         };
     }
 }

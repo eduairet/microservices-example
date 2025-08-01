@@ -1,4 +1,5 @@
 using SearchService.Repositories.SearchRepository;
+using SearchService.Shared.Constants;
 using SearchService.Shared.Constants.Policies;
 using SearchService.Shared.Helpers.Services;
 
@@ -13,6 +14,7 @@ public static class ServiceCollection
 
     public static void AddHttpClients(this IServiceCollection services)
     {
-        services.AddHttpClient<AsciiServiceHttpClient>().AddPolicyHandler(HttpClientPolicies.RetryWhenNotFound());
+        services.AddHttpClient<AsciiServiceHttpClient>()
+            .AddPolicyHandler(HttpClientPolicies.RetryWhenNotFound());
     }
 }

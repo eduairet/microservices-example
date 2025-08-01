@@ -17,8 +17,8 @@ public class AlphabetUpsertDto
             Description = Description,
             CreatedAt = createdAt,
             UpdatedAt = updatedAt,
-            Glyphs = Glyphs,
-            AuthorId = authorId
+            AuthorId = authorId,
+            Glyphs = Glyphs
         };
     }
 
@@ -31,8 +31,8 @@ public class AlphabetUpsertDto
             Description = Description,
             CreatedAt = createdAt,
             UpdatedAt = updatedAt,
-            Glyphs = Glyphs,
-            AuthorId = authorId
+            AuthorId = authorId,
+            Glyphs = Glyphs
         };
     }
 }

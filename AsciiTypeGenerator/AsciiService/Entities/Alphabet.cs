@@ -14,6 +14,11 @@ public class Alphabet
     [Required] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     [Required] public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public int? AuthorId { get; set; }
-    [ForeignKey("AuthorId")] public User Author { get; set; }
+
+    [System.Text.Json.Serialization.JsonIgnore]
+    [ForeignKey("AuthorId")]
+    public User Author { get; set; }
+
+    [System.Text.Json.Serialization.JsonIgnore]
     public virtual ICollection<Glyph> Glyphs { get; set; } = new List<Glyph>();
 }

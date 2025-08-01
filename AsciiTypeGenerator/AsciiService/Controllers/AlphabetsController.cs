@@ -15,9 +15,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
         try
         {
             var alphabets = await alphabetsRepository.GetAllAsync();
-            return alphabets.Count == 0
-                ? Accepted(ErrorMessages.AlphabetsNotFound(null))
-                : Accepted(alphabets.Select(AlphabetDetailsDto.FromEntity).ToList());
+            return Accepted(alphabets.Select(AlphabetDetailsDto.FromEntity).ToList());
         }
         catch (Exception ex)
         {
