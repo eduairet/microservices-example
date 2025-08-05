@@ -1,4 +1,6 @@
-using SearchService.Models;
+using SearchService.Entities;
+using SearchService.Models.Alphabet;
+using SearchService.Models.Artwork;
 using SearchService.Shared.Constants;
 using SearchService.Shared.Constants.ServicesRoutes;
 
@@ -11,16 +13,14 @@ public class AsciiServiceHttpClient(HttpClient httpClient, IConfiguration config
     public async Task<List<Alphabet>> GetAlphabetsForSearchDb()
     {
         var endpoint = $"{_asciiServiceUrl}/{AsciiServiceRoutes.GetAllAlphabets}";
-        var alphabets = await httpClient.GetFromJsonAsync<object>(endpoint);
-        // TODO Solve Deserialization issue with Alphabet
-        return [];
+        var alphabets = await httpClient.GetFromJsonAsync<List<AlphabetDto>>(endpoint);
+        return alphabets is null ? [] : alphabets.Select(AlphabetDtoEx.ToEntity).ToList();
     }
 
     public async Task<List<Artwork>> GetArtworksForSearchDb()
     {
         var endpoint = $"{_asciiServiceUrl}/{AsciiServiceRoutes.GetAllArtworks}";
-        var artworks = await httpClient.GetFromJsonAsync<object>(endpoint);
-        // TODO Solve Deserialization issue with Artwork
-        return [];
+        var artworks = await httpClient.GetFromJsonAsync<List<ArtworkDto>>(endpoint);
+        return artworks is null ? [] : artworks.Select(ArtworkDtoEx.ToEntity).ToList();
     }
 }

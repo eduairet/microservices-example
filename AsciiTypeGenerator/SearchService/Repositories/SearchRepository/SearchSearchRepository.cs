@@ -3,18 +3,19 @@ using SearchService.Models.Virtualize;
 
 namespace SearchService.Repositories.SearchRepository;
 
-public class SearchRepository : ISearchRepository
+public class SearchRepository<T> : ISearchRepository<T>
+    where T : Entity
 {
-    public async Task<VirtualizeResponse<Entity>> SearchAsync(VirtualizeQueryParameters queryParameters)
+    public async Task<VirtualizeResponse<T>> SearchAsync(VirtualizeQueryParameters queryParameters)
     {
-        var startIndex = queryParameters.StartIndex;
+        var startIndex = Math.Max(queryParameters.StartIndex, 1);
         var pageSize = queryParameters.PageSize;
 
-        var totalCount = await DB.CountAsync<Entity>();
+        var totalCount = await DB.CountAsync<T>();
 
         if (totalCount == 0)
         {
-            return new VirtualizeResponse<Entity>
+            return new VirtualizeResponse<T>
             {
                 Items = [],
                 TotalCount = 0,
@@ -22,16 +23,22 @@ public class SearchRepository : ISearchRepository
             };
         }
 
-        var query = DB.PagedSearch<Entity>();
+        var query = DB.PagedSearch<T>();
 
         if (!string.IsNullOrWhiteSpace(queryParameters.SearchText))
             query.Match(Search.Full, queryParameters.SearchText).SortByTextScore();
 
         if (queryParameters.SortBy is not null && !string.IsNullOrWhiteSpace(queryParameters.SortBy.Field))
+        {
             query.Sort(x =>
                 queryParameters.SortBy.Descending
                     ? x.Descending(queryParameters.SortBy.Field)
                     : x.Ascending(queryParameters.SortBy.Field));
+        }
+        else
+        {
+            query.Sort(x => x.Descending(nameof(Entity.ID)));
+        }
 
         if (queryParameters.Filter?.Count > 0)
             foreach (var filter in queryParameters.Filter)
@@ -42,7 +49,7 @@ public class SearchRepository : ISearchRepository
             .PageSize(pageSize)
             .ExecuteAsync();
 
-        return new VirtualizeResponse<Entity>
+        return new VirtualizeResponse<T>
         {
             Items = result.Results.ToList(),
             PageCount = result.PageCount,

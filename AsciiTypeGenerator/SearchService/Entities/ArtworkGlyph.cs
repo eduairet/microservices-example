@@ -1,10 +1,10 @@
 using MongoDB.Entities;
 
-namespace SearchService.Models;
+namespace SearchService.Entities;
 
 public class ArtworkGlyph : Entity
 {
     public int Index { get; set; }
-    public Artwork Artwork { get; set; } = new();
+    public Entities.Artwork Artwork { get; set; } = new();
     public Glyph Glyph { get; set; } = new();
 }

@@ -3,7 +3,7 @@ using SearchService.Models.Virtualize;
 
 namespace SearchService.Repositories.SearchRepository;
 
-public interface ISearchRepository
+public interface ISearchRepository<T> where T : Entity
 {
-    Task<VirtualizeResponse<Entity>> SearchAsync(VirtualizeQueryParameters queryParameters);
+    Task<VirtualizeResponse<T>> SearchAsync(VirtualizeQueryParameters queryParameters);
 }

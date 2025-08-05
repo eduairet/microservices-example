@@ -1,6 +1,6 @@
 using MongoDB.Driver;
 using MongoDB.Entities;
-using SearchService.Models;
+using SearchService.Entities;
 using SearchService.Shared.Constants;
 using SearchService.Shared.Helpers.Services;
 
@@ -27,22 +27,6 @@ public class DbInitializer(WebApplication app)
 
         await DB.Index<Artwork>()
             .Key(x => x.ID, KeyType.Text)
-            .CreateAsync();
-
-        await DB.Index<Glyph>()
-            .Key(x => x.ID, KeyType.Text)
-            .CreateAsync();
-
-        await DB.Index<ArtworkGlyph>()
-            .Key(x => x.Index, KeyType.Ascending)
-            .Key(x => x.ID, KeyType.Text)
-            .Key(x => x.Artwork.ID, KeyType.Text)
-            .Key(x => x.Glyph.ID, KeyType.Text)
-            .CreateAsync();
-
-        await DB.Index<User>()
-            .Key(x => x.ID, KeyType.Text)
-            .Key(x => x.UserName, KeyType.Text)
             .CreateAsync();
 
         using var scope = app.Services.CreateScope();
