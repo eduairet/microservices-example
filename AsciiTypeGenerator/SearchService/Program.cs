@@ -1,3 +1,4 @@
+using MassTransit;
 using Scalar.AspNetCore;
 using SearchService.Data;
 using SearchService.Shared.Constants;
@@ -10,6 +11,10 @@ builder.Services.AddControllers();
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddMassTransit(config =>
+{
+    config.UsingRabbitMq((context, cfg) => { cfg.ConfigureEndpoints(context); });
+});
 builder.Services.AddHttpClients();
 builder.Services.AddRepositories();
 

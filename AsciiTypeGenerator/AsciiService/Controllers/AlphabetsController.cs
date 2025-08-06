@@ -99,7 +99,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
     }
 
     [HttpDelete(ApiRoutes.Alphabets.Delete)]
-    public async Task<IActionResult> DeleteAlphabet([FromRoute] string id)
+    public async Task<ActionResult<AlphabetDeletedResponse>> DeleteAlphabet([FromRoute] string id)
     {
         try
         {
@@ -107,7 +107,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
                 return NotFound(ErrorMessages.AlphabetNotFound(id));
 
             await alphabetsRepository.DeleteAsync(id);
-            return NoContent();
+            return Ok(AlphabetDeletedResponse.FromId(id));
         }
         catch (Exception ex)
         {

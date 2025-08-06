@@ -107,7 +107,7 @@ public class ArtworksController(IArtworksRepository artworksRepository) : Contro
                 return NotFound(ErrorMessages.ArtworkNotFound(id));
 
             await artworksRepository.DeleteAsync(id);
-            return NoContent();
+            return Ok(ArtworkDeletedResponse.FromId(id));
         }
         catch (Exception ex)
         {

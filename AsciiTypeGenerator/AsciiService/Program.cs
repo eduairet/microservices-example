@@ -1,6 +1,7 @@
 using AsciiService.Data;
 using AsciiService.Shared.Constants;
 using AsciiService.Shared.Extensions.DependencyInjectionExtensions;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -14,6 +15,10 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(new EnvironmentConstants(builder.Configuration).ConnectionString)
 );
+builder.Services.AddMassTransit(config =>
+{
+    config.UsingRabbitMq((context, cfg) => { cfg.ConfigureEndpoints(context); });
+});
 builder.Services.AddRepositories();
 
 var app = builder.Build();
