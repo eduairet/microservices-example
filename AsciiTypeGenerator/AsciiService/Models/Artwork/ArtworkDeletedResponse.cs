@@ -1,4 +1,4 @@
-namespace AsciiService.Models.Artworks;
+namespace AsciiService.Models.Artwork;
 
 public class ArtworkDeletedResponse
 {

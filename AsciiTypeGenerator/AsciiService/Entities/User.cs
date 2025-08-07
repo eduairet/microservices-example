@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AsciiService.Entities;
 
-public class User
+public sealed class User
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -13,8 +13,8 @@ public class User
     [Required] [MaxLength(256)] public string UserName { get; set; } = string.Empty;
 
     [System.Text.Json.Serialization.JsonIgnore]
-    public virtual ICollection<Artwork> Artworks { get; set; } = new List<Artwork>();
+    public ICollection<Artwork> Artworks { get; set; } = new List<Artwork>();
 
     [System.Text.Json.Serialization.JsonIgnore]
-    public virtual ICollection<Alphabet> Alphabets { get; set; } = new List<Alphabet>();
+    public ICollection<Alphabet> Alphabets { get; set; } = new List<Alphabet>();
 }

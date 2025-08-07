@@ -1,5 +1,6 @@
 using MassTransit;
 using Scalar.AspNetCore;
+using SearchService.Consumers;
 using SearchService.Data;
 using SearchService.Shared.Constants;
 using SearchService.Shared.Extensions.DependencyInjectionExtensions;
@@ -13,6 +14,8 @@ builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true
 builder.Services.AddOpenApi();
 builder.Services.AddMassTransit(config =>
 {
+    config.AddConsumersFromNamespaceContaining<AlphabetCreatedConsumer>();
+    config.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
     config.UsingRabbitMq((context, cfg) => { cfg.ConfigureEndpoints(context); });
 });
 builder.Services.AddHttpClients();

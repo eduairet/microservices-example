@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AsciiService.Entities;
 
-public class Alphabet
+public sealed class Alphabet
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -20,5 +20,5 @@ public class Alphabet
     public User Author { get; set; }
 
     [System.Text.Json.Serialization.JsonIgnore]
-    public virtual ICollection<Glyph> Glyphs { get; set; } = new List<Glyph>();
+    public ICollection<Glyph> Glyphs { get; set; } = new List<Glyph>();
 }

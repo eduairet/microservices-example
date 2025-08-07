@@ -1,4 +1,4 @@
-namespace AsciiService.Models.Alphabets;
+namespace AsciiService.Models.Alphabet;
 
 public class AlphabetDeletedResponse
 {

@@ -13,6 +13,7 @@ public class ArtworksRepository(AppDbContext context) : RepositoryBase<Artwork>(
         var artworks = await context.Artworks
             .Include(a => a.Author)
             .Include(a => a.ArtworkGlyphs)
+            .ThenInclude(ag => ag.Glyph)
             .AsNoTracking()
             .ToListAsync();
 

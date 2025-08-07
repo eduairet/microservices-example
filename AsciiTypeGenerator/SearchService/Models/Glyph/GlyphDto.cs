@@ -1,6 +1,8 @@
+using Contracts;
+
 namespace SearchService.Models.Glyph;
 
-public class GlyphDto
+public abstract class GlyphDto
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
@@ -18,5 +20,14 @@ public static class GlyphDtoEx
         Unicode = dto.Unicode,
         Alphabet = new Entities.Alphabet { ID = dto.AlphabetId.ToString() },
         Drawing = dto.Drawing
+    };
+
+    public static Entities.Glyph ToEntity(GlyphContract glyph) => new()
+    {
+        ID = glyph.Id.ToString(),
+        Name = glyph.Name,
+        Unicode = glyph.Unicode,
+        Alphabet = new Entities.Alphabet { ID = glyph.AlphabetId.ToString() },
+        Drawing = glyph.Drawing
     };
 }

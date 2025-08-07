@@ -1,6 +1,6 @@
 namespace SearchService.Models.ArtworkGlyph;
 
-public class ArtworkGlyphDto
+public abstract class ArtworkGlyphDto
 {
     public int Id { get; set; }
     public int Index { get; set; }
@@ -16,5 +16,13 @@ public static class ArtworkGlyphDtoEx
         Index = dto.Index,
         Artwork = new Entities.Artwork { ID = dto.ArtworkId.ToString() },
         Glyph = new Entities.Glyph { ID = dto.GlyphId.ToString() }
+    };
+
+    public static Entities.ArtworkGlyph ToEntity(Contracts.ArtworkGlyphContract artworkGlyph) => new()
+    {
+        ID = artworkGlyph.Id.ToString(),
+        Index = artworkGlyph.Index,
+        Artwork = new Entities.Artwork { ID = artworkGlyph.ArtworkId.ToString() },
+        Glyph = new Entities.Glyph { ID = artworkGlyph.GlyphId.ToString() }
     };
 }

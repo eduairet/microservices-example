@@ -1,6 +1,6 @@
 namespace Contracts;
 
-public class ArtworkContract
+public abstract class ArtworkContract
 {
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
@@ -9,5 +9,5 @@ public class ArtworkContract
     public DateTime UpdatedAt { get; set; }
     public int AuthorId { get; set; }
     public UserContract Author { get; set; } = new();
-    public List<ArtworkGlyphContract> ArtworkGlyphs { get; set; } = [];
+    public abstract List<ArtworkGlyphContract> ArtworkGlyphs { get; set; }
 }

@@ -1,30 +1,30 @@
 using System.ComponentModel.DataAnnotations;
-using AsciiService.Entities;
+using AsciiService.Models.Glyph;
 
-namespace AsciiService.Models.Artworks;
+namespace AsciiService.Models.Alphabet;
 
-public class ArtworkUpsertDto
+public abstract class AlphabetUpsertDto
 {
     [Required] [MaxLength(100)] private string Title { get; set; } = string.Empty;
     [Required] [MaxLength(2000)] private string Description { get; set; } = string.Empty;
-    [Required] private List<ArtworkGlyph> ArtworkGlyphs { get; set; } = [];
+    protected abstract List<GlyphDetailsDto> Glyphs { get; set; }
 
-    public Artwork ToEntity(int authorId, DateTime createdAt, DateTime updatedAt)
+    public Entities.Alphabet ToEntity(int authorId, DateTime createdAt, DateTime updatedAt)
     {
-        return new Artwork
+        return new Entities.Alphabet
         {
             Title = Title,
             Description = Description,
             CreatedAt = createdAt,
             UpdatedAt = updatedAt,
             AuthorId = authorId,
-            ArtworkGlyphs = ArtworkGlyphs
+            Glyphs = Glyphs.Select(g => g.ToEntity()).ToList()
         };
     }
 
-    public Artwork ToEntity(int id, int authorId, DateTime createdAt, DateTime updatedAt)
+    public Entities.Alphabet ToEntity(int id, int? authorId, DateTime createdAt, DateTime updatedAt)
     {
-        return new Artwork
+        return new Entities.Alphabet
         {
             Id = id,
             Title = Title,
@@ -32,7 +32,7 @@ public class ArtworkUpsertDto
             CreatedAt = createdAt,
             UpdatedAt = updatedAt,
             AuthorId = authorId,
-            ArtworkGlyphs = ArtworkGlyphs
+            Glyphs = Glyphs.Select(g => g.ToEntity()).ToList()
         };
     }
 }

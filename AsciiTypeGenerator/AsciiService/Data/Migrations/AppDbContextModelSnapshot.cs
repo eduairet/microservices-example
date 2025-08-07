@@ -67,7 +67,7 @@ namespace AsciiService.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AuthorId")
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -193,8 +193,7 @@ namespace AsciiService.Data.Migrations
                     b.HasOne("AsciiService.Entities.User", "Author")
                         .WithMany("Artworks")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Author");
                 });

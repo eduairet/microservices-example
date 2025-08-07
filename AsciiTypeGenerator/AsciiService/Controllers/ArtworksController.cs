@@ -1,4 +1,4 @@
-using AsciiService.Models.Artworks;
+using AsciiService.Models.Artwork;
 using AsciiService.Repositories.ArtworksRepository;
 using AsciiService.Shared.Constants;
 using Microsoft.AspNetCore.Mvc;

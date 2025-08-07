@@ -13,11 +13,11 @@ public sealed class Artwork
     [Required] [MaxLength(2000)] public string Description { get; set; } = string.Empty;
     [Required] public DateTime CreatedAt { get; set; }
     [Required] public DateTime UpdatedAt { get; set; }
-    [Required] public int AuthorId { get; set; }
+    public int? AuthorId { get; set; }
 
     [System.Text.Json.Serialization.JsonIgnore]
     [ForeignKey("AuthorId")]
-    public User Author { get; set; } = new();
+    public User Author { get; set; }
 
     [System.Text.Json.Serialization.JsonIgnore]
     public ICollection<ArtworkGlyph> ArtworkGlyphs { get; set; } = new List<ArtworkGlyph>();

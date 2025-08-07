@@ -16,14 +16,31 @@ public static class DbInitializer
         await context.Database.MigrateAsync();
 
         var defaultAlphabet = SeedDataAlphabets.Default();
+        var alreadyHasDefaultAlphabet = context.Alphabets.Any(a => a.Title == defaultAlphabet.Title);
+        var alreadyHasArtworks = context.Artworks.Any();
 
-        if (context.Alphabets.Any(a => a.Title == defaultAlphabet.Title))
+        switch (alreadyHasDefaultAlphabet)
         {
-            Console.WriteLine("Database already has default alphabet. Skipping seeding.");
+            case true when alreadyHasArtworks:
+                Console.WriteLine("Database already seeded. Skipping seeding.");
+                return;
+            case true:
+                Console.WriteLine("Database already has default alphabet. Skipping seeding.");
+                break;
+            default:
+                await context.AddAsync(defaultAlphabet);
+                break;
+        }
+
+        if (alreadyHasArtworks)
+        {
+            Console.WriteLine("Database already has artworks. Skipping seeding.");
             return;
         }
 
-        await context.AddAsync(defaultAlphabet);
+        var defaultArtwork = SeedDataArtworks.Default(defaultAlphabet);
+        await context.AddAsync(defaultArtwork);
+
         await context.SaveChangesAsync();
     }
 }

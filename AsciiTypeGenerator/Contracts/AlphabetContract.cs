@@ -1,6 +1,6 @@
 namespace Contracts;
 
-public class AlphabetContract
+public abstract class AlphabetContract
 {
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
@@ -8,5 +8,5 @@ public class AlphabetContract
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public UserContract Author { get; set; } = new();
-    public List<GlyphContract> Glyphs { get; set; } = [];
+    public abstract List<GlyphContract> Glyphs { get; set; }
 }

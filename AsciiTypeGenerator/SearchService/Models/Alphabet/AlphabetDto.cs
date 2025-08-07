@@ -1,3 +1,4 @@
+using Contracts;
 using SearchService.Models.Glyph;
 using SearchService.Models.User;
 
@@ -25,5 +26,16 @@ public static class AlphabetDtoEx
         UpdatedAt = dto.UpdatedAt,
         Author = dto.Author is null ? null : AuthorDtoEx.ToEntity(dto.Author),
         Glyphs = dto.Glyphs.Select(GlyphDtoEx.ToEntity).ToList()
+    };
+    
+    public static Entities.Alphabet ToEntity(AlphabetContract alphabet) => new()
+    {
+        ID = alphabet.Id.ToString(),
+        Title = alphabet.Title,
+        Description = alphabet.Description,
+        CreatedAt = alphabet.CreatedAt,
+        UpdatedAt = alphabet.UpdatedAt,
+        Author = AuthorDtoEx.ToEntity(alphabet.Author),
+        Glyphs = alphabet.Glyphs.Select(GlyphDtoEx.ToEntity).ToList()
     };
 }

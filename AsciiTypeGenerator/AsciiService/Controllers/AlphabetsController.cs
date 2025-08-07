@@ -1,4 +1,4 @@
-using AsciiService.Models.Alphabets;
+using AsciiService.Models.Alphabet;
 using AsciiService.Repositories.AlphabetsRepository;
 using AsciiService.Shared.Constants;
 using Microsoft.AspNetCore.Mvc;

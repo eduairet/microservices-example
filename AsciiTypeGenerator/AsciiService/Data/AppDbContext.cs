@@ -42,6 +42,11 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             .WithMany(u => u.Artworks)
             .HasForeignKey(a => a.AuthorId)
             .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<Artwork>()
+            .HasMany(a => a.ArtworkGlyphs)
+            .WithOne(ag => ag.Artwork)
+            .HasForeignKey(ag => ag.ArtworkId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         #endregion
 
@@ -62,7 +67,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             .WithMany(a => a.ArtworkGlyphs)
             .HasForeignKey(ag => ag.ArtworkId)
             .OnDelete(DeleteBehavior.Cascade);
-
         modelBuilder.Entity<ArtworkGlyph>()
             .HasOne(ag => ag.Glyph)
             .WithMany(g => g.ArtworkGlyphs)

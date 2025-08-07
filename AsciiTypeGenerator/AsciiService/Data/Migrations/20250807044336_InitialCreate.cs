@@ -59,7 +59,7 @@ namespace AsciiService.Data.Migrations
                     Description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    AuthorId = table.Column<int>(type: "integer", nullable: false)
+                    AuthorId = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -80,8 +80,8 @@ namespace AsciiService.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", maxLength: 2147483647, nullable: true),
                     Unicode = table.Column<int>(type: "integer", nullable: false),
-                    AlphabetId = table.Column<int>(type: "integer", nullable: false),
-                    Drawing = table.Column<string>(type: "text", maxLength: 2147483647, nullable: false)
+                    Drawing = table.Column<string>(type: "text", maxLength: 2147483647, nullable: false),
+                    AlphabetId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

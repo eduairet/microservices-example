@@ -1,6 +1,7 @@
 using AsciiService.Entities;
+using AsciiService.Models.ArtworkGlyph;
 
-namespace AsciiService.Models.Artworks;
+namespace AsciiService.Models.Artwork;
 
 public class ArtworkDetailsDto
 {
@@ -10,9 +11,9 @@ public class ArtworkDetailsDto
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public User Author { get; set; } = new();
-    private List<ArtworkGlyph> ArtworkGlyphs { get; set; } = [];
+    public List<ArtworkGlyphDetailsDto> ArtworkGlyphs { get; set; } = [];
 
-    public static ArtworkDetailsDto FromEntity(Artwork artwork)
+    public static ArtworkDetailsDto FromEntity(Entities.Artwork artwork)
     {
         return new ArtworkDetailsDto
         {
@@ -22,7 +23,7 @@ public class ArtworkDetailsDto
             CreatedAt = artwork.CreatedAt,
             UpdatedAt = artwork.UpdatedAt,
             Author = artwork.Author,
-            ArtworkGlyphs = artwork.ArtworkGlyphs.ToList()
+            ArtworkGlyphs = artwork.ArtworkGlyphs.Select(ArtworkGlyphDetailsDto.FromEntity).ToList()
         };
     }
 }

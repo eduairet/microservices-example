@@ -1,6 +1,7 @@
 using AsciiService.Entities;
+using AsciiService.Models.Glyph;
 
-namespace AsciiService.Models.Alphabets;
+namespace AsciiService.Models.Alphabet;
 
 public class AlphabetDetailsDto
 {
@@ -13,9 +14,9 @@ public class AlphabetDetailsDto
 
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     public User Author { get; set; } = new();
-    public List<Glyph> Glyphs { get; set; } = [];
+    public List<GlyphDetailsDto> Glyphs { get; set; } = [];
 
-    public static AlphabetDetailsDto FromEntity(Alphabet alphabet)
+    public static AlphabetDetailsDto FromEntity(Entities.Alphabet alphabet)
     {
         return new AlphabetDetailsDto
         {
@@ -25,7 +26,7 @@ public class AlphabetDetailsDto
             CreatedAt = alphabet.CreatedAt,
             UpdatedAt = alphabet.UpdatedAt,
             Author = alphabet.Author,
-            Glyphs = alphabet.Glyphs.ToList()
+            Glyphs = alphabet.Glyphs.Select(GlyphDetailsDto.FromEntity).ToList()
         };
     }
 }
