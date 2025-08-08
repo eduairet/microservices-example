@@ -5,7 +5,7 @@ using SearchService.Models.Alphabet;
 
 namespace SearchService.Consumers;
 
-public abstract class AlphabetCreatedConsumer : IConsumer<AlphabetCreated>
+public class AlphabetCreatedConsumer : IConsumer<AlphabetCreated>
 {
     public async Task Consume(ConsumeContext<AlphabetCreated> context)
     {
