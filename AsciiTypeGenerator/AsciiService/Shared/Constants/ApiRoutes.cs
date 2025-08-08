@@ -9,20 +9,20 @@ public static class ApiRoutes
     public static class Alphabets
     {
         public const string GetAll = "";
-        public const string GetById = "{{id}}";
+        public const string GetById = "{id:int}";
         public const string Create = "";
-        public const string Update = "{{id}}";
-        public const string Delete = "{{id}}";
+        public const string Update = "{id:int}";
+        public const string Delete = "{id:int}";
         public const string UserAlphabets = "user";
     }
 
     public static class Artworks
     {
         public const string GetAll = "";
-        public const string GetById = "{{id}}";
+        public const string GetById = "{id:int}";
         public const string Create = "";
-        public const string Update = "{{id}}";
-        public const string Delete = "{{id}}";
+        public const string Update = "{id:int}";
+        public const string Delete = "{id:int}";
         public const string UserArtworks = "user";
     }
 }

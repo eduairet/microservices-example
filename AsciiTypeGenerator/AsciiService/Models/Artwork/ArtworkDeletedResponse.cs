@@ -2,11 +2,11 @@ namespace AsciiService.Models.Artwork;
 
 public class ArtworkDeletedResponse
 {
-    public string Id { get; set; } = string.Empty;
+    public int Id { get; set; }
 
     public string Message { get; set; } = string.Empty;
 
-    public static ArtworkDeletedResponse FromId(string id)
+    public static ArtworkDeletedResponse FromId(int id)
     {
         return new ArtworkDeletedResponse
         {

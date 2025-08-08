@@ -25,7 +25,7 @@ public class ArtworksController(IArtworksRepository artworksRepository) : Contro
     }
 
     [HttpGet(ApiRoutes.Artworks.GetById)]
-    public async Task<ActionResult<ArtworkDetailsDto>> GetArtworkById([FromRoute] string id)
+    public async Task<ActionResult<ArtworkDetailsDto>> GetArtworkById([FromRoute] int id)
     {
         try
         {
@@ -54,10 +54,9 @@ public class ArtworksController(IArtworksRepository artworksRepository) : Contro
         try
         {
             // TODO: Get author ID from authentication context
-            const int authorId = 0;
 
             var now = DateTime.UtcNow;
-            var artwork = await artworksRepository.AddAsync(upsertDto.ToEntity(authorId, now, now));
+            var artwork = await artworksRepository.AddAsync(upsertDto.ToEntity(null, now, now));
 
             return CreatedAtAction(nameof(GetArtworkById), new { id = artwork.Id },
                 ArtworkDetailsDto.FromEntity(artwork));
@@ -85,7 +84,7 @@ public class ArtworksController(IArtworksRepository artworksRepository) : Contro
             var artwork = await artworksRepository.GetAsync(id);
 
             if (artwork is null)
-                return NotFound(ErrorMessages.ArtworkNotFound(id.ToString()));
+                return NotFound(ErrorMessages.ArtworkNotFound(id));
 
             await artworksRepository.UpdateAsync(updateDto.ToEntity(id, artwork.AuthorId, artwork.CreatedAt,
                 DateTime.UtcNow));
@@ -99,12 +98,15 @@ public class ArtworksController(IArtworksRepository artworksRepository) : Contro
     }
 
     [HttpDelete(ApiRoutes.Artworks.Delete)]
-    public async Task<IActionResult> DeleteArtwork([FromRoute] string id)
+    public async Task<IActionResult> DeleteArtwork([FromRoute] int id)
     {
+        // TODO: Check the author is the same as the one who created the artwork
+
         try
         {
             if (!await artworksRepository.Exists(id))
                 return NotFound(ErrorMessages.ArtworkNotFound(id));
+
 
             await artworksRepository.DeleteAsync(id);
             return Ok(ArtworkDeletedResponse.FromId(id));

@@ -11,12 +11,9 @@ public class AlphabetDto
     public string Description { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    public AuthorDto Author { get; set; } = new();
-    public List<GlyphDto> Glyphs { get; set; } = [];
-}
+    public AuthorDto Author { get; set; }
+    public List<GlyphDto> Glyphs { get; set; }
 
-public static class AlphabetDtoEx
-{
     public static Entities.Alphabet ToEntity(AlphabetDto dto) => new()
     {
         ID = dto.Id.ToString(),
@@ -24,18 +21,18 @@ public static class AlphabetDtoEx
         Description = dto.Description,
         CreatedAt = dto.CreatedAt,
         UpdatedAt = dto.UpdatedAt,
-        Author = dto.Author is null ? null : AuthorDtoEx.ToEntity(dto.Author),
-        Glyphs = dto.Glyphs.Select(GlyphDtoEx.ToEntity).ToList()
+        Author = dto.Author is null ? null : AuthorDto.ToEntity(dto.Author),
+        Glyphs = dto.Glyphs.Select(GlyphDto.ToEntity).ToList()
     };
-    
-    public static Entities.Alphabet ToEntity(AlphabetContract alphabet) => new()
+
+    public static Entities.Alphabet ToEntity(AlphabetContract contract) => new()
     {
-        ID = alphabet.Id.ToString(),
-        Title = alphabet.Title,
-        Description = alphabet.Description,
-        CreatedAt = alphabet.CreatedAt,
-        UpdatedAt = alphabet.UpdatedAt,
-        Author = AuthorDtoEx.ToEntity(alphabet.Author),
-        Glyphs = alphabet.Glyphs.Select(GlyphDtoEx.ToEntity).ToList()
+        ID = contract.Id.ToString(),
+        Title = contract.Title,
+        Description = contract.Description,
+        CreatedAt = contract.CreatedAt,
+        UpdatedAt = contract.UpdatedAt,
+        Author = contract.Author is null ? null : AuthorDto.ToEntity(contract.Author),
+        Glyphs = contract.Glyphs.Select(GlyphDto.ToEntity).ToList()
     };
 }

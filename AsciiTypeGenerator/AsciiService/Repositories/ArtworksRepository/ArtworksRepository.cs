@@ -20,11 +20,29 @@ public class ArtworksRepository(AppDbContext context) : RepositoryBase<Artwork>(
         return artworks;
     }
 
-    public async Task<Artwork> GetUserArtworksAsync(int userId)
+    public new async Task<Artwork> GetAsync(object id)
+    {
+        if (id is null) return null;
+        var artwork = await context.Artworks
+            .Include(a => a.Author)
+            .Include(a => a.ArtworkGlyphs)
+            .ThenInclude(ag => ag.Glyph)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.Id == (int)id);
+
+        return artwork ?? throw new KeyNotFoundException(ErrorMessages.ArtworkNotFound((int)id));
+    }
+
+    public async Task<List<Artwork>> GetUserArtworksAsync(int userId)
     {
         var artwork = await context.Artworks
-            .FirstOrDefaultAsync(a => a.AuthorId == userId);
+            .Where(a => a.AuthorId == userId)
+            .Include(a => a.Author)
+            .Include(a => a.ArtworkGlyphs)
+            .ThenInclude(ag => ag.Glyph)
+            .AsNoTracking()
+            .ToListAsync();
 
-        return artwork ?? throw new KeyNotFoundException(ErrorMessages.NoArtworksForUser(userId.ToString()));
+        return artwork;
     }
 }

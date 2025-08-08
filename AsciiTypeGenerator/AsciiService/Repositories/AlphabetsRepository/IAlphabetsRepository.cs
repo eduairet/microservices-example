@@ -5,5 +5,5 @@ namespace AsciiService.Repositories.AlphabetsRepository;
 
 public interface IAlphabetsRepository : IRepositoryBase<Alphabet>
 {
-    Task<Alphabet> GetUserAlphabetsAsync(int userId);
+    Task<IEnumerable<Alphabet>> GetUserAlphabetsAsync(int userId);
 }

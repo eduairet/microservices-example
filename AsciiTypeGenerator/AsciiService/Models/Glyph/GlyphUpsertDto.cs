@@ -1,22 +1,15 @@
 namespace AsciiService.Models.Glyph;
 
-public class GlyphDetailsDto
+public class GlyphUpsertDto
 {
     public string Name { get; set; } = string.Empty;
     public int Unicode { get; set; }
     public string Drawing { get; set; } = string.Empty;
 
-    public static Entities.Glyph ToEntity(GlyphDetailsDto dto) => new()
+    public static Entities.Glyph ToEntity(GlyphUpsertDto dto) => new()
     {
         Name = dto.Name,
         Unicode = dto.Unicode,
         Drawing = dto.Drawing
-    };
-
-    public static GlyphDetailsDto FromEntity(Entities.Glyph glyph) => new()
-    {
-        Name = glyph.Name,
-        Unicode = glyph.Unicode,
-        Drawing = glyph.Drawing
     };
 }

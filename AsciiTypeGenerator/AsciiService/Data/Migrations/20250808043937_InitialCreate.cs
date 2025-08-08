@@ -133,9 +133,10 @@ namespace AsciiService.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ArtworkGlyphs_ArtworkId",
+                name: "IX_ArtworkGlyphs_ArtworkId_Index",
                 table: "ArtworkGlyphs",
-                column: "ArtworkId");
+                columns: new[] { "ArtworkId", "Index" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ArtworkGlyphs_GlyphId",
@@ -154,9 +155,10 @@ namespace AsciiService.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Glyphs_AlphabetId",
+                name: "IX_Glyphs_AlphabetId_Unicode",
                 table: "Glyphs",
-                column: "AlphabetId");
+                columns: new[] { "AlphabetId", "Unicode" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_UserName",

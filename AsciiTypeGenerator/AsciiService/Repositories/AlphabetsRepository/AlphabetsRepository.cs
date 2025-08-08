@@ -18,11 +18,26 @@ public class AlphabetsRepository(AppDbContext context) : RepositoryBase<Alphabet
 
         return alphabets;
     }
-    public async Task<Alphabet> GetUserAlphabetsAsync(int userId)
+
+    public new async Task<Alphabet> GetAsync(object id)
     {
         var alphabet = await context.Alphabets
-            .FirstOrDefaultAsync(a => a.AuthorId == userId);
+            .Include(a => a.Author)
+            .Include(a => a.Glyphs)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(a => a.Id == (int)id);
 
-        return alphabet ?? throw new KeyNotFoundException(ErrorMessages.NoAlphabetsForUser(userId.ToString()));
+        return alphabet;
+    }
+
+    public async Task<IEnumerable<Alphabet>> GetUserAlphabetsAsync(int userId)
+    {
+        var alphabets = await context.Alphabets
+            .Where(a => a.AuthorId == userId)
+            .Include(a => a.Glyphs)
+            .AsNoTracking()
+            .ToListAsync();
+
+        return alphabets;
     }
 }

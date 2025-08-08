@@ -22,11 +22,15 @@ public class DbInitializer(WebApplication app)
         );
 
         await DB.Index<Alphabet>()
-            .Key(x => x.ID, KeyType.Text)
+            .Key(x => x.Title, KeyType.Text)
+            .Key(x => x.Description, KeyType.Text)
+            .Key(x => x.Author.UserName, KeyType.Text)
             .CreateAsync();
 
         await DB.Index<Artwork>()
-            .Key(x => x.ID, KeyType.Text)
+            .Key(x => x.Title, KeyType.Text)
+            .Key(x => x.Description, KeyType.Text)
+            .Key(x => x.Author.UserName, KeyType.Text)
             .CreateAsync();
 
         using var scope = app.Services.CreateScope();

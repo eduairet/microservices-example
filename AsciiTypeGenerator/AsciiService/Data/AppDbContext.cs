@@ -57,6 +57,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             .WithMany(a => a.Glyphs)
             .HasForeignKey(g => g.AlphabetId)
             .OnDelete(DeleteBehavior.Cascade);
+       modelBuilder.Entity<Glyph>()
+           .HasIndex(g => new { g.AlphabetId, g.Unicode })
+           .IsUnique();
 
         #endregion
 
@@ -72,6 +75,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             .WithMany(g => g.ArtworkGlyphs)
             .HasForeignKey(ag => ag.GlyphId)
             .OnDelete(DeleteBehavior.Cascade);
+        modelBuilder.Entity<ArtworkGlyph>()
+            .HasIndex(ag => new { ag.ArtworkId, ag.Index })
+            .IsUnique();
 
         #endregion
 

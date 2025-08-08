@@ -4,13 +4,13 @@ using AsciiService.Models.ArtworkGlyph;
 
 namespace AsciiService.Models.Artwork;
 
-public abstract class ArtworkUpsertDto
+public class ArtworkUpsertDto
 {
-    [Required] [MaxLength(100)] private string Title { get; set; } = string.Empty;
-    [Required] [MaxLength(2000)] private string Description { get; set; } = string.Empty;
+    [Required] [MaxLength(100)] public string Title { get; set; } = string.Empty;
+    [Required] [MaxLength(2000)] public string Description { get; set; } = string.Empty;
 
     [Required]
-    protected abstract List<ArtworkGlyphDetailsDto> ArtworkGlyphs { get; set; }
+    public List<ArtworkGlyphDetailsDto> ArtworkGlyphs { get; set; } = [];
 
     public Entities.Artwork ToEntity(int? authorId, DateTime createdAt, DateTime updatedAt)
     {
@@ -21,7 +21,7 @@ public abstract class ArtworkUpsertDto
             CreatedAt = createdAt,
             UpdatedAt = updatedAt,
             AuthorId = authorId,
-            ArtworkGlyphs = ArtworkGlyphs.Select(g => g.ToEntity()).ToList()
+            ArtworkGlyphs = ArtworkGlyphs.Select(ArtworkGlyphDetailsDto.ToEntity).ToList()
         };
     }
 
@@ -35,7 +35,7 @@ public abstract class ArtworkUpsertDto
             CreatedAt = createdAt,
             UpdatedAt = updatedAt,
             AuthorId = authorId,
-            ArtworkGlyphs = ArtworkGlyphs.Select(g => g.ToEntity()).ToList()
+            ArtworkGlyphs = ArtworkGlyphs.Select(ArtworkGlyphDetailsDto.ToEntity).ToList()
         };
     }
 }

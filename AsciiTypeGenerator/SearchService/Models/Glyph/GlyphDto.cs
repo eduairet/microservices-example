@@ -2,32 +2,23 @@ using Contracts;
 
 namespace SearchService.Models.Glyph;
 
-public abstract class GlyphDto
+public class GlyphDto
 {
-    public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public int Unicode { get; set; }
-    public int AlphabetId { get; set; }
     public string Drawing { get; set; } = string.Empty;
-}
 
-public static class GlyphDtoEx
-{
     public static Entities.Glyph ToEntity(GlyphDto dto) => new()
     {
-        ID = dto.Id.ToString(),
         Name = dto.Name,
         Unicode = dto.Unicode,
-        Alphabet = new Entities.Alphabet { ID = dto.AlphabetId.ToString() },
         Drawing = dto.Drawing
     };
 
-    public static Entities.Glyph ToEntity(GlyphContract glyph) => new()
+    public static Entities.Glyph ToEntity(GlyphContract contract) => new()
     {
-        ID = glyph.Id.ToString(),
-        Name = glyph.Name,
-        Unicode = glyph.Unicode,
-        Alphabet = new Entities.Alphabet { ID = glyph.AlphabetId.ToString() },
-        Drawing = glyph.Drawing
+        Name = contract.Name,
+        Unicode = contract.Unicode,
+        Drawing = contract.Drawing
     };
 }

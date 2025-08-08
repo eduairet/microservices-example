@@ -25,7 +25,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
     }
 
     [HttpGet(ApiRoutes.Alphabets.GetById)]
-    public async Task<ActionResult<AlphabetDetailsDto>> GetAlphabetById([FromRoute] string id)
+    public async Task<ActionResult<AlphabetDetailsDto>> GetAlphabetById([FromRoute] int id)
     {
         try
         {
@@ -54,10 +54,9 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
         try
         {
             // TODO: Get author ID from authentication context
-            const int authorId = 0;
 
             var now = DateTime.UtcNow;
-            var alphabet = await alphabetsRepository.AddAsync(upsertDto.ToEntity(authorId, now, now));
+            var alphabet = await alphabetsRepository.AddAsync(upsertDto.ToEntity(null, now, now));
 
             return CreatedAtAction(nameof(GetAlphabetById), new { id = alphabet.Id },
                 AlphabetDetailsDto.FromEntity(alphabet));
@@ -85,7 +84,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
             var alphabet = await alphabetsRepository.GetAsync(id);
 
             if (alphabet is null)
-                return NotFound(ErrorMessages.AlphabetNotFound(id.ToString()));
+                return NotFound(ErrorMessages.AlphabetNotFound(id));
 
             await alphabetsRepository.UpdateAsync(updateDto.ToEntity(id, alphabet.AuthorId, alphabet.CreatedAt,
                 DateTime.UtcNow));
@@ -99,8 +98,10 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
     }
 
     [HttpDelete(ApiRoutes.Alphabets.Delete)]
-    public async Task<ActionResult<AlphabetDeletedResponse>> DeleteAlphabet([FromRoute] string id)
+    public async Task<ActionResult<AlphabetDeletedResponse>> DeleteAlphabet([FromRoute] int id)
     {
+        // TODO: Check the author is the same as the one who created the alphabet
+
         try
         {
             if (!await alphabetsRepository.Exists(id))

@@ -10,7 +10,7 @@ public class ArtworkDetailsDto
     public string Description { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public User Author { get; set; } = new();
+    public User Author { get; set; }
     public List<ArtworkGlyphDetailsDto> ArtworkGlyphs { get; set; } = [];
 
     public static ArtworkDetailsDto FromEntity(Entities.Artwork artwork)

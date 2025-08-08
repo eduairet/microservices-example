@@ -14,13 +14,13 @@ public class AsciiServiceHttpClient(HttpClient httpClient, IConfiguration config
     {
         var endpoint = $"{_asciiServiceUrl}/{AsciiServiceRoutes.GetAllAlphabets}";
         var alphabets = await httpClient.GetFromJsonAsync<List<AlphabetDto>>(endpoint);
-        return alphabets is null ? [] : alphabets.Select(AlphabetDtoEx.ToEntity).ToList();
+        return alphabets is null ? [] : alphabets.Select(AlphabetDto.ToEntity).ToList();
     }
 
     public async Task<List<Artwork>> GetArtworksForSearchDb()
     {
         var endpoint = $"{_asciiServiceUrl}/{AsciiServiceRoutes.GetAllArtworks}";
         var artworks = await httpClient.GetFromJsonAsync<List<ArtworkDto>>(endpoint);
-        return artworks is null ? [] : artworks.Select(ArtworkDtoEx.ToEntity).ToList();
+        return artworks is null ? [] : artworks.Select(ArtworkDto.ToEntity).ToList();
     }
 }

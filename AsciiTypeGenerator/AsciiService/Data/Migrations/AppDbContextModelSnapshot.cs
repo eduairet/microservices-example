@@ -115,9 +115,10 @@ namespace AsciiService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArtworkId");
-
                     b.HasIndex("GlyphId");
+
+                    b.HasIndex("ArtworkId", "Index")
+                        .IsUnique();
 
                     b.ToTable("ArtworkGlyphs", (string)null);
                 });
@@ -147,7 +148,8 @@ namespace AsciiService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AlphabetId");
+                    b.HasIndex("AlphabetId", "Unicode")
+                        .IsUnique();
 
                     b.ToTable("Glyphs", (string)null);
                 });

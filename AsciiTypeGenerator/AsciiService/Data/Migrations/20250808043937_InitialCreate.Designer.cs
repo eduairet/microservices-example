@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AsciiService.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250807044336_InitialCreate")]
+    [Migration("20250808043937_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -118,9 +118,10 @@ namespace AsciiService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ArtworkId");
-
                     b.HasIndex("GlyphId");
+
+                    b.HasIndex("ArtworkId", "Index")
+                        .IsUnique();
 
                     b.ToTable("ArtworkGlyphs", (string)null);
                 });
@@ -150,7 +151,8 @@ namespace AsciiService.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AlphabetId");
+                    b.HasIndex("AlphabetId", "Unicode")
+                        .IsUnique();
 
                     b.ToTable("Glyphs", (string)null);
                 });
