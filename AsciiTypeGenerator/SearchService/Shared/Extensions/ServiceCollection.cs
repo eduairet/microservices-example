@@ -3,7 +3,7 @@ using SearchService.Repositories.SearchRepository;
 using SearchService.Shared.Constants.Policies;
 using SearchService.Shared.Helpers.Services;
 
-namespace SearchService.Shared.Extensions.DependencyInjectionExtensions;
+namespace SearchService.Shared.Extensions;
 
 public static class ServiceCollection
 {

@@ -1,6 +1,6 @@
 using AsciiService.Data;
 using AsciiService.Shared.Constants;
-using AsciiService.Shared.Extensions.DependencyInjectionExtensions;
+using AsciiService.Shared.Extensions;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;

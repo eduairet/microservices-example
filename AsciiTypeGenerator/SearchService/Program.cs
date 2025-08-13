@@ -4,7 +4,8 @@ using SearchService.Consumers.Alphabet;
 using SearchService.Consumers.Artwork;
 using SearchService.Data;
 using SearchService.Shared.Constants;
-using SearchService.Shared.Extensions.DependencyInjectionExtensions;
+using SearchService.Shared.Extensions;
+using SearchService.Shared.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,10 +16,7 @@ builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true
 builder.Services.AddOpenApi();
 builder.Services.AddMassTransit(config =>
 {
-    config.AddConsumersFromNamespaceContaining<AlphabetUpsertedConsumer>();
-    config.AddConsumersFromNamespaceContaining<AlphabetDeletedConsumer>();
-    config.AddConsumersFromNamespaceContaining<ArtworkUpsertedConsumer>();
-    config.AddConsumersFromNamespaceContaining<ArtworkDeletedConsumer>();
+    config.AddAllConsumersFromNamespaceContaining();
     config.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
     config.UsingRabbitMq((context, cfg) => { cfg.ConfigureEndpoints(context); });
 });

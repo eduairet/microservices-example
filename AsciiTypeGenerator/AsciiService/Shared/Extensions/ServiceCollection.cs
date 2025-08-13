@@ -1,7 +1,7 @@
 using AsciiService.Repositories.AlphabetsRepository;
 using AsciiService.Repositories.ArtworksRepository;
 
-namespace AsciiService.Shared.Extensions.DependencyInjectionExtensions;
+namespace AsciiService.Shared.Extensions;
 
 public static class ServiceCollection
 {
