@@ -6,12 +6,9 @@ public class AlphabetDeletedResponse
 
     public string Message { get; set; } = string.Empty;
 
-    public static AlphabetDeletedResponse FromId(int id)
+    public static AlphabetDeletedResponse FromId(int id) => new()
     {
-        return new AlphabetDeletedResponse
-        {
-            Id = id,
-            Message = Shared.Constants.SuccessMessages.AlphabetDeleted(id)
-        };
-    }
+        Id = id,
+        Message = Shared.Constants.SuccessMessages.AlphabetDeleted(id)
+    };
 }

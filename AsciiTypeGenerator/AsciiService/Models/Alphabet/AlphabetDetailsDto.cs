@@ -1,5 +1,6 @@
 using AsciiService.Entities;
 using AsciiService.Models.Glyph;
+using Contracts;
 
 namespace AsciiService.Models.Alphabet;
 
@@ -29,4 +30,21 @@ public class AlphabetDetailsDto
             Glyphs = alphabet.Glyphs.Select(GlyphDetailsDto.FromEntity).ToList()
         };
     }
+
+    public static AlphabetUpserted ToContractUpsert(AlphabetDetailsDto alphabet) => new()
+    {
+        Id = alphabet.Id,
+        Title = alphabet.Title,
+        Description = alphabet.Description,
+        CreatedAt = alphabet.CreatedAt,
+        UpdatedAt = alphabet.UpdatedAt,
+        Author = alphabet.Author is not null
+            ? new UserContract
+            {
+                Id = alphabet.Author.Id,
+                UserName = alphabet.Author?.UserName
+            }
+            : null,
+        Glyphs = alphabet.Glyphs.Select(GlyphDetailsDto.ToContract).ToList()
+    };
 }

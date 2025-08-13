@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using AsciiService.Entities;
 using AsciiService.Models.ArtworkGlyph;
 
 namespace AsciiService.Models.Artwork;

@@ -1,4 +1,5 @@
 using AsciiService.Models.Glyph;
+using Contracts;
 
 namespace AsciiService.Models.ArtworkGlyph;
 
@@ -17,5 +18,11 @@ public class ArtworkGlyphDetailsDto
     {
         Index = artworkGlyph.Index,
         Glyph = GlyphDetailsDto.FromEntity(artworkGlyph.Glyph)
+    };
+    
+    public static ArtworkGlyphContract ToContract(ArtworkGlyphDetailsDto dto) => new()
+    {
+        Index = dto.Index,
+        Glyph = GlyphDetailsDto.ToContract(dto.Glyph)
     };
 }

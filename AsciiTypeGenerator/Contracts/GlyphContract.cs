@@ -1,6 +1,6 @@
 namespace Contracts;
 
-public abstract class GlyphContract
+public class GlyphContract
 {
     public string Name { get; set; } = string.Empty;
     public int Unicode { get; set; }

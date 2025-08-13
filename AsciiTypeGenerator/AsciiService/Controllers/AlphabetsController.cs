@@ -1,13 +1,15 @@
 using AsciiService.Models.Alphabet;
 using AsciiService.Repositories.AlphabetsRepository;
 using AsciiService.Shared.Constants;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AsciiService.Controllers;
 
 [ApiController]
 [Route($"{ApiRoutes.BasePath}/[controller]")]
-public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : ControllerBase
+public class AlphabetsController(IAlphabetsRepository alphabetsRepository, IPublishEndpoint publishEndpoint)
+    : ControllerBase
 {
     [HttpGet(ApiRoutes.Alphabets.GetAll)]
     public async Task<ActionResult<List<AlphabetDetailsDto>>> GetAll()
@@ -19,8 +21,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
-            throw;
+            return BadRequest(ex.Message);
         }
     }
 
@@ -29,11 +30,10 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
     {
         try
         {
-            var alphabet = await alphabetsRepository.GetAsync(id);
-
-            if (alphabet is null)
+            if (!await alphabetsRepository.Exists(id))
                 return NotFound(ErrorMessages.AlphabetNotFound(id));
 
+            var alphabet = await alphabetsRepository.GetAsync(id);
             return Ok(AlphabetDetailsDto.FromEntity(alphabet));
         }
         catch (Exception ex)
@@ -43,23 +43,26 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository) : Con
     }
 
     [HttpPost(ApiRoutes.Alphabets.Create)]
-    public async Task<ActionResult<AlphabetDetailsDto>> CreateAlphabet([FromBody] AlphabetUpsertDto upsertDto)
+    public async Task<ActionResult<AlphabetDetailsDto>> CreateAlphabet([FromBody] AlphabetUpsertDto request)
     {
-        if (upsertDto is null)
-            return BadRequest(ErrorMessages.InvalidRequestBody);
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
         try
         {
+            if (request is null)
+                return BadRequest(ErrorMessages.InvalidRequestBody);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             // TODO: Get author ID from authentication context
 
             var now = DateTime.UtcNow;
-            var alphabet = await alphabetsRepository.AddAsync(upsertDto.ToEntity(null, now, now));
+            var alphabet = await alphabetsRepository.AddAsync(request.ToEntity(null, now, now));
+            var alphabetCreated = AlphabetDetailsDto.FromEntity(alphabet);
+
+            await publishEndpoint.Publish(AlphabetDetailsDto.ToContractUpsert(alphabetCreated));
 
             return CreatedAtAction(nameof(GetAlphabetById), new { id = alphabet.Id },
-                AlphabetDetailsDto.FromEntity(alphabet));
+                alphabetCreated);
         }
         catch (Exception ex)
         {

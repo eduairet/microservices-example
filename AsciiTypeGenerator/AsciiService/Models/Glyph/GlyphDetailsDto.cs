@@ -1,3 +1,5 @@
+using Contracts;
+
 namespace AsciiService.Models.Glyph;
 
 public class GlyphDetailsDto
@@ -18,5 +20,12 @@ public class GlyphDetailsDto
         Name = glyph.Name,
         Unicode = glyph.Unicode,
         Drawing = glyph.Drawing
+    };
+    
+    public static GlyphContract ToContract(GlyphDetailsDto dto) => new()
+    {
+        Name = dto.Name,
+        Unicode = dto.Unicode,
+        Drawing = dto.Drawing
     };
 }
