@@ -8,13 +8,6 @@ public class GlyphDetailsDto
     public int Unicode { get; set; }
     public string Drawing { get; set; } = string.Empty;
 
-    public static Entities.Glyph ToEntity(GlyphDetailsDto glyph) => new()
-    {
-        Name = glyph.Name,
-        Unicode = glyph.Unicode,
-        Drawing = glyph.Drawing
-    };
-
     public static GlyphDetailsDto FromEntity(Entities.Glyph glyph) => new()
     {
         Name = glyph.Name,

@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using AsciiService.Models.Glyph;
 
 namespace AsciiService.Models.Alphabet;
 
@@ -7,7 +6,7 @@ public class AlphabetUpsertDto
 {
     [Required] [MaxLength(100)] public string Title { get; set; } = string.Empty;
     [Required] [MaxLength(2000)] public string Description { get; set; } = string.Empty;
-    public List<GlyphDetailsDto> Glyphs { get; set; } = [];
+    public List<Entities.Glyph> Glyphs { get; set; } = [];
 
     public Entities.Alphabet ToEntity(int? authorId, DateTime createdAt, DateTime updatedAt)
     {
@@ -18,7 +17,7 @@ public class AlphabetUpsertDto
             CreatedAt = createdAt,
             UpdatedAt = updatedAt,
             AuthorId = authorId,
-            Glyphs = Glyphs.Select(GlyphDetailsDto.ToEntity).ToList()
+            Glyphs = Glyphs
         };
     }
 
@@ -32,7 +31,7 @@ public class AlphabetUpsertDto
             CreatedAt = createdAt,
             UpdatedAt = updatedAt,
             AuthorId = authorId,
-            Glyphs = Glyphs.Select(GlyphDetailsDto.ToEntity).ToList()
+            Glyphs = Glyphs
         };
     }
 }
