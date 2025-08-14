@@ -28,7 +28,7 @@ public class ArtworkDetailsDto
         };
     }
 
-    public static ArtworkUpserted ToContractUpsert(ArtworkDetailsDto artwork) => new()
+    public static ArtworkUpserted ToContractUpsert(Entities.Artwork artwork) => new()
     {
         Id = artwork.Id,
         Title = artwork.Title,

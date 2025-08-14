@@ -1,13 +1,25 @@
 using AsciiService.Data;
 using AsciiService.Entities;
+using AsciiService.Models.Alphabet;
 using AsciiService.Repositories.RepositoryBase;
-using AsciiService.Shared.Constants;
+using Contracts;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace AsciiService.Repositories.AlphabetsRepository;
 
-public class AlphabetsRepository(AppDbContext context) : RepositoryBase<Alphabet>(context), IAlphabetsRepository
+public class AlphabetsRepository(AppDbContext context, IPublishEndpoint publishEndpoint)
+    : RepositoryBase<Alphabet>(context, publishEndpoint), IAlphabetsRepository
 {
+    protected override TContract FromEntityToCreateContract<TContract>(Alphabet entity) =>
+        (TContract)(object)AlphabetDetailsDto.ToContractUpsert(entity);
+
+    protected override TContract FromEntityToUpdateContract<TContract>(Alphabet entity) =>
+        (TContract)(object)AlphabetDetailsDto.ToContractUpsert(entity);
+
+    protected override TContract FromEntityToDeleteContract<TContract>(Alphabet entity) =>
+        (TContract)(object)new AlphabetDeleted { Id = entity.Id };
+
     public new async Task<List<Alphabet>> GetAllAsync()
     {
         var alphabets = await context.Alphabets

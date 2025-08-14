@@ -1,4 +1,5 @@
 using AsciiService.Entities;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
 namespace AsciiService.Data;
@@ -94,6 +95,14 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             .WithOne(a => a.Author)
             .HasForeignKey(a => a.AuthorId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        #endregion
+
+        #region OutboxMessage
+
+        modelBuilder.AddInboxStateEntity();
+        modelBuilder.AddOutboxMessageEntity();
+        modelBuilder.AddOutboxStateEntity();
 
         #endregion
     }

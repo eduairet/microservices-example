@@ -31,7 +31,7 @@ public class AlphabetDetailsDto
         };
     }
 
-    public static AlphabetUpserted ToContractUpsert(AlphabetDetailsDto alphabet) => new()
+    public static AlphabetUpserted ToContractUpsert(Entities.Alphabet alphabet) => new()
     {
         Id = alphabet.Id,
         Title = alphabet.Title,

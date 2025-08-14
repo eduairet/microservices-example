@@ -1,15 +1,13 @@
 using AsciiService.Models.Artwork;
 using AsciiService.Repositories.ArtworksRepository;
 using AsciiService.Shared.Constants;
-using Contracts;
-using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AsciiService.Controllers;
 
 [ApiController]
 [Route($"{ApiRoutes.BasePath}/[controller]")]
-public class ArtworksController(IArtworksRepository artworksRepository, IPublishEndpoint publishEndpoint)
+public class ArtworksController(IArtworksRepository artworksRepository)
     : ControllerBase
 {
     [HttpGet(ApiRoutes.Artworks.GetAll)]
@@ -18,6 +16,7 @@ public class ArtworksController(IArtworksRepository artworksRepository, IPublish
         try
         {
             var artworks = await artworksRepository.GetAllAsync();
+
             return Accepted(artworks.Select(ArtworkDetailsDto.FromEntity).ToList());
         }
         catch (Exception ex)
@@ -35,6 +34,7 @@ public class ArtworksController(IArtworksRepository artworksRepository, IPublish
                 return NotFound(ErrorMessages.ArtworkNotFound(id));
 
             var artwork = await artworksRepository.GetAsync(id);
+
             return Ok(ArtworkDetailsDto.FromEntity(artwork));
         }
         catch (Exception ex)
@@ -58,12 +58,9 @@ public class ArtworksController(IArtworksRepository artworksRepository, IPublish
 
             var now = DateTime.UtcNow;
             var artwork = await artworksRepository.AddAsync(request.ToEntity(null, now, now));
-            var artworkCreated = ArtworkDetailsDto.FromEntity(artwork);
-
-            await publishEndpoint.Publish(ArtworkDetailsDto.ToContractUpsert(artworkCreated));
 
             return CreatedAtAction(nameof(GetArtworkById), new { id = artwork.Id },
-                artworkCreated);
+                ArtworkDetailsDto.FromEntity(artwork));
         }
         catch (Exception ex)
         {
@@ -92,8 +89,6 @@ public class ArtworksController(IArtworksRepository artworksRepository, IPublish
             var artworkUpdate = updateDto.ToEntity(id, artwork.AuthorId, artwork.CreatedAt, DateTime.UtcNow);
 
             await artworksRepository.UpdateAsync(artworkUpdate);
-            await publishEndpoint.Publish(
-                ArtworkDetailsDto.ToContractUpsert(ArtworkDetailsDto.FromEntity(artworkUpdate)));
 
             return Ok(artworkUpdate);
         }
@@ -113,9 +108,7 @@ public class ArtworksController(IArtworksRepository artworksRepository, IPublish
             if (!await artworksRepository.Exists(id))
                 return NotFound(ErrorMessages.ArtworkNotFound(id));
 
-
             await artworksRepository.DeleteAsync(id);
-            await publishEndpoint.Publish(new ArtworkDeleted { Id = id });
 
             return Ok(ArtworkDeletedResponse.FromId(id));
         }

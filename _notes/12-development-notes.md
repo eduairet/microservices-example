@@ -15,3 +15,9 @@
 
 - MassTransit is a popular .NET library for building message-based applications. It provides a high-level abstraction over messaging systems like RabbitMQ, making it easier to implement messaging patterns and handle message routing, serialization, and error handling.
 - The main advantage of using MassTransit is that it simplifies the development and scaling of microservices by providing a consistent and easy-to-use API for messaging that can switch between different transport layers (like RabbitMQ, Azure Service Bus, etc.) with minimal code changes.
+
+## ACID transactions
+
+- ACID transactions are a set of properties that guarantee that database transactions are processed reliably. The acronym stands for Atomicity, Consistency, Isolation, and Durability.
+- In the context of microservices, ensuring ACID compliance can be challenging due to the distributed nature of the architecture. However, it is crucial for maintaining data integrity and consistency across services.
+- To implement ACID transactions in a microservices environment using MassTransit, we can implement an outbox with retry. This involves storing messages that need to be sent to other services in a database table (the outbox) as part of the same transaction that modifies the local data. Once the transaction is committed, a background process can read the outbox and send the messages to the message broker (e.g., RabbitMQ). This ensures that either both the data change and the message send succeed or fail together, maintaining ACID properties.

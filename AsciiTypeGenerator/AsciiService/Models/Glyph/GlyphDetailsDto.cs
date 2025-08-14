@@ -8,11 +8,11 @@ public class GlyphDetailsDto
     public int Unicode { get; set; }
     public string Drawing { get; set; } = string.Empty;
 
-    public static Entities.Glyph ToEntity(GlyphDetailsDto dto) => new()
+    public static Entities.Glyph ToEntity(GlyphDetailsDto glyph) => new()
     {
-        Name = dto.Name,
-        Unicode = dto.Unicode,
-        Drawing = dto.Drawing
+        Name = glyph.Name,
+        Unicode = glyph.Unicode,
+        Drawing = glyph.Drawing
     };
 
     public static GlyphDetailsDto FromEntity(Entities.Glyph glyph) => new()
@@ -21,11 +21,11 @@ public class GlyphDetailsDto
         Unicode = glyph.Unicode,
         Drawing = glyph.Drawing
     };
-    
-    public static GlyphContract ToContract(GlyphDetailsDto dto) => new()
+
+    public static GlyphContract ToContract(Entities.Glyph glyph) => new()
     {
-        Name = dto.Name,
-        Unicode = dto.Unicode,
-        Drawing = dto.Drawing
+        Name = glyph.Name,
+        Unicode = glyph.Unicode,
+        Drawing = glyph.Drawing
     };
 }

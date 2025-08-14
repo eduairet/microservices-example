@@ -1,14 +1,13 @@
 using AsciiService.Models.Alphabet;
 using AsciiService.Repositories.AlphabetsRepository;
 using AsciiService.Shared.Constants;
-using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AsciiService.Controllers;
 
 [ApiController]
 [Route($"{ApiRoutes.BasePath}/[controller]")]
-public class AlphabetsController(IAlphabetsRepository alphabetsRepository, IPublishEndpoint publishEndpoint)
+public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
     : ControllerBase
 {
     [HttpGet(ApiRoutes.Alphabets.GetAll)]
@@ -17,6 +16,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository, IPubl
         try
         {
             var alphabets = await alphabetsRepository.GetAllAsync();
+
             return Accepted(alphabets.Select(AlphabetDetailsDto.FromEntity).ToList());
         }
         catch (Exception ex)
@@ -34,6 +34,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository, IPubl
                 return NotFound(ErrorMessages.AlphabetNotFound(id));
 
             var alphabet = await alphabetsRepository.GetAsync(id);
+
             return Ok(AlphabetDetailsDto.FromEntity(alphabet));
         }
         catch (Exception ex)
@@ -57,12 +58,9 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository, IPubl
 
             var now = DateTime.UtcNow;
             var alphabet = await alphabetsRepository.AddAsync(request.ToEntity(null, now, now));
-            var alphabetCreated = AlphabetDetailsDto.FromEntity(alphabet);
-
-            await publishEndpoint.Publish(AlphabetDetailsDto.ToContractUpsert(alphabetCreated));
 
             return CreatedAtAction(nameof(GetAlphabetById), new { id = alphabet.Id },
-                alphabetCreated);
+                AlphabetDetailsDto.FromEntity(alphabet));
         }
         catch (Exception ex)
         {
@@ -111,6 +109,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository, IPubl
                 return NotFound(ErrorMessages.AlphabetNotFound(id));
 
             await alphabetsRepository.DeleteAsync(id);
+
             return Ok(AlphabetDeletedResponse.FromId(id));
         }
         catch (Exception ex)

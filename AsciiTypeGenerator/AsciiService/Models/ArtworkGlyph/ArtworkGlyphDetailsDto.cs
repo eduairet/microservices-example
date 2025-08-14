@@ -4,7 +4,7 @@ using Contracts;
 namespace AsciiService.Models.ArtworkGlyph;
 
 public class ArtworkGlyphDetailsDto
-{ 
+{
     public int Index { get; set; }
     public GlyphDetailsDto Glyph { get; set; }
 
@@ -19,8 +19,8 @@ public class ArtworkGlyphDetailsDto
         Index = artworkGlyph.Index,
         Glyph = GlyphDetailsDto.FromEntity(artworkGlyph.Glyph)
     };
-    
-    public static ArtworkGlyphContract ToContract(ArtworkGlyphDetailsDto dto) => new()
+
+    public static ArtworkGlyphContract ToContract(Entities.ArtworkGlyph dto) => new()
     {
         Index = dto.Index,
         Glyph = GlyphDetailsDto.ToContract(dto.Glyph)
