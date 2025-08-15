@@ -85,11 +85,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
 
             // TODO: Check the author is the same as the one who created the alphabet
 
-            var alphabet = await alphabetsRepository.GetAsync(id);
-
-            var alphabetUpdate =
-                await alphabetsRepository.UpdateAsync(request.ToEntity(id, alphabet.AuthorId, alphabet.CreatedAt,
-                    DateTime.UtcNow));
+            var alphabetUpdate = await alphabetsRepository.UpdateAsync(id, request);
 
             return Ok(AlphabetDetailsDto.FromEntity(alphabetUpdate));
         }

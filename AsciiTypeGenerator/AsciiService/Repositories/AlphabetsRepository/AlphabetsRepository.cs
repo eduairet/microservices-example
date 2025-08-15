@@ -42,6 +42,55 @@ public class AlphabetsRepository(AppDbContext context, IPublishEndpoint publishE
         return alphabet;
     }
 
+    public async Task<Alphabet> UpdateAsync(int alphabetId, AlphabetUpdateDto updateDto)
+    {
+        var alphabet = await context.Alphabets
+            .Include(a => a.Glyphs)
+            .FirstOrDefaultAsync(a => a.Id == alphabetId);
+
+        alphabet.Title = updateDto.Title;
+        alphabet.Description = updateDto.Description;
+        alphabet.UpdatedAt = DateTime.UtcNow;
+
+        var glyphsToKeep = new List<Glyph>();
+        foreach (var glyphDto in updateDto.Glyphs)
+        {
+            if (glyphDto.Id is null)
+            {
+                var newGlyph = new Glyph
+                {
+                    Name = glyphDto.Name,
+                    Unicode = glyphDto.Unicode,
+                    Drawing = glyphDto.Drawing,
+                    AlphabetId = alphabetId
+                };
+                context.Glyphs.Add(newGlyph);
+                glyphsToKeep.Add(newGlyph);
+            }
+            else
+            {
+                var existingGlyph = await context.Glyphs.FirstOrDefaultAsync(g => g.Id == glyphDto.Id);
+
+                if (existingGlyph is null || existingGlyph.AlphabetId != alphabetId) continue;
+
+                existingGlyph.Name = glyphDto.Name;
+                existingGlyph.Unicode = glyphDto.Unicode;
+                existingGlyph.Drawing = glyphDto.Drawing;
+                glyphsToKeep.Add(existingGlyph);
+            }
+        }
+
+        var glyphIdsToKeep = glyphsToKeep.Where(g => g.Id != 0).Select(g => g.Id).ToHashSet();
+        var glyphsToRemove = alphabet.Glyphs.Where(g => !glyphIdsToKeep.Contains(g.Id)).ToList();
+
+        foreach (var glyph in glyphsToRemove) context.Glyphs.Remove(glyph);
+
+        alphabet.Glyphs = glyphsToKeep;
+
+        await context.SaveChangesAsync();
+        return alphabet;
+    }
+
     public async Task<IEnumerable<Alphabet>> GetUserAlphabetsAsync(int userId)
     {
         var alphabets = await context.Alphabets
