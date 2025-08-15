@@ -53,7 +53,7 @@ public class RepositoryBase<T>(DbContext context, IPublishEndpoint publishEndpoi
         return entity;
     }
 
-    public async Task UpdateAsync(T entity)
+    public async Task<T> UpdateAsync(T entity)
     {
         context.Update(entity);
 
@@ -67,6 +67,7 @@ public class RepositoryBase<T>(DbContext context, IPublishEndpoint publishEndpoi
         }
 
         await context.SaveChangesAsync();
+        return entity;
     }
 
     public async Task DeleteAsync(object id)

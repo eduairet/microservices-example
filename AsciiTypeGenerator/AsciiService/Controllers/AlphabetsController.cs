@@ -44,7 +44,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
     }
 
     [HttpPost(ApiRoutes.Alphabets.Create)]
-    public async Task<ActionResult<AlphabetDetailsDto>> CreateAlphabet([FromBody] AlphabetUpsertDto request)
+    public async Task<ActionResult<AlphabetDetailsDto>> CreateAlphabet([FromBody] AlphabetCreateDto request)
     {
         try
         {
@@ -70,27 +70,28 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
 
     [HttpPut(ApiRoutes.Alphabets.Update)]
     public async Task<ActionResult<AlphabetDetailsDto>> UpdateAlphabet([FromRoute] int id,
-        [FromBody] AlphabetUpsertDto updateDto)
+        [FromBody] AlphabetUpdateDto request)
     {
-        if (updateDto is null)
-            return BadRequest(ErrorMessages.InvalidRequestBody);
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        // TODO: Check the author is the same as the one who created the alphabet
-
         try
         {
+            if (request is null)
+                return BadRequest(ErrorMessages.InvalidRequestBody);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!await alphabetsRepository.Exists(id))
+                return NotFound(ErrorMessages.ArtworkNotFound(id));
+
+            // TODO: Check the author is the same as the one who created the alphabet
+
             var alphabet = await alphabetsRepository.GetAsync(id);
 
-            if (alphabet is null)
-                return NotFound(ErrorMessages.AlphabetNotFound(id));
+            var alphabetUpdate =
+                await alphabetsRepository.UpdateAsync(request.ToEntity(id, alphabet.AuthorId, alphabet.CreatedAt,
+                    DateTime.UtcNow));
 
-            await alphabetsRepository.UpdateAsync(updateDto.ToEntity(id, alphabet.AuthorId, alphabet.CreatedAt,
-                DateTime.UtcNow));
-
-            return Ok(AlphabetDetailsDto.FromEntity(alphabet));
+            return Ok(AlphabetDetailsDto.FromEntity(alphabetUpdate));
         }
         catch (Exception ex)
         {

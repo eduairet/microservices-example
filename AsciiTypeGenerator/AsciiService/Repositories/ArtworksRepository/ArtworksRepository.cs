@@ -32,6 +32,28 @@ public class ArtworksRepository(AppDbContext context, IPublishEndpoint publishEn
         return artworks;
     }
 
+    public new async Task<Artwork> UpdateAsync(Artwork entity)
+    {
+        var artworkGlyphs = entity.ArtworkGlyphs;
+        
+        entity.ArtworkGlyphs.Clear();
+
+        foreach (var glyph in artworkGlyphs)
+            entity.ArtworkGlyphs.Add(glyph);
+
+        try
+        {
+            await publishEndpoint.Publish(FromEntityToUpdateContract<object>(entity));
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
+
+        await context.SaveChangesAsync();
+        return entity;
+    }
+
     public async Task<List<Artwork>> GetUserArtworksAsync(int userId)
     {
         var artwork = await context.Artworks

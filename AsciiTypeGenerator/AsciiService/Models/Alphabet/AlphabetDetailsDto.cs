@@ -17,19 +17,17 @@ public class AlphabetDetailsDto
     public User Author { get; set; } = new();
     public List<GlyphDetailsDto> Glyphs { get; set; } = [];
 
-    public static AlphabetDetailsDto FromEntity(Entities.Alphabet alphabet)
+    public static AlphabetDetailsDto FromEntity(Entities.Alphabet alphabet) => new()
     {
-        return new AlphabetDetailsDto
-        {
-            Id = alphabet.Id,
-            Title = alphabet.Title,
-            Description = alphabet.Description,
-            CreatedAt = alphabet.CreatedAt,
-            UpdatedAt = alphabet.UpdatedAt,
-            Author = alphabet.Author,
-            Glyphs = alphabet.Glyphs.Select(GlyphDetailsDto.FromEntity).ToList()
-        };
-    }
+        Id = alphabet.Id,
+        Title = alphabet.Title,
+        Description = alphabet.Description,
+        CreatedAt = alphabet.CreatedAt,
+        UpdatedAt = alphabet.UpdatedAt,
+        Author = alphabet.Author,
+        Glyphs = alphabet.Glyphs.Select(GlyphDetailsDto.FromEntity).ToList()
+    };
+
 
     public static AlphabetUpserted ToContractUpsert(Entities.Alphabet alphabet) => new()
     {

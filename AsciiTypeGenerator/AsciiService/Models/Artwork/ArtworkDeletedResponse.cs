@@ -6,12 +6,9 @@ public class ArtworkDeletedResponse
 
     public string Message { get; set; } = string.Empty;
 
-    public static ArtworkDeletedResponse FromId(int id)
+    public static ArtworkDeletedResponse FromId(int id) => new()
     {
-        return new ArtworkDeletedResponse
-        {
-            Id = id,
-            Message = Shared.Constants.SuccessMessages.ArtworkDeleted(id)
-        };
-    }
+        Id = id,
+        Message = Shared.Constants.SuccessMessages.ArtworkDeleted(id)
+    };
 }

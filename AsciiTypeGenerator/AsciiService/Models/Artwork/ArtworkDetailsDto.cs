@@ -14,19 +14,17 @@ public class ArtworkDetailsDto
     public User Author { get; set; }
     public List<ArtworkGlyphDetailsDto> ArtworkGlyphs { get; set; } = [];
 
-    public static ArtworkDetailsDto FromEntity(Entities.Artwork artwork)
+    public static ArtworkDetailsDto FromEntity(Entities.Artwork artwork) => new()
     {
-        return new ArtworkDetailsDto
-        {
-            Id = artwork.Id,
-            Title = artwork.Title,
-            Description = artwork.Description,
-            CreatedAt = artwork.CreatedAt,
-            UpdatedAt = artwork.UpdatedAt,
-            Author = artwork.Author,
-            ArtworkGlyphs = artwork.ArtworkGlyphs.Select(ArtworkGlyphDetailsDto.FromEntity).ToList()
-        };
-    }
+        Id = artwork.Id,
+        Title = artwork.Title,
+        Description = artwork.Description,
+        CreatedAt = artwork.CreatedAt,
+        UpdatedAt = artwork.UpdatedAt,
+        Author = artwork.Author,
+        ArtworkGlyphs = artwork.ArtworkGlyphs.Select(ArtworkGlyphDetailsDto.FromEntity).ToList()
+    };
+
 
     public static ArtworkUpserted ToContractUpsert(Entities.Artwork artwork) => new()
     {

@@ -8,7 +8,7 @@ public class ArtworkUpsertDto
     [Required] [MaxLength(2000)] public string Description { get; set; } = string.Empty;
 
     [Required]
-    public List<Entities.ArtworkGlyph> ArtworkGlyphs { get; set; } = [];
+    public List<int> ArtworkGlyphsIds { get; set; } = [];
 
     public Entities.Artwork ToEntity(int? authorId, DateTime createdAt, DateTime updatedAt)
     {
@@ -19,13 +19,16 @@ public class ArtworkUpsertDto
             CreatedAt = createdAt,
             UpdatedAt = updatedAt,
             AuthorId = authorId,
-            ArtworkGlyphs = ArtworkGlyphs
+            ArtworkGlyphs = ArtworkGlyphsIds.Select((glyphId, i) => new Entities.ArtworkGlyph
+            {
+                Index = i,
+                GlyphId = glyphId
+            }).ToList()
         };
     }
 
     public Entities.Artwork ToEntity(int id, int? authorId, DateTime createdAt, DateTime updatedAt)
-    {
-        return new Entities.Artwork
+        => new Entities.Artwork
         {
             Id = id,
             Title = Title,
@@ -33,7 +36,10 @@ public class ArtworkUpsertDto
             CreatedAt = createdAt,
             UpdatedAt = updatedAt,
             AuthorId = authorId,
-            ArtworkGlyphs = ArtworkGlyphs
+            ArtworkGlyphs = ArtworkGlyphsIds.Select((glyphId, i) => new Entities.ArtworkGlyph
+            {
+                Index = i,
+                GlyphId = glyphId
+            }).ToList()
         };
-    }
 }

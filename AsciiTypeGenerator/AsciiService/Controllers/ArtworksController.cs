@@ -70,11 +70,11 @@ public class ArtworksController(IArtworksRepository artworksRepository)
 
     [HttpPut(ApiRoutes.Artworks.Update)]
     public async Task<ActionResult<ArtworkDetailsDto>> UpdateArtwork([FromRoute] int id,
-        [FromBody] ArtworkUpsertDto updateDto)
+        [FromBody] ArtworkUpsertDto request)
     {
         try
         {
-            if (updateDto is null)
+            if (request is null)
                 return BadRequest(ErrorMessages.InvalidRequestBody);
 
             if (!ModelState.IsValid)
@@ -86,9 +86,10 @@ public class ArtworksController(IArtworksRepository artworksRepository)
             // TODO: Check the author is the same as the one who created the artwork
 
             var artwork = await artworksRepository.GetAsync(id);
-            var artworkUpdate = updateDto.ToEntity(id, artwork.AuthorId, artwork.CreatedAt, DateTime.UtcNow);
 
-            await artworksRepository.UpdateAsync(artworkUpdate);
+            var artworkUpdate =
+                await artworksRepository.UpdateAsync(request.ToEntity(id, artwork.AuthorId, artwork.CreatedAt,
+                    DateTime.UtcNow));
 
             return Ok(artworkUpdate);
         }
