@@ -25,23 +25,16 @@ public class AuthController(
         if (userExists is not null)
             return BadRequest(ErrorMessages.UserAlreadyExists);
 
-        try
-        {
-            var newUser = userRegister.ToEntity();
-            var newUserResult = await userManager.CreateAsync(newUser, userRegister.Password);
+        var newUser = userRegister.ToEntity();
+        var newUserResult = await userManager.CreateAsync(newUser, userRegister.Password);
 
-            if (newUserResult.Succeeded)
-                return CreatedAtAction(nameof(Register), new { id = newUser.Id }, newUser);
+        if (newUserResult.Succeeded)
+            return CreatedAtAction(nameof(Register), new { id = newUser.Id }, newUser);
 
-            foreach (var error in newUserResult.Errors)
-                ModelState.AddModelError(error.Code, error.Description);
+        foreach (var error in newUserResult.Errors)
+            ModelState.AddModelError(error.Code, error.Description);
 
-            return BadRequest(ModelState);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        return BadRequest(ModelState);
     }
 
     [HttpPost(ApiRoutes.Auth.Login)]
@@ -51,26 +44,19 @@ public class AuthController(
 
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        try
-        {
-            var user = await userManager.FindByEmailAsync(userLogin.Email);
+        var user = await userManager.FindByEmailAsync(userLogin.Email);
 
-            if (user is null) return NotFound(ErrorMessages.UserNotFound);
+        if (user is null) return NotFound(ErrorMessages.UserNotFound);
 
-            if (!PasswordHelpers.Verify(user, userLogin.Password))
-                return Unauthorized(ErrorMessages.InvalidCredentials);
+        if (!PasswordHelpers.Verify(user, userLogin.Password))
+            return Unauthorized(ErrorMessages.InvalidCredentials);
 
-            var passwordResult = await userManager.CheckPasswordAsync(user, userLogin.Password);
+        var passwordResult = await userManager.CheckPasswordAsync(user, userLogin.Password);
 
-            if (!passwordResult) return Unauthorized(ErrorMessages.InvalidCredentials);
+        if (!passwordResult) return Unauthorized(ErrorMessages.InvalidCredentials);
 
-            var token = await JwtHelpers.CreateToken(user, configuration, userManager);
+        var token = await JwtHelpers.CreateToken(user, configuration, userManager);
 
-            return Ok(token);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        return Ok(token);
     }
 }

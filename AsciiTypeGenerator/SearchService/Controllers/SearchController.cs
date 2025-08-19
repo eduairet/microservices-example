@@ -17,37 +17,23 @@ public class SearchController(
     public async Task<ActionResult<VirtualizeResponse<Alphabet>>> Alphabets(
         [FromQuery] VirtualizeQueryParameters request)
     {
-        try
-        {
-            var alphabets = await searchAlphabetsRepository.SearchAsync(request);
+        var alphabets = await searchAlphabetsRepository.SearchAsync(request);
 
-            if (alphabets.TotalCount == 0)
-                return NotFound(ErrorMessages.AlphabetsNotFound(request.SearchText));
+        if (alphabets.TotalCount == 0)
+            return NotFound(ErrorMessages.AlphabetsNotFound(request.SearchText));
 
-            return Ok(alphabets);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        return Ok(alphabets);
     }
 
     [HttpGet(ApiRoutes.Search.Artworks)]
     public async Task<ActionResult<VirtualizeResponse<Artwork>>> Search(
         [FromQuery] VirtualizeQueryParameters request)
     {
-        try
-        {
-            var artworks = await searchArtworksRepository.SearchAsync(request);
+        var artworks = await searchArtworksRepository.SearchAsync(request);
 
-            if (artworks.TotalCount == 0)
-                return NotFound(ErrorMessages.ArtworksNotFound(request.SearchText));
+        if (artworks.TotalCount == 0)
+            return NotFound(ErrorMessages.ArtworksNotFound(request.SearchText));
 
-            return Ok(artworks);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        return Ok(artworks);
     }
 }
