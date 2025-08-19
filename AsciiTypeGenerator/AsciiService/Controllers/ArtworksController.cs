@@ -13,109 +13,74 @@ public class ArtworksController(IArtworksRepository artworksRepository)
     [HttpGet(ApiRoutes.Artworks.GetAll)]
     public async Task<ActionResult<List<ArtworkDetailsDto>>> GetAll()
     {
-        try
-        {
-            var artworks = await artworksRepository.GetAllAsync();
+        var artworks = await artworksRepository.GetAllAsync();
 
-            return Accepted(artworks.Select(ArtworkDetailsDto.FromEntity).ToList());
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        return Accepted(artworks.Select(ArtworkDetailsDto.FromEntity).ToList());
     }
 
     [HttpGet(ApiRoutes.Artworks.GetById)]
     public async Task<ActionResult<ArtworkDetailsDto>> GetArtworkById([FromRoute] int id)
     {
-        try
-        {
-            if (!await artworksRepository.Exists(id))
-                return NotFound(ErrorMessages.ArtworkNotFound(id));
+        if (!await artworksRepository.Exists(id))
+            return NotFound(ErrorMessages.ArtworkNotFound(id));
 
-            var artwork = await artworksRepository.GetAsync(id);
+        var artwork = await artworksRepository.GetAsync(id);
 
-            return Ok(ArtworkDetailsDto.FromEntity(artwork));
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        return Ok(ArtworkDetailsDto.FromEntity(artwork));
     }
 
     [HttpPost(ApiRoutes.Artworks.Create)]
     public async Task<ActionResult<ArtworkDetailsDto>> CreateArtwork([FromBody] ArtworkUpsertDto request)
     {
-        try
-        {
-            if (request is null)
-                return BadRequest(ErrorMessages.InvalidRequestBody);
+        if (request is null)
+            return BadRequest(ErrorMessages.InvalidRequestBody);
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-            // TODO: Get author ID from authentication context
+        // TODO: Get author ID from authentication context
 
-            var now = DateTime.UtcNow;
-            var artwork = await artworksRepository.AddAsync(request.ToEntity(null, now, now));
+        var now = DateTime.UtcNow;
+        var artwork = await artworksRepository.AddAsync(request.ToEntity(null, now, now));
 
-            return CreatedAtAction(nameof(GetArtworkById), new { id = artwork.Id },
-                ArtworkDetailsDto.FromEntity(artwork));
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        return CreatedAtAction(nameof(GetArtworkById), new { id = artwork.Id },
+            ArtworkDetailsDto.FromEntity(artwork));
     }
 
     [HttpPut(ApiRoutes.Artworks.Update)]
     public async Task<ActionResult<ArtworkDetailsDto>> UpdateArtwork([FromRoute] int id,
         [FromBody] ArtworkUpsertDto request)
     {
-        try
-        {
-            if (request is null)
-                return BadRequest(ErrorMessages.InvalidRequestBody);
+        if (request is null)
+            return BadRequest(ErrorMessages.InvalidRequestBody);
 
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
 
-            if (!await artworksRepository.Exists(id))
-                return NotFound(ErrorMessages.ArtworkNotFound(id));
+        if (!await artworksRepository.Exists(id))
+            return NotFound(ErrorMessages.ArtworkNotFound(id));
 
-            // TODO: Check the author is the same as the one who created the artwork
+        // TODO: Check the author is the same as the one who created the artwork
 
-            var artwork = await artworksRepository.GetAsync(id);
+        var artwork = await artworksRepository.GetAsync(id);
 
-            var artworkUpdate =
-                await artworksRepository.UpdateAsync(request.ToEntity(id, artwork.AuthorId, artwork.CreatedAt,
-                    DateTime.UtcNow));
+        var artworkUpdate =
+            await artworksRepository.UpdateAsync(request.ToEntity(id, artwork.AuthorId, artwork.CreatedAt,
+                DateTime.UtcNow));
 
-            return Ok(artworkUpdate);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        return Ok(artworkUpdate);
     }
 
     [HttpDelete(ApiRoutes.Artworks.Delete)]
     public async Task<IActionResult> DeleteArtwork([FromRoute] int id)
     {
+        if (!await artworksRepository.Exists(id))
+            return NotFound(ErrorMessages.ArtworkNotFound(id));
+
         // TODO: Check the author is the same as the one who created the artwork
 
-        try
-        {
-            if (!await artworksRepository.Exists(id))
-                return NotFound(ErrorMessages.ArtworkNotFound(id));
+        await artworksRepository.DeleteAsync(id);
 
-            await artworksRepository.DeleteAsync(id);
-
-            return Ok(ArtworkDeletedResponse.FromId(id));
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
+        return Ok(ArtworkDeletedResponse.FromId(id));
     }
 }
