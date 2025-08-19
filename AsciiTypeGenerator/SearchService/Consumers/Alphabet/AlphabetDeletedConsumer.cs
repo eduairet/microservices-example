@@ -4,9 +4,9 @@ using MongoDB.Entities;
 
 namespace SearchService.Consumers.Alphabet;
 
-public class AlphabetDeletedConsumer : IConsumer<AlphabetUpserted>
+public class AlphabetDeletedConsumer : IConsumer<AlphabetDeleted>
 {
-    public async Task Consume(ConsumeContext<AlphabetUpserted> context)
+    public async Task Consume(ConsumeContext<AlphabetDeleted> context)
     {
         var alphabet = await DB.Find<Entities.Alphabet>()
             .MatchID(context.Message.Id)

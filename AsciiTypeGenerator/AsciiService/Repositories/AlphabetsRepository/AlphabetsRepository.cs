@@ -12,10 +12,10 @@ public class AlphabetsRepository(AppDbContext context, IPublishEndpoint publishE
     : RepositoryBase<Alphabet>(context, publishEndpoint), IAlphabetsRepository
 {
     protected override TContract FromEntityToCreateContract<TContract>(Alphabet entity) =>
-        (TContract)(object)AlphabetDetailsDto.ToContractUpsert(entity);
+        (TContract)(object)AlphabetDetailsDto.ToContractCreate(entity);
 
     protected override TContract FromEntityToUpdateContract<TContract>(Alphabet entity) =>
-        (TContract)(object)AlphabetDetailsDto.ToContractUpsert(entity);
+        (TContract)(object)AlphabetDetailsDto.ToContractUpdate(entity);
 
     protected override TContract FromEntityToDeleteContract<TContract>(Alphabet entity) =>
         (TContract)(object)new AlphabetDeleted { Id = entity.Id };

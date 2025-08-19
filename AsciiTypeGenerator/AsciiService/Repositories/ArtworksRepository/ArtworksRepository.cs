@@ -11,11 +11,13 @@ namespace AsciiService.Repositories.ArtworksRepository;
 public class ArtworksRepository(AppDbContext context, IPublishEndpoint publishEndpoint)
     : RepositoryBase<Artwork>(context, publishEndpoint), IArtworksRepository
 {
+    private readonly IPublishEndpoint _publishEndpoint = publishEndpoint;
+
     protected override TContract FromEntityToCreateContract<TContract>(Artwork entity) =>
-        (TContract)(object)ArtworkDetailsDto.ToContractUpsert(entity);
+        (TContract)(object)ArtworkDetailsDto.ToContractCreate(entity);
 
     protected override TContract FromEntityToUpdateContract<TContract>(Artwork entity) =>
-        (TContract)(object)ArtworkDetailsDto.ToContractUpsert(entity);
+        (TContract)(object)ArtworkDetailsDto.ToContractUpdate(entity);
 
     protected override TContract FromEntityToDeleteContract<TContract>(Artwork entity) =>
         (TContract)(object)new ArtworkDeleted { Id = entity.Id };
@@ -35,7 +37,7 @@ public class ArtworksRepository(AppDbContext context, IPublishEndpoint publishEn
     public new async Task<Artwork> UpdateAsync(Artwork entity)
     {
         var artworkGlyphs = entity.ArtworkGlyphs;
-        
+
         entity.ArtworkGlyphs.Clear();
 
         foreach (var glyph in artworkGlyphs)
@@ -43,7 +45,7 @@ public class ArtworksRepository(AppDbContext context, IPublishEndpoint publishEn
 
         try
         {
-            await publishEndpoint.Publish(FromEntityToUpdateContract<object>(entity));
+            await _publishEndpoint.Publish(FromEntityToUpdateContract<object>(entity));
         }
         catch (Exception)
         {

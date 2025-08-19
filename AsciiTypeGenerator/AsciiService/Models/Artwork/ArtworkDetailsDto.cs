@@ -26,7 +26,24 @@ public class ArtworkDetailsDto
     };
 
 
-    public static ArtworkUpserted ToContractUpsert(Entities.Artwork artwork) => new()
+    public static ArtworkCreated ToContractCreate(Entities.Artwork artwork) => new()
+    {
+        Id = artwork.Id,
+        Title = artwork.Title,
+        Description = artwork.Description,
+        CreatedAt = artwork.CreatedAt,
+        UpdatedAt = artwork.UpdatedAt,
+        Author = artwork.Author is not null
+            ? new UserContract
+            {
+                Id = artwork.Author.Id,
+                UserName = artwork.Author?.UserName
+            }
+            : null,
+        ArtworkGlyphs = artwork.ArtworkGlyphs.Select(ArtworkGlyphDetailsDto.ToContract).ToList()
+    };
+
+    public static ArtworkUpdated ToContractUpdate(Entities.Artwork artwork) => new()
     {
         Id = artwork.Id,
         Title = artwork.Title,

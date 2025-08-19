@@ -1,5 +1,5 @@
 namespace Contracts;
 
-public abstract class AlphabetUpdated : AlphabetContract
+public class AlphabetUpdated : AlphabetContract
 {
 }

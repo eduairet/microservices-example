@@ -4,9 +4,9 @@ using MongoDB.Entities;
 
 namespace SearchService.Consumers.Artwork;
 
-public class ArtworkDeletedConsumer : IConsumer<ArtworkUpserted>
+public class ArtworkDeletedConsumer : IConsumer<ArtworkDeleted>
 {
-    public async Task Consume(ConsumeContext<ArtworkUpserted> context)
+    public async Task Consume(ConsumeContext<ArtworkDeleted> context)
     {
         var artwork = await DB.Find<Entities.Artwork>()
             .MatchID(context.Message.Id)

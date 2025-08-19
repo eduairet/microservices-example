@@ -5,7 +5,6 @@ using SearchService.Consumers.Artwork;
 using SearchService.Data;
 using SearchService.Shared.Constants;
 using SearchService.Shared.Extensions;
-using SearchService.Shared.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +17,11 @@ builder.Services.AddMassTransit(config =>
 {
     config.AddAllConsumersFromNamespaceContaining();
     config.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
-    config.UsingRabbitMq((context, cfg) => { cfg.ConfigureEndpoints(context); });
+    config.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.ConfigureMessageRetries(context);
+        cfg.ConfigureEndpoints(context);
+    });
 });
 builder.Services.AddHttpClients();
 builder.Services.AddRepositories();

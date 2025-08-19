@@ -5,11 +5,11 @@ using SearchService.Models.Alphabet;
 
 namespace SearchService.Consumers.Alphabet;
 
-public class AlphabetUpsertedConsumer : IConsumer<AlphabetUpserted>
+public class AlphabetUpdatedConsumer : IConsumer<AlphabetUpdated>
 {
-    public async Task Consume(ConsumeContext<AlphabetUpserted> context)
+    public async Task Consume(ConsumeContext<AlphabetUpdated> context)
     {
-        Console.WriteLine($"Alphabet created/updated: {context.Message.Id}");
+        Console.WriteLine($"Alphabet updated: {context.Message.Id}");
         var alphabet = AlphabetDto.ToEntity(context.Message);
         await alphabet.SaveAsync();
     }

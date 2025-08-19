@@ -5,11 +5,11 @@ using SearchService.Models.Artwork;
 
 namespace SearchService.Consumers.Artwork;
 
-public class ArtworkUpsertedConsumer : IConsumer<ArtworkUpserted>
+public class ArtworkCreatedConsumer : IConsumer<ArtworkCreated>
 {
-    public async Task Consume(ConsumeContext<ArtworkUpserted> context)
+    public async Task Consume(ConsumeContext<ArtworkCreated> context)
     {
-        Console.WriteLine($"Artwork created/updated: {context.Message.Id}");
+        Console.WriteLine($"Artwork created: {context.Message.Id}");
         var artwork = ArtworkDto.ToEntity(context.Message);
         await artwork.SaveAsync();
     }

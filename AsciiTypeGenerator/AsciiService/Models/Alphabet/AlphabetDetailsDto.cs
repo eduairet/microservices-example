@@ -29,7 +29,24 @@ public class AlphabetDetailsDto
     };
 
 
-    public static AlphabetUpserted ToContractUpsert(Entities.Alphabet alphabet) => new()
+    public static AlphabetCreated ToContractCreate(Entities.Alphabet alphabet) => new()
+    {
+        Id = alphabet.Id,
+        Title = alphabet.Title,
+        Description = alphabet.Description,
+        CreatedAt = alphabet.CreatedAt,
+        UpdatedAt = alphabet.UpdatedAt,
+        Author = alphabet.Author is not null
+            ? new UserContract
+            {
+                Id = alphabet.Author.Id,
+                UserName = alphabet.Author?.UserName
+            }
+            : null,
+        Glyphs = alphabet.Glyphs.Select(GlyphDetailsDto.ToContract).ToList()
+    };
+    
+    public static AlphabetUpdated ToContractUpdate(Entities.Alphabet alphabet) => new()
     {
         Id = alphabet.Id,
         Title = alphabet.Title,
