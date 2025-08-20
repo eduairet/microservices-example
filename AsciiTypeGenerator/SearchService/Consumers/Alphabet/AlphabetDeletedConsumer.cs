@@ -8,17 +8,12 @@ public class AlphabetDeletedConsumer : IConsumer<AlphabetDeleted>
 {
     public async Task Consume(ConsumeContext<AlphabetDeleted> context)
     {
-        var alphabet = await DB.Find<Entities.Alphabet>()
-            .MatchID(context.Message.Id)
-            .ExecuteFirstAsync();
+        Console.WriteLine($"Consuming AlphabetDeleted: {context.Message.Id}");
 
-        if (alphabet is null)
-        {
-            Console.WriteLine($"Alphabet with ID {context.Message.Id} not found for deletion.");
-            return;
-        }
+        var result = await DB.DeleteAsync<Entities.Alphabet>(context.Message.Id);
 
-        Console.WriteLine($"Alphabet deleted: {context.Message.Id}");
-        await DB.DeleteAsync<Entities.Alphabet>(alphabet);
+        if (!result.IsAcknowledged)
+            throw new MessageException(typeof(AlphabetDeleted),
+                $"Failed to delete Alphabet with ID {context.Message.Id}");
     }
 }

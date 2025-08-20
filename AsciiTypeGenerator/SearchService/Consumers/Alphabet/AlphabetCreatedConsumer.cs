@@ -9,7 +9,7 @@ public class AlphabetCreatedConsumer : IConsumer<AlphabetCreated>
 {
     public async Task Consume(ConsumeContext<AlphabetCreated> context)
     {
-        Console.WriteLine($"Alphabet created: {context.Message.Id}");
+        Console.WriteLine($"Consuming AlphabetCreated: {context.Message.Id}");
         var alphabet = AlphabetDto.ToEntity(context.Message);
         await alphabet.SaveAsync();
     }

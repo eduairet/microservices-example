@@ -16,7 +16,7 @@ builder.Services.AddOpenApi();
 builder.Services.AddMassTransit(config =>
 {
     config.AddAllConsumersFromNamespaceContaining();
-    config.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("search", false));
+    config.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter(RabbitMqEndpoints.Prefix, false));
     config.UsingRabbitMq((context, cfg) =>
     {
         cfg.ConfigureMessageRetries(context);

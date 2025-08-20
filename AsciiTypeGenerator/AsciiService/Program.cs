@@ -17,6 +17,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 builder.Services.AddMassTransit(config =>
 {
+    config.AddAllConsumersFromNamespaceContaining();
+    config.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter(RabbitMqEndpoints.Prefix, false));
     config.AddEntityFrameworkOutbox<AppDbContext>(o =>
     {
         o.QueryDelay = TimeSpan.FromSeconds(10);

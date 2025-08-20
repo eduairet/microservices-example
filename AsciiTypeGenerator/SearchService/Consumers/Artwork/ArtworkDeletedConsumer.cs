@@ -8,17 +8,12 @@ public class ArtworkDeletedConsumer : IConsumer<ArtworkDeleted>
 {
     public async Task Consume(ConsumeContext<ArtworkDeleted> context)
     {
-        var artwork = await DB.Find<Entities.Artwork>()
-            .MatchID(context.Message.Id)
-            .ExecuteFirstAsync();
+        Console.WriteLine($"Consuming ArtworkDeleted: {context.Message.Id}");
 
-        if (artwork is null)
-        {
-            Console.WriteLine($"Artwork with ID {context.Message.Id} not found for deletion.");
-            return;
-        }
+        var result = await DB.DeleteAsync<Entities.Artwork>(context.Message.Id);
 
-        Console.WriteLine($"Artwork deleted: {context.Message.Id}");
-        await DB.DeleteAsync<Entities.Artwork>(artwork);
+        if (!result.IsAcknowledged)
+            throw new MessageException(typeof(ArtworkDeleted),
+                $"Failed to delete Artwork with ID {context.Message.Id}");
     }
 }

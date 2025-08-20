@@ -9,7 +9,7 @@ public class ArtworkCreatedConsumer : IConsumer<ArtworkCreated>
 {
     public async Task Consume(ConsumeContext<ArtworkCreated> context)
     {
-        Console.WriteLine($"Artwork created: {context.Message.Id}");
+        Console.WriteLine($"Consuming ArtworkCreated: {context.Message.Id}");
         var artwork = ArtworkDto.ToEntity(context.Message);
         await artwork.SaveAsync();
     }

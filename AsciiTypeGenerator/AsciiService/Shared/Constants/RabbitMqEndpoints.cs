@@ -1,8 +1,8 @@
-namespace SearchService.Shared.Constants;
+namespace AsciiService.Shared.Constants;
 
 public static class RabbitMqEndpoints
 {
-    public const string Prefix = "search";
+    public const string Prefix = "ascii";
 
     public static class Alphabets
     {
