@@ -21,3 +21,11 @@
 - ACID transactions are a set of properties that guarantee that database transactions are processed reliably. The acronym stands for Atomicity, Consistency, Isolation, and Durability.
 - In the context of microservices, ensuring ACID compliance can be challenging due to the distributed nature of the architecture. However, it is crucial for maintaining data integrity and consistency across services.
 - To implement ACID transactions in a microservices environment using MassTransit, we can implement an outbox with retry. This involves storing messages that need to be sent to other services in a database table (the outbox) as part of the same transaction that modifies the local data. Once the transaction is committed, a background process can read the outbox and send the messages to the message broker (e.g., RabbitMQ). This ensures that either both the data change and the message send succeed or fail together, maintaining ACID properties.
+
+## Identity Service
+
+- Usually for production apps we use a cloud service like Azure AD B2C or Auth0 for user authentication and management.
+- For local development, we can use a simple in-memory store or a lightweight database like SQLite to simulate user authentication.
+- The identity service should expose APIs for user registration, login, and token management (e.g., issuing JWT tokens).
+- It's important to secure the identity service and protect user credentials, using techniques like hashing passwords and implementing HTTPS.
+- Nowadays most users expect SSO (Single Sign-On) capabilities, allowing them to authenticate once and gain access to multiple services without re-entering credentials.
