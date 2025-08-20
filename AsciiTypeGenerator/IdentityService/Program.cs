@@ -6,6 +6,7 @@ using IdentityService.Entities;
 using IdentityService.Shared.Constants;
 using IdentityService.Shared.Helpers;
 using Scalar.AspNetCore;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,9 +15,11 @@ builder.Services.AddControllers();
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(new EnvironmentConstants(builder.Configuration).ConnectionString)
 );
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -25,9 +28,13 @@ builder.Services.AddAuthentication(options =>
 {
     options.TokenValidationParameters = JwtHelpers.GetTokenValidationParameters(builder.Configuration);
 });
+
 builder.Services.AddIdentityCore<User>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>();
+
+builder.Host.UseSerilog((context, loggerConfiguration) =>
+    loggerConfiguration.WriteTo.Console().ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
 
@@ -36,6 +43,15 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi(ApiRoutes.OpenApiPath);
     app.MapScalarApiReference();
+    app.Lifetime.ApplicationStarted.Register(() =>
+    {
+        var logger = app.Services.GetService<ILogger<Program>>();
+        var serverAddress = app.Urls.First();
+
+        if (logger is null) return;
+
+        logger.LogInformation("{Address}", serverAddress);
+    });
 }
 
 app.UseHttpsRedirection();

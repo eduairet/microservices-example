@@ -3,6 +3,7 @@
 _reference/
 postgres_data/
 mongodb_data/
+Logs/
 
 # .NET
 ## Ignore Visual Studio temporary files, build results, and
