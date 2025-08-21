@@ -13,7 +13,7 @@ public sealed class Alphabet
     [Required] [MaxLength(2000)] public string Description { get; set; } = string.Empty;
     [Required] public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     [Required] public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    public int? AuthorId { get; set; }
+    [MaxLength(int.MaxValue)] public string AuthorId { get; set; }
 
     [System.Text.Json.Serialization.JsonIgnore]
     [ForeignKey("AuthorId")]

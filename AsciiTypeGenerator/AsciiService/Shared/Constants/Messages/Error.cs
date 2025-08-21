@@ -31,6 +31,12 @@ public static partial class Messages
 
         public static string AlphabetNotFound(int id) => $"Alphabet with ID {id} not found.";
 
+        public static string ForbiddenUpdateAlphabet(int id)
+            => $"Forbidden to update alphabet with ID {id}. You can only update your own alphabets.";
+
+        public static string ForbiddenDeleteAlphabet(int id)
+            => $"Forbidden to delete alphabet with ID {id}. You can only delete your own alphabets.";
+
         public static string NoAlphabetsForUser(string userId)
             => $"No alphabets found for user ID {userId}.";
 
@@ -48,6 +54,12 @@ public static partial class Messages
             => $"Error deleting artwork: {message}";
 
         public static string ArtworkNotFound(int id) => $"Artwork with ID {id} not found.";
+
+        public static string ForbiddenUpdateArtwork(int id)
+            => $"Forbidden to update artwork with ID {id}. You can only update your own artworks.";
+
+        public static string ForbiddenDeleteArtwork(int id)
+            => $"Forbidden to delete artwork with ID {id}. You can only delete your own artworks.";
 
         public static string NoArtworksForUser(string userId)
             => $"No artworks found for user ID {userId}.";

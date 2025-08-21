@@ -2,6 +2,7 @@ using AsciiService.Models.Alphabet;
 using AsciiService.Repositories.AlphabetsRepository;
 using AsciiService.Shared.Constants;
 using AsciiService.Shared.Constants.Messages;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AsciiService.Controllers;
@@ -30,6 +31,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
         return Ok(AlphabetDetailsDto.FromEntity(alphabet));
     }
 
+    [Authorize]
     [HttpPost(ApiRoutes.Alphabets.Create)]
     public async Task<ActionResult<AlphabetDetailsDto>> CreateAlphabet([FromBody] AlphabetCreateDto request)
     {
@@ -39,15 +41,15 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        // TODO: Get author ID from authentication context
-
+        var userId = User.FindFirst("id")?.Value;
         var now = DateTime.UtcNow;
-        var alphabet = await alphabetsRepository.AddAsync(request.ToEntity(null, now, now));
+        var alphabet = await alphabetsRepository.AddAsync(request.ToEntity(userId, now, now));
 
         return CreatedAtAction(nameof(GetAlphabetById), new { id = alphabet.Id },
             AlphabetDetailsDto.FromEntity(alphabet));
     }
 
+    [Authorize]
     [HttpPut(ApiRoutes.Alphabets.Update)]
     public async Task<ActionResult<AlphabetDetailsDto>> UpdateAlphabet([FromRoute] int id,
         [FromBody] AlphabetUpdateDto request)
@@ -59,22 +61,29 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
             return BadRequest(ModelState);
 
         if (!await alphabetsRepository.Exists(id))
-            return NotFound(Messages.Error.ArtworkNotFound(id));
+            return NotFound(Messages.Error.AlphabetNotFound(id));
 
-        // TODO: Check the author is the same as the one who created the alphabet
+        var alphabet = await alphabetsRepository.GetAsync(id);
+
+        if (alphabet.AuthorId != User.FindFirst("id")?.Value)
+            return Forbid(Messages.Error.ForbiddenUpdateAlphabet(id));
 
         var alphabetUpdate = await alphabetsRepository.UpdateAsync(id, request);
 
         return Ok(AlphabetDetailsDto.FromEntity(alphabetUpdate));
     }
 
+    [Authorize]
     [HttpDelete(ApiRoutes.Alphabets.Delete)]
     public async Task<ActionResult<AlphabetDeletedResponse>> DeleteAlphabet([FromRoute] int id)
     {
         if (!await alphabetsRepository.Exists(id))
             return NotFound(Messages.Error.AlphabetNotFound(id));
 
-        // TODO: Check the author is the same as the one who created the alphabet
+        var alphabet = await alphabetsRepository.GetAsync(id);
+
+        if (alphabet.AuthorId != User.FindFirst("id")?.Value)
+            return Forbid(Messages.Error.ForbiddenDeleteAlphabet(id));
 
         await alphabetsRepository.DeleteAsync(id);
 

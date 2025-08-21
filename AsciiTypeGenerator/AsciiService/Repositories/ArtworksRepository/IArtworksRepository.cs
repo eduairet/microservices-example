@@ -5,5 +5,5 @@ namespace AsciiService.Repositories.ArtworksRepository;
 
 public interface IArtworksRepository : IRepositoryBase<Artwork>
 {
-    Task<List<Artwork>> GetUserArtworksAsync(int userId);
+    Task<List<Artwork>> GetUserArtworksAsync(string userId);
 }

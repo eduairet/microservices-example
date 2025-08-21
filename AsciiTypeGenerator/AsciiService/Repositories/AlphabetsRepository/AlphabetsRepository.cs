@@ -91,7 +91,7 @@ public class AlphabetsRepository(AppDbContext context, IPublishEndpoint publishE
         return alphabet;
     }
 
-    public async Task<IEnumerable<Alphabet>> GetUserAlphabetsAsync(int userId)
+    public async Task<IEnumerable<Alphabet>> GetUserAlphabetsAsync(string userId)
     {
         var alphabets = await context.Alphabets
             .Where(a => a.AuthorId == userId)

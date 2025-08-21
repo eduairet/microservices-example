@@ -10,7 +10,7 @@ public class ArtworkUpsertDto
     [Required]
     public List<int> ArtworkGlyphsIds { get; set; } = [];
 
-    public Entities.Artwork ToEntity(int? authorId, DateTime createdAt, DateTime updatedAt)
+    public Entities.Artwork ToEntity(string authorId, DateTime createdAt, DateTime updatedAt)
     {
         return new Entities.Artwork
         {
@@ -27,7 +27,7 @@ public class ArtworkUpsertDto
         };
     }
 
-    public Entities.Artwork ToEntity(int id, int? authorId, DateTime createdAt, DateTime updatedAt)
+    public Entities.Artwork ToEntity(int id, string authorId, DateTime createdAt, DateTime updatedAt)
         => new Entities.Artwork
         {
             Id = id,

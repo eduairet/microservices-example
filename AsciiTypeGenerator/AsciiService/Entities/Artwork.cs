@@ -13,7 +13,7 @@ public sealed class Artwork
     [Required] [MaxLength(2000)] public string Description { get; set; } = string.Empty;
     [Required] public DateTime CreatedAt { get; set; }
     [Required] public DateTime UpdatedAt { get; set; }
-    public int? AuthorId { get; set; }
+    [MaxLength(int.MaxValue)] public string AuthorId { get; set; }
 
     [System.Text.Json.Serialization.JsonIgnore]
     [ForeignKey("AuthorId")]

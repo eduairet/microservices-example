@@ -56,7 +56,7 @@ public class ArtworksRepository(AppDbContext context, IPublishEndpoint publishEn
         return entity;
     }
 
-    public async Task<List<Artwork>> GetUserArtworksAsync(int userId)
+    public async Task<List<Artwork>> GetUserArtworksAsync(string userId)
     {
         var artwork = await context.Artworks
             .Where(a => a.AuthorId == userId)
