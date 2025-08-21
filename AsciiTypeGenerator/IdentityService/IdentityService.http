@@ -1,4 +1,4 @@
-@IdentityService_HostAddress = http://localhost:5197
+@IdentityService_HostAddress = http://localhost:5101
 
 ### Register a new user
 POST {{IdentityService_HostAddress}}/api/v1/auth/register

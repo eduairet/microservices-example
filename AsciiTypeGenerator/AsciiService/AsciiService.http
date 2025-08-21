@@ -1,0 +1,72 @@
+@AsciiService_HostAddress = http://localhost:5100
+
+### Alphabets Endpoints
+
+# Get all alphabets
+GET {{AsciiService_HostAddress}}/api/alphabets
+Accept: application/json
+
+# Get alphabet by ID
+GET {{AsciiService_HostAddress}}/api/alphabets/1
+Accept: application/json
+
+# Create alphabet
+POST {{AsciiService_HostAddress}}/api/alphabets
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Sample Alphabet",
+  "description": "A test alphabet."
+}
+
+# Update alphabet
+PUT {{AsciiService_HostAddress}}/api/alphabets/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Updated Alphabet",
+  "description": "Updated description."
+}
+
+# Delete alphabet
+DELETE {{AsciiService_HostAddress}}/api/alphabets/1
+Accept: application/json
+
+
+### Artworks Endpoints
+
+# Get all artworks
+GET {{AsciiService_HostAddress}}/api/artworks
+Accept: application/json
+
+# Get artwork by ID
+GET {{AsciiService_HostAddress}}/api/artworks/1
+Accept: application/json
+
+# Create artwork
+POST {{AsciiService_HostAddress}}/api/artworks
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Sample Artwork",
+  "description": "A test artwork.",
+  "alphabetId": 1
+}
+
+# Update artwork
+PUT {{AsciiService_HostAddress}}/api/artworks/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "Updated Artwork",
+  "description": "Updated description.",
+  "alphabetId": 1
+}
+
+# Delete artwork
+DELETE {{AsciiService_HostAddress}}/api/artworks/1
+Accept: application/json
