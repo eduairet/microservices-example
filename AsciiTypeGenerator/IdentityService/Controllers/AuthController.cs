@@ -1,6 +1,7 @@
 using IdentityService.Entities;
 using IdentityService.Models.User;
 using IdentityService.Shared.Constants;
+using IdentityService.Shared.Constants.Messages;
 using IdentityService.Shared.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,18 +18,18 @@ public class AuthController(
     [HttpPost(ApiRoutes.Auth.Register)]
     public async Task<IActionResult> Register([FromBody] UserRegisterDto userRegister)
     {
-        logger.LogInformation("Registering user with email: {Email}", userRegister?.Email);
+        logger.LogInformation(Messages.Info.RegisteringUserLog, userRegister?.Email);
 
         try
         {
-            if (userRegister is null) return BadRequest(ErrorMessages.EmptyUserRegistration);
+            if (userRegister is null) return BadRequest(Messages.Error.EmptyUserRegistration);
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var userExists = await userManager.FindByEmailAsync(userRegister.Email);
 
             if (userExists is not null)
-                return BadRequest(ErrorMessages.UserAlreadyExists);
+                return BadRequest(Messages.Error.UserAlreadyExists);
 
             var newUser = userRegister.ToEntity();
             var newUserResult = await userManager.CreateAsync(newUser, userRegister.Password);
@@ -43,37 +44,37 @@ public class AuthController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred while registering user with email: {Email}\n{Exception}",
+            logger.LogError(ex, Messages.Error.UserRegisteringErrorLog,
                 userRegister?.Email, ex.Message);
-            return StatusCode(500, ErrorMessages.InternalServerError);
+            return StatusCode(500, Messages.Error.InternalServerError);
         }
         finally
         {
-            logger.LogInformation("Finished registering user with email: {Email}", userRegister?.Email);
+            logger.LogInformation(Messages.Info.RegisteredUserLog, userRegister?.Email);
         }
     }
 
     [HttpPost(ApiRoutes.Auth.Login)]
     public async Task<IActionResult> Login([FromBody] UserLoginDto userLogin)
     {
-        logger.LogInformation("User login attempt with email: {Email}", userLogin?.Email);
+        logger.LogInformation(Messages.Info.LoginAttemptUserLog, userLogin?.Email);
 
         try
         {
-            if (userLogin == null) return BadRequest(ErrorMessages.EmptyUserLogin);
+            if (userLogin == null) return BadRequest(Messages.Error.EmptyUserLogin);
 
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var user = await userManager.FindByEmailAsync(userLogin.Email);
 
-            if (user is null) return NotFound(ErrorMessages.UserNotFound);
+            if (user is null) return NotFound(Messages.Error.UserNotFound);
 
             if (!PasswordHelpers.Verify(user, userLogin.Password))
-                return Unauthorized(ErrorMessages.InvalidCredentials);
+                return Unauthorized(Messages.Error.InvalidCredentials);
 
             var passwordResult = await userManager.CheckPasswordAsync(user, userLogin.Password);
 
-            if (!passwordResult) return Unauthorized(ErrorMessages.InvalidCredentials);
+            if (!passwordResult) return Unauthorized(Messages.Error.InvalidCredentials);
 
             var token = await JwtHelpers.CreateToken(user, configuration, userManager);
 
@@ -81,13 +82,13 @@ public class AuthController(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "An error occurred during login attempt with email: {Email}\n{Exception}",
+            logger.LogError(ex, Messages.Error.UserLoginErrorLog,
                 userLogin?.Email, ex.Message);
-            return StatusCode(500, ErrorMessages.InternalServerError);
+            return StatusCode(500, Messages.Error.InternalServerError);
         }
         finally
         {
-            logger.LogInformation("Finished login attempt with email: {Email}", userLogin?.Email);
+            logger.LogInformation(Messages.Info.LoggedInUserLog, userLogin?.Email);
         }
     }
 }

@@ -1,5 +1,6 @@
 using IdentityService.Data.SeedDataObjects;
 using IdentityService.Entities;
+using IdentityService.Shared.Constants.Messages;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityService.Data;
@@ -10,16 +11,17 @@ public static class DbInitializer
     {
         using var scope = app.Services.CreateScope();
         await SeedData(scope.ServiceProvider.GetService<AppDbContext>(),
-            scope.ServiceProvider.GetService<IConfiguration>());
+            scope.ServiceProvider.GetService<IConfiguration>(),
+            scope.ServiceProvider.GetService<ILogger<Program>>());
     }
 
-    private static async Task SeedData(AppDbContext context, IConfiguration configuration)
+    private static async Task SeedData(AppDbContext context, IConfiguration configuration, ILogger logger)
     {
         await context.Database.MigrateAsync();
 
         if (context.Users.Any(u => u.Role.Name == nameof(IdentityRolesEnum.SuperAdmin)))
         {
-            Console.WriteLine("Database already has SuperAdmin user. Skipping seeding.");
+            logger.LogInformation(Messages.Info.DatabaseSuperAdminAlreadyExists);
             return;
         }
 

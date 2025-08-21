@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using IdentityService.Entities;
+using IdentityService.Shared.Constants.Messages;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
@@ -14,7 +15,7 @@ public static class JwtHelpers
     {
         if (user is null || string.IsNullOrEmpty(user.Id) || string.IsNullOrEmpty(user.Email) ||
             string.IsNullOrEmpty(user.UserName))
-            throw new NullReferenceException(Constants.ErrorMessages.InvalidUser(nameof(user)));
+            throw new NullReferenceException(Messages.Error.InvalidUser(nameof(user)));
 
         var (jwtKey, jwtIssuer, jwtAudience) = GetJwtSettings(configuration);
 

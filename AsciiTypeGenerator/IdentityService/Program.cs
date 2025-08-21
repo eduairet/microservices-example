@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using IdentityService.Data;
 using IdentityService.Entities;
 using IdentityService.Shared.Constants;
+using IdentityService.Shared.Constants.Messages;
 using IdentityService.Shared.Helpers;
 using Scalar.AspNetCore;
 using Serilog;
@@ -64,7 +65,8 @@ try
 }
 catch (Exception ex)
 {
-    Console.WriteLine(ex.Message);
+    var logger = app.Services.GetService<ILogger<Program>>();
+    logger?.LogError(ex, Messages.Error.DatabaseInitializationErrorLog, ex.Message);
 }
 
 app.Run();

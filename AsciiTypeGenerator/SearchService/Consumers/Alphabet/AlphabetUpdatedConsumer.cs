@@ -9,7 +9,7 @@ public class AlphabetUpdatedConsumer : IConsumer<AlphabetUpdated>
 {
     public async Task Consume(ConsumeContext<AlphabetUpdated> context)
     {
-        Console.WriteLine($"Alphabet updated: {context.Message.Id}");
+        Console.WriteLine($"Consuming AlphabetUpdated: {context.Message.Id}");
 
         var result = await DB.Update<Entities.Alphabet>()
             .Match(x => x.ID == context.Message.Id.ToString())

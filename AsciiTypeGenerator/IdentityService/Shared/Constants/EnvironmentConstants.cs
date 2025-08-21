@@ -1,3 +1,5 @@
+using IdentityService.Shared.Constants.Messages;
+
 namespace IdentityService.Shared.Constants;
 
 public class EnvironmentConstants(IConfiguration configuration)
@@ -6,28 +8,28 @@ public class EnvironmentConstants(IConfiguration configuration)
 
     public string ConnectionString => configuration.GetConnectionString("DefaultConnection")
                                       ?? throw new NullReferenceException(
-                                          ErrorMessages.KeyNotSet("DefaultConnection"));
+                                          Messages.Messages.Error.KeyNotSet("DefaultConnection"));
 
     public string SuperAdminEmail => configuration["SUPER_ADMIN_EMAIL"] ??
                                      throw new NullReferenceException(
-                                         ErrorMessages.KeyNotSet("SUPER_ADMIN_EMAIL"));
+                                         Messages.Messages.Error.KeyNotSet("SUPER_ADMIN_EMAIL"));
 
     public string SuperAdminPassword => configuration["SUPER_ADMIN_PASSWORD"] ??
                                         throw new NullReferenceException(
-                                            ErrorMessages.KeyNotSet("SUPER_ADMIN_PASSWORD"));
+                                            Messages.Messages.Error.KeyNotSet("SUPER_ADMIN_PASSWORD"));
 
     #endregion
 
     #region JWT Settings
 
     public string JwtKey => configuration["JWT_KEY"] ??
-                            throw new NullReferenceException(ErrorMessages.KeyNotSet("JWT_KEY"));
+                            throw new NullReferenceException(Messages.Messages.Error.KeyNotSet("JWT_KEY"));
 
     public string JwtIssuer => configuration["JWT_ISSUER"] ??
-                               throw new NullReferenceException(ErrorMessages.KeyNotSet("JWT_ISSUER"));
+                               throw new NullReferenceException(Messages.Messages.Error.KeyNotSet("JWT_ISSUER"));
 
     public string JwtAudience => configuration["JWT_AUDIENCE"] ??
-                                 throw new NullReferenceException(ErrorMessages.KeyNotSet("JWT_AUDIENCE"));
+                                 throw new NullReferenceException(Messages.Messages.Error.KeyNotSet("JWT_AUDIENCE"));
 
     #endregion
 }
