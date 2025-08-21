@@ -1,4 +1,5 @@
 using AsciiService.Data.SeedDataObjects;
+using AsciiService.Shared.Constants.Messages;
 using Microsoft.EntityFrameworkCore;
 
 namespace AsciiService.Data;
@@ -22,10 +23,10 @@ public static class DbInitializer
         switch (alreadyHasDefaultAlphabet)
         {
             case true when alreadyHasArtworks:
-                Console.WriteLine("Database already seeded. Skipping seeding.");
+                Console.WriteLine(Messages.Info.DatabaseAlreadySeeded);
                 return;
             case true:
-                Console.WriteLine("Database already has default alphabet. Skipping seeding.");
+                Console.WriteLine(Messages.Info.DatabaseAlreadyHasDefaultAlphabet);
                 break;
             default:
                 await context.AddAsync(defaultAlphabet);
@@ -34,7 +35,7 @@ public static class DbInitializer
 
         if (alreadyHasArtworks)
         {
-            Console.WriteLine("Database already has artworks. Skipping seeding.");
+            Console.WriteLine(Messages.Info.DatabaseAlreadyHasArtworks);
             return;
         }
 

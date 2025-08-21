@@ -37,6 +37,9 @@ builder.Services.AddIdentityCore<User>()
 builder.Host.UseSerilog((context, loggerConfiguration) =>
     loggerConfiguration.WriteTo.Console().ReadFrom.Configuration(context.Configuration));
 
+// Needed to allow cookies to be sent in cross-origin requests
+builder.Services.ConfigureApplicationCookie(options => { options.Cookie.SameSite = SameSiteMode.Lax; });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

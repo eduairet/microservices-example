@@ -1,3 +1,4 @@
+using AsciiService.Shared.Constants.Messages;
 using Contracts;
 using MassTransit;
 
@@ -7,7 +8,7 @@ public class ArtworkDeletedFaultConsumer : IConsumer<Fault<ArtworkDeleted>>
 {
     public Task Consume(ConsumeContext<Fault<ArtworkDeleted>> context)
     {
-        Console.WriteLine($"Error deleting artwork: {context.Message.Exceptions.FirstOrDefault()?.Message}");
+        Console.WriteLine(Messages.Error.ArtworkErrorDeleting(context.Message.Exceptions.FirstOrDefault()?.Message));
         return Task.CompletedTask;
     }
 }

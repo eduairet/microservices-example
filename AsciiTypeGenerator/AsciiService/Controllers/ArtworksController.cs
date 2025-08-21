@@ -1,6 +1,7 @@
 using AsciiService.Models.Artwork;
 using AsciiService.Repositories.ArtworksRepository;
 using AsciiService.Shared.Constants;
+using AsciiService.Shared.Constants.Messages;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AsciiService.Controllers;
@@ -22,7 +23,7 @@ public class ArtworksController(IArtworksRepository artworksRepository)
     public async Task<ActionResult<ArtworkDetailsDto>> GetArtworkById([FromRoute] int id)
     {
         if (!await artworksRepository.Exists(id))
-            return NotFound(ErrorMessages.ArtworkNotFound(id));
+            return NotFound(Messages.Error.ArtworkNotFound(id));
 
         var artwork = await artworksRepository.GetAsync(id);
 
@@ -33,7 +34,7 @@ public class ArtworksController(IArtworksRepository artworksRepository)
     public async Task<ActionResult<ArtworkDetailsDto>> CreateArtwork([FromBody] ArtworkUpsertDto request)
     {
         if (request is null)
-            return BadRequest(ErrorMessages.InvalidRequestBody);
+            return BadRequest(Messages.Error.InvalidRequestBody);
 
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -52,13 +53,13 @@ public class ArtworksController(IArtworksRepository artworksRepository)
         [FromBody] ArtworkUpsertDto request)
     {
         if (request is null)
-            return BadRequest(ErrorMessages.InvalidRequestBody);
+            return BadRequest(Messages.Error.InvalidRequestBody);
 
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         if (!await artworksRepository.Exists(id))
-            return NotFound(ErrorMessages.ArtworkNotFound(id));
+            return NotFound(Messages.Error.ArtworkNotFound(id));
 
         // TODO: Check the author is the same as the one who created the artwork
 
@@ -75,7 +76,7 @@ public class ArtworksController(IArtworksRepository artworksRepository)
     public async Task<IActionResult> DeleteArtwork([FromRoute] int id)
     {
         if (!await artworksRepository.Exists(id))
-            return NotFound(ErrorMessages.ArtworkNotFound(id));
+            return NotFound(Messages.Error.ArtworkNotFound(id));
 
         // TODO: Check the author is the same as the one who created the artwork
 

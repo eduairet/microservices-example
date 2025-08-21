@@ -1,3 +1,5 @@
+using AsciiService.Shared.Constants.Messages;
+
 namespace AsciiService.Models.Artwork;
 
 public class ArtworkDeletedResponse
@@ -9,6 +11,6 @@ public class ArtworkDeletedResponse
     public static ArtworkDeletedResponse FromId(int id) => new()
     {
         Id = id,
-        Message = Shared.Constants.SuccessMessages.ArtworkDeleted(id)
+        Message = Messages.Info.ArtworkDeleted(id)
     };
 }

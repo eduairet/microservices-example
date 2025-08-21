@@ -1,3 +1,4 @@
+using AsciiService.Shared.Constants.Messages;
 using Contracts;
 using MassTransit;
 
@@ -7,7 +8,7 @@ public class AlphabetCreatedFaultConsumer : IConsumer<Fault<AlphabetCreated>>
 {
     public Task Consume(ConsumeContext<Fault<AlphabetCreated>> context)
     {
-        Console.WriteLine($"Error creating alphabet: {context.Message.Exceptions.FirstOrDefault()?.Message}");
+        Console.WriteLine(Messages.Error.AlphabetErrorCreating(context.Message.Exceptions.FirstOrDefault()?.Message));
         return Task.CompletedTask;
     }
 }

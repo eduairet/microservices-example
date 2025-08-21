@@ -1,6 +1,7 @@
 using AsciiService.Models.Alphabet;
 using AsciiService.Repositories.AlphabetsRepository;
 using AsciiService.Shared.Constants;
+using AsciiService.Shared.Constants.Messages;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AsciiService.Controllers;
@@ -22,7 +23,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
     public async Task<ActionResult<AlphabetDetailsDto>> GetAlphabetById([FromRoute] int id)
     {
         if (!await alphabetsRepository.Exists(id))
-            return NotFound(ErrorMessages.AlphabetNotFound(id));
+            return NotFound(Messages.Error.AlphabetNotFound(id));
 
         var alphabet = await alphabetsRepository.GetAsync(id);
 
@@ -33,7 +34,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
     public async Task<ActionResult<AlphabetDetailsDto>> CreateAlphabet([FromBody] AlphabetCreateDto request)
     {
         if (request is null)
-            return BadRequest(ErrorMessages.InvalidRequestBody);
+            return BadRequest(Messages.Error.InvalidRequestBody);
 
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -52,13 +53,13 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
         [FromBody] AlphabetUpdateDto request)
     {
         if (request is null)
-            return BadRequest(ErrorMessages.InvalidRequestBody);
+            return BadRequest(Messages.Error.InvalidRequestBody);
 
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
         if (!await alphabetsRepository.Exists(id))
-            return NotFound(ErrorMessages.ArtworkNotFound(id));
+            return NotFound(Messages.Error.ArtworkNotFound(id));
 
         // TODO: Check the author is the same as the one who created the alphabet
 
@@ -71,7 +72,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
     public async Task<ActionResult<AlphabetDeletedResponse>> DeleteAlphabet([FromRoute] int id)
     {
         if (!await alphabetsRepository.Exists(id))
-            return NotFound(ErrorMessages.AlphabetNotFound(id));
+            return NotFound(Messages.Error.AlphabetNotFound(id));
 
         // TODO: Check the author is the same as the one who created the alphabet
 

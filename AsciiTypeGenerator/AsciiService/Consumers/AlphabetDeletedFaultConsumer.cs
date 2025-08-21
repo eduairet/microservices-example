@@ -1,3 +1,4 @@
+using AsciiService.Shared.Constants.Messages;
 using Contracts;
 using MassTransit;
 
@@ -7,7 +8,7 @@ public class AlphabetDeletedFaultConsumer : IConsumer<Fault<AlphabetDeleted>>
 {
     public Task Consume(ConsumeContext<Fault<AlphabetDeleted>> context)
     {
-        Console.WriteLine($"Error deleting alphabet: {context.Message.Exceptions.FirstOrDefault()?.Message}");
+        Console.WriteLine(Messages.Error.AlphabetErrorDeleting(context.Message.Exceptions.FirstOrDefault()?.Message));
         return Task.CompletedTask;
     }
 }

@@ -2,6 +2,7 @@ using AsciiService.Data;
 using AsciiService.Shared.Constants;
 using AsciiService.Shared.Extensions;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -12,9 +13,11 @@ builder.Services.AddControllers();
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(new EnvironmentConstants(builder.Configuration).ConnectionString)
 );
+
 builder.Services.AddMassTransit(config =>
 {
     config.AddAllConsumersFromNamespaceContaining();
@@ -28,7 +31,17 @@ builder.Services.AddMassTransit(config =>
 
     config.UsingRabbitMq((context, cfg) => { cfg.ConfigureEndpoints(context); });
 });
+
 builder.Services.AddRepositories();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = new EnvironmentConstants(builder.Configuration).IdentityServiceUrl;
+        options.RequireHttpsMetadata = false;
+        options.TokenValidationParameters.ValidateAudience = false;
+        options.TokenValidationParameters.NameClaimType = "username";
+    });
 
 var app = builder.Build();
 
@@ -40,6 +53,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 

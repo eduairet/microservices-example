@@ -1,25 +1,24 @@
 using Microsoft.EntityFrameworkCore;
-using AsciiService.Shared.Constants;
+using AsciiService.Shared.Constants.Messages;
 using MassTransit;
 
 namespace AsciiService.Repositories.RepositoryBase;
 
 public class RepositoryBase<T>(DbContext context, IPublishEndpoint publishEndpoint) : IRepositoryBase<T> where T : class
 {
-    // Add function to map the entity into a generic type, it should be called FromEntityToCreateContract
     protected virtual TContract FromEntityToCreateContract<TContract>(T entity) where TContract : class
     {
-        throw new NotImplementedException("FromEntityToCreateContract method is not implemented.");
+        throw new NotImplementedException(Messages.Error.MethodNotImplemented(nameof(FromEntityToCreateContract)));
     }
 
     protected virtual TContract FromEntityToUpdateContract<TContract>(T entity) where TContract : class
     {
-        throw new NotImplementedException("FromEntityToUpdateContract method is not implemented.");
+        throw new NotImplementedException(Messages.Error.MethodNotImplemented(nameof(FromEntityToUpdateContract)));
     }
 
     protected virtual TContract FromEntityToDeleteContract<TContract>(T entity) where TContract : class
     {
-        throw new NotImplementedException("FromEntityToDeleteContract method is not implemented.");
+        throw new NotImplementedException(Messages.Error.MethodNotImplemented(nameof(FromEntityToDeleteContract)));
     }
 
     public async Task<List<T>> GetAllAsync()
@@ -32,7 +31,7 @@ public class RepositoryBase<T>(DbContext context, IPublishEndpoint publishEndpoi
     {
         if (id is null) return null;
         var entity = await context.Set<T>().FindAsync(id) ??
-                     throw new KeyNotFoundException(ErrorMessages.EntityIdNotFound(id.ToString()));
+                     throw new KeyNotFoundException(Messages.Error.EntityIdNotFound(id.ToString()));
         return entity;
     }
 
@@ -42,7 +41,7 @@ public class RepositoryBase<T>(DbContext context, IPublishEndpoint publishEndpoi
 
         try
         {
-            await publishEndpoint.Publish(FromEntityToUpdateContract<object>(entity));
+            await publishEndpoint.Publish(FromEntityToCreateContract<object>(entity));
         }
         catch (Exception)
         {
@@ -73,12 +72,12 @@ public class RepositoryBase<T>(DbContext context, IPublishEndpoint publishEndpoi
     public async Task DeleteAsync(object id)
     {
         var entity = await context.FindAsync<T>(id) ??
-                     throw new KeyNotFoundException(ErrorMessages.EntityIdNotFound(id.ToString()));
+                     throw new KeyNotFoundException(Messages.Error.EntityIdNotFound(id.ToString()));
         context.Set<T>().Remove(entity);
 
         try
         {
-            await publishEndpoint.Publish(FromEntityToUpdateContract<object>(entity));
+            await publishEndpoint.Publish(FromEntityToDeleteContract<object>(entity));
         }
         catch (Exception)
         {

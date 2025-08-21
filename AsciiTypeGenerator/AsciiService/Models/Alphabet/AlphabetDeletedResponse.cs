@@ -1,3 +1,5 @@
+using AsciiService.Shared.Constants.Messages;
+
 namespace AsciiService.Models.Alphabet;
 
 public class AlphabetDeletedResponse
@@ -9,6 +11,6 @@ public class AlphabetDeletedResponse
     public static AlphabetDeletedResponse FromId(int id) => new()
     {
         Id = id,
-        Message = Shared.Constants.SuccessMessages.AlphabetDeleted(id)
+        Message = Messages.Info.AlphabetDeleted(id)
     };
 }

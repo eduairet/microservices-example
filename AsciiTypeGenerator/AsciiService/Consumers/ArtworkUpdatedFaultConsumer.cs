@@ -1,3 +1,4 @@
+using AsciiService.Shared.Constants.Messages;
 using Contracts;
 using MassTransit;
 
@@ -7,7 +8,7 @@ public class ArtworkUpdatedFaultConsumer : IConsumer<Fault<ArtworkUpdated>>
 {
     public Task Consume(ConsumeContext<Fault<ArtworkUpdated>> context)
     {
-        Console.WriteLine($"Error updating artwork: {context.Message.Exceptions.FirstOrDefault()?.Message}");
+        Console.WriteLine(Messages.Error.ArtworkErrorUpdating(context.Message.Exceptions.FirstOrDefault()?.Message));
         return Task.CompletedTask;
     }
 }
