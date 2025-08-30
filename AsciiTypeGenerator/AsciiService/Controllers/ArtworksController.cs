@@ -41,7 +41,7 @@ public class ArtworksController(IArtworksRepository artworksRepository)
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var userId = User.FindFirst("id")?.Value;
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
         var now = DateTime.UtcNow;
         var artwork = await artworksRepository.AddAsync(request.ToEntity(userId, now, now));
 
@@ -65,7 +65,7 @@ public class ArtworksController(IArtworksRepository artworksRepository)
 
         var artwork = await artworksRepository.GetAsync(id);
 
-        if (artwork.AuthorId != User.FindFirst("id")?.Value)
+        if (artwork.AuthorId != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
             return Forbid(Messages.Error.ForbiddenUpdateArtwork(id));
 
         var artworkUpdate =
@@ -84,7 +84,7 @@ public class ArtworksController(IArtworksRepository artworksRepository)
 
         var artwork = await artworksRepository.GetAsync(id);
 
-        if (artwork.AuthorId != User.FindFirst("id")?.Value)
+        if (artwork.AuthorId != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
             return Forbid(Messages.Error.ForbiddenDeleteArtwork(id));
 
         await artworksRepository.DeleteAsync(id);

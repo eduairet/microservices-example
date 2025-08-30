@@ -41,7 +41,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        var userId = User.FindFirst("id")?.Value;
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
         var now = DateTime.UtcNow;
         var alphabet = await alphabetsRepository.AddAsync(request.ToEntity(userId, now, now));
 
@@ -65,7 +65,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
 
         var alphabet = await alphabetsRepository.GetAsync(id);
 
-        if (alphabet.AuthorId != User.FindFirst("id")?.Value)
+        if (alphabet.AuthorId != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
             return Forbid(Messages.Error.ForbiddenUpdateAlphabet(id));
 
         var alphabetUpdate = await alphabetsRepository.UpdateAsync(id, request);
@@ -82,7 +82,7 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
 
         var alphabet = await alphabetsRepository.GetAsync(id);
 
-        if (alphabet.AuthorId != User.FindFirst("id")?.Value)
+        if (alphabet.AuthorId != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
             return Forbid(Messages.Error.ForbiddenDeleteAlphabet(id));
 
         await alphabetsRepository.DeleteAsync(id);
