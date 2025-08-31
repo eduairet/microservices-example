@@ -29,3 +29,14 @@
 - The identity service should expose APIs for user registration, login, and token management (e.g., issuing JWT tokens).
 - It's important to secure the identity service and protect user credentials, using techniques like hashing passwords and implementing HTTPS.
 - Nowadays most users expect SSO (Single Sign-On) capabilities, allowing them to authenticate once and gain access to multiple services without re-entering credentials.
+
+# Reverse Proxy
+
+- A reverse proxy is a server that sits between client devices and a web server, forwarding client requests to the appropriate backend server and returning the server's response to the client.
+- In a microservices architecture, a reverse proxy can be used to route requests to different services based on the request URL, enabling service discovery and load balancing.
+- Popular reverse proxy solutions are Microsoft YARP (Yet Another Reverse Proxy), Nginx, Traefik, or any of the cloud-native solutions like AWS App Mesh or Azure API Management.
+- Some of the features commonly provided by reverse proxies include:
+  - Load balancing: Distributing incoming requests across multiple backend servers to ensure no single server is overwhelmed.
+  - SSL termination: Handling SSL/TLS encryption and decryption at the proxy level, offloading this work from backend servers.
+  - Caching: Storing copies of frequently requested resources to reduce latency and improve response times.
+  - Request/response modification: Altering requests or responses on the fly, such as adding headers or transforming payloads.
