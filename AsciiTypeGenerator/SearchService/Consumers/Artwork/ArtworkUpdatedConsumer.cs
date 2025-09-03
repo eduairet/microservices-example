@@ -19,7 +19,7 @@ public class ArtworkUpdatedConsumer : IConsumer<ArtworkUpdated>
                 x.Description,
                 x.CreatedAt,
                 x.UpdatedAt,
-                x.Author,
+                x.AuthorName,
                 x.ArtworkGlyphs
             }, ArtworkDto.ToEntity(context.Message)).ExecuteAsync();
 

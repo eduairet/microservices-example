@@ -23,7 +23,6 @@ public class AlphabetsRepository(AppDbContext context, IPublishEndpoint publishE
     public new async Task<List<Alphabet>> GetAllAsync()
     {
         var alphabets = await context.Alphabets
-            .Include(a => a.Author)
             .Include(a => a.Glyphs)
             .AsNoTracking()
             .ToListAsync();
@@ -34,7 +33,6 @@ public class AlphabetsRepository(AppDbContext context, IPublishEndpoint publishE
     public new async Task<Alphabet> GetAsync(object id)
     {
         var alphabet = await context.Alphabets
-            .Include(a => a.Author)
             .Include(a => a.Glyphs)
             .AsNoTracking()
             .FirstOrDefaultAsync(a => a.Id == (int)id);
@@ -42,7 +40,8 @@ public class AlphabetsRepository(AppDbContext context, IPublishEndpoint publishE
         return alphabet;
     }
 
-    public async Task<Alphabet> UpdateAsync(int alphabetId, AlphabetUpdateDto updateDto)
+    public async Task<Alphabet> UpdateAsync(int alphabetId, string authorId, string authorName,
+        AlphabetUpdateDto updateDto)
     {
         var alphabet = await context.Alphabets
             .Include(a => a.Glyphs)
@@ -51,6 +50,8 @@ public class AlphabetsRepository(AppDbContext context, IPublishEndpoint publishE
         alphabet.Title = updateDto.Title;
         alphabet.Description = updateDto.Description;
         alphabet.UpdatedAt = DateTime.UtcNow;
+        alphabet.AuthorName = authorName;
+        alphabet.AuthorId = authorId;
 
         var glyphsToKeep = new List<Glyph>();
         foreach (var glyphDto in updateDto.Glyphs)

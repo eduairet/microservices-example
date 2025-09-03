@@ -7,6 +7,6 @@ public class AlphabetContract
     public string Description { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    public UserContract Author { get; set; } = new();
+    public string AuthorName { get; set; }
     public List<GlyphContract> Glyphs { get; set; }
 }

@@ -42,8 +42,8 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
             return BadRequest(ModelState);
 
         var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        var now = DateTime.UtcNow;
-        var alphabet = await alphabetsRepository.AddAsync(request.ToEntity(userId, now, now));
+        var userName = User.Identity?.Name;
+        var alphabet = await alphabetsRepository.AddAsync(request.ToEntity(userId, userName));
 
         return CreatedAtAction(nameof(GetAlphabetById), new { id = alphabet.Id },
             AlphabetDetailsDto.FromEntity(alphabet));
@@ -68,7 +68,9 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
         if (alphabet.AuthorId != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
             return Forbid(Messages.Error.ForbiddenUpdateAlphabet(id));
 
-        var alphabetUpdate = await alphabetsRepository.UpdateAsync(id, request);
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var userName = User.Identity?.Name;
+        var alphabetUpdate = await alphabetsRepository.UpdateAsync(id, userId, userName, request);
 
         return Ok(AlphabetDetailsDto.FromEntity(alphabetUpdate));
     }

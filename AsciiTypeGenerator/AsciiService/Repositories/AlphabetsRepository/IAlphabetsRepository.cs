@@ -6,6 +6,6 @@ namespace AsciiService.Repositories.AlphabetsRepository;
 
 public interface IAlphabetsRepository : IRepositoryBase<Alphabet>
 {
-    Task<Alphabet> UpdateAsync(int alphabetId, AlphabetUpdateDto updateDto);
+    Task<Alphabet> UpdateAsync(int alphabetId, string authorId, string authorName, AlphabetUpdateDto updateDto);
     Task<IEnumerable<Alphabet>> GetUserAlphabetsAsync(string userId);
 }

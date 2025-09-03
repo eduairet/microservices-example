@@ -7,13 +7,14 @@ public class AlphabetCreateDto
     [Required] [MaxLength(100)] public string Title { get; set; } = string.Empty;
     [Required] [MaxLength(2000)] public string Description { get; set; } = string.Empty;
 
-    public Entities.Alphabet ToEntity(string authorId, DateTime createdAt, DateTime updatedAt) => new()
+    public Entities.Alphabet ToEntity(string authorId, string authorName) => new()
     {
         Title = Title,
         Description = Description,
-        CreatedAt = createdAt,
-        UpdatedAt = updatedAt,
+        CreatedAt = DateTime.UtcNow,
+        UpdatedAt = DateTime.UtcNow,
         AuthorId = authorId,
+        AuthorName = authorName,
         Glyphs = new List<Entities.Glyph>()
     };
 }

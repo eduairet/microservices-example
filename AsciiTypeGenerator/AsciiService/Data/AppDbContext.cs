@@ -10,7 +10,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
     public DbSet<Alphabet> Alphabets { get; set; }
     public DbSet<Artwork> Artworks { get; set; }
     public DbSet<Glyph> Glyphs { get; set; }
-    public DbSet<User> Users { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -19,11 +18,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
         #region Alphabet
 
         modelBuilder.Entity<Alphabet>().ToTable("Alphabets")
-            .HasOne(a => a.Author)
-            .WithMany(u => u.Alphabets)
-            .HasForeignKey(a => a.AuthorId)
-            .OnDelete(DeleteBehavior.Cascade);
-        modelBuilder.Entity<Alphabet>().HasMany(a => a.Glyphs)
+            .HasMany(a => a.Glyphs)
             .WithOne(g => g.Alphabet)
             .HasForeignKey(g => g.AlphabetId)
             .OnDelete(DeleteBehavior.Cascade);
@@ -39,11 +34,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             .HasIndex(a => a.Title)
             .IsUnique();
         modelBuilder.Entity<Artwork>()
-            .HasOne(a => a.Author)
-            .WithMany(u => u.Artworks)
-            .HasForeignKey(a => a.AuthorId)
-            .OnDelete(DeleteBehavior.Cascade);
-        modelBuilder.Entity<Artwork>()
             .HasMany(a => a.ArtworkGlyphs)
             .WithOne(ag => ag.Artwork)
             .HasForeignKey(ag => ag.ArtworkId)
@@ -58,9 +48,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             .WithMany(a => a.Glyphs)
             .HasForeignKey(g => g.AlphabetId)
             .OnDelete(DeleteBehavior.Cascade);
-       modelBuilder.Entity<Glyph>()
-           .HasIndex(g => new { g.AlphabetId, g.Unicode })
-           .IsUnique();
+        modelBuilder.Entity<Glyph>()
+            .HasIndex(g => new { g.AlphabetId, g.Unicode })
+            .IsUnique();
 
         #endregion
 
@@ -79,22 +69,6 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
         modelBuilder.Entity<ArtworkGlyph>()
             .HasIndex(ag => new { ag.ArtworkId, ag.Index })
             .IsUnique();
-
-        #endregion
-
-        #region User
-
-        modelBuilder.Entity<User>().ToTable("Users")
-            .HasIndex(u => u.UserName)
-            .IsUnique();
-        modelBuilder.Entity<User>().HasMany(u => u.Artworks)
-            .WithOne(a => a.Author)
-            .HasForeignKey(a => a.AuthorId)
-            .OnDelete(DeleteBehavior.Cascade);
-        modelBuilder.Entity<User>().HasMany(u => u.Alphabets)
-            .WithOne(a => a.Author)
-            .HasForeignKey(a => a.AuthorId)
-            .OnDelete(DeleteBehavior.Cascade);
 
         #endregion
 

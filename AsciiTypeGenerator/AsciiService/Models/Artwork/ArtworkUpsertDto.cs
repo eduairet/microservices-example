@@ -10,32 +10,32 @@ public class ArtworkUpsertDto
     [Required]
     public List<int> ArtworkGlyphsIds { get; set; } = [];
 
-    public Entities.Artwork ToEntity(string authorId, DateTime createdAt, DateTime updatedAt)
-    {
-        return new Entities.Artwork
+    public Entities.Artwork ToEntity(string authorId, string authorName) =>
+        new()
         {
             Title = Title,
             Description = Description,
-            CreatedAt = createdAt,
-            UpdatedAt = updatedAt,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
             AuthorId = authorId,
+            AuthorName = authorName,
             ArtworkGlyphs = ArtworkGlyphsIds.Select((glyphId, i) => new Entities.ArtworkGlyph
             {
                 Index = i,
                 GlyphId = glyphId
             }).ToList()
         };
-    }
 
-    public Entities.Artwork ToEntity(int id, string authorId, DateTime createdAt, DateTime updatedAt)
-        => new Entities.Artwork
+    public Entities.Artwork ToEntity(int id, string authorId, string authorName, DateTime createdAt)
+        => new()
         {
             Id = id,
             Title = Title,
             Description = Description,
             CreatedAt = createdAt,
-            UpdatedAt = updatedAt,
+            UpdatedAt = DateTime.UtcNow,
             AuthorId = authorId,
+            AuthorName = authorName,
             ArtworkGlyphs = ArtworkGlyphsIds.Select((glyphId, i) => new Entities.ArtworkGlyph
             {
                 Index = i,

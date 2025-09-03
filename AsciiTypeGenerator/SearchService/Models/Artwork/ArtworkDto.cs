@@ -1,5 +1,4 @@
 using SearchService.Models.ArtworkGlyph;
-using SearchService.Models.User;
 
 namespace SearchService.Models.Artwork;
 
@@ -10,7 +9,7 @@ public class ArtworkDto
     public string Description { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    public AuthorDto Author { get; set; }
+    public string AuthorName { get; set; }
     public List<ArtworkGlyphDto> ArtworkGlyphs { get; set; }
 
     public static Entities.Artwork ToEntity(ArtworkDto dto) => new()
@@ -20,7 +19,7 @@ public class ArtworkDto
         Description = dto.Description,
         CreatedAt = dto.CreatedAt,
         UpdatedAt = dto.UpdatedAt,
-        Author = dto.Author is null ? null : AuthorDto.ToEntity(dto.Author),
+        AuthorName = dto.AuthorName,
         ArtworkGlyphs = dto.ArtworkGlyphs.Select(ArtworkGlyphDto.ToEntity).ToList()
     };
 
@@ -31,7 +30,7 @@ public class ArtworkDto
         Description = contract.Description,
         CreatedAt = contract.CreatedAt,
         UpdatedAt = contract.UpdatedAt,
-        Author = AuthorDto.ToEntity(contract.Author),
+        AuthorName = contract.AuthorName,
         ArtworkGlyphs = contract.ArtworkGlyphs.Select(ArtworkGlyphDto.ToEntity).ToList()
     };
 }

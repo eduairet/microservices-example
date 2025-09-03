@@ -8,6 +8,6 @@ public class Alphabet : Entity
     public string Description { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    public User Author { get; set; }
+    public string AuthorName { get; set; }
     public List<Glyph> Glyphs { get; set; } = [];
 }

@@ -25,7 +25,6 @@ public class ArtworksRepository(AppDbContext context, IPublishEndpoint publishEn
     public new async Task<List<Artwork>> GetAllAsync()
     {
         var artworks = await context.Artworks
-            .Include(a => a.Author)
             .Include(a => a.ArtworkGlyphs)
             .ThenInclude(ag => ag.Glyph)
             .AsNoTracking()
@@ -60,7 +59,6 @@ public class ArtworksRepository(AppDbContext context, IPublishEndpoint publishEn
     {
         var artwork = await context.Artworks
             .Where(a => a.AuthorId == userId)
-            .Include(a => a.Author)
             .Include(a => a.ArtworkGlyphs)
             .ThenInclude(ag => ag.Glyph)
             .AsNoTracking()

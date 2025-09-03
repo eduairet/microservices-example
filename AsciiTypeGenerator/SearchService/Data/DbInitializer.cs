@@ -24,13 +24,13 @@ public class DbInitializer(WebApplication app)
         await DB.Index<Alphabet>()
             .Key(x => x.Title, KeyType.Text)
             .Key(x => x.Description, KeyType.Text)
-            .Key(x => x.Author.UserName, KeyType.Text)
+            .Key(x => x.AuthorName, KeyType.Text)
             .CreateAsync();
 
         await DB.Index<Artwork>()
             .Key(x => x.Title, KeyType.Text)
             .Key(x => x.Description, KeyType.Text)
-            .Key(x => x.Author.UserName, KeyType.Text)
+            .Key(x => x.AuthorName, KeyType.Text)
             .CreateAsync();
 
         using var scope = app.Services.CreateScope();

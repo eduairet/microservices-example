@@ -1,6 +1,5 @@
 using Contracts;
 using SearchService.Models.Glyph;
-using SearchService.Models.User;
 
 namespace SearchService.Models.Alphabet;
 
@@ -11,7 +10,7 @@ public class AlphabetDto
     public string Description { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    public AuthorDto Author { get; set; }
+    public string AuthorName { get; set; }
     public List<GlyphDto> Glyphs { get; set; }
 
     public static Entities.Alphabet ToEntity(AlphabetDto dto) => new()
@@ -21,7 +20,7 @@ public class AlphabetDto
         Description = dto.Description,
         CreatedAt = dto.CreatedAt,
         UpdatedAt = dto.UpdatedAt,
-        Author = dto.Author is null ? null : AuthorDto.ToEntity(dto.Author),
+        AuthorName = dto.AuthorName,
         Glyphs = dto.Glyphs.Select(GlyphDto.ToEntity).ToList()
     };
 
@@ -32,7 +31,7 @@ public class AlphabetDto
         Description = contract.Description,
         CreatedAt = contract.CreatedAt,
         UpdatedAt = contract.UpdatedAt,
-        Author = contract.Author is null ? null : AuthorDto.ToEntity(contract.Author),
+        AuthorName = contract.AuthorName,
         Glyphs = contract.Glyphs.Select(GlyphDto.ToEntity).ToList()
     };
 }

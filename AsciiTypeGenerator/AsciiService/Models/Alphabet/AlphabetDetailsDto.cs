@@ -8,13 +8,10 @@ public class AlphabetDetailsDto
 {
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
-
     public string Description { get; set; } = string.Empty;
-
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
-    public User Author { get; set; } = new();
+    public string AuthorName { get; set; }
     public List<GlyphDetailsDto> Glyphs { get; set; } = [];
 
     public static AlphabetDetailsDto FromEntity(Entities.Alphabet alphabet) => new()
@@ -24,7 +21,7 @@ public class AlphabetDetailsDto
         Description = alphabet.Description,
         CreatedAt = alphabet.CreatedAt,
         UpdatedAt = alphabet.UpdatedAt,
-        Author = alphabet.Author,
+        AuthorName = alphabet.AuthorName,
         Glyphs = alphabet.Glyphs.Select(GlyphDetailsDto.FromEntity).ToList()
     };
 
@@ -36,16 +33,10 @@ public class AlphabetDetailsDto
         Description = alphabet.Description,
         CreatedAt = alphabet.CreatedAt,
         UpdatedAt = alphabet.UpdatedAt,
-        Author = alphabet.Author is not null
-            ? new UserContract
-            {
-                Id = alphabet.Author.Id,
-                UserName = alphabet.Author?.UserName
-            }
-            : null,
+        AuthorName = alphabet.AuthorName,
         Glyphs = alphabet.Glyphs.Select(GlyphDetailsDto.ToContract).ToList()
     };
-    
+
     public static AlphabetUpdated ToContractUpdate(Entities.Alphabet alphabet) => new()
     {
         Id = alphabet.Id,
@@ -53,13 +44,7 @@ public class AlphabetDetailsDto
         Description = alphabet.Description,
         CreatedAt = alphabet.CreatedAt,
         UpdatedAt = alphabet.UpdatedAt,
-        Author = alphabet.Author is not null
-            ? new UserContract
-            {
-                Id = alphabet.Author.Id,
-                UserName = alphabet.Author?.UserName
-            }
-            : null,
+        AuthorName = alphabet.AuthorName,
         Glyphs = alphabet.Glyphs.Select(GlyphDetailsDto.ToContract).ToList()
     };
 }

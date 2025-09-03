@@ -19,7 +19,7 @@ public class AlphabetUpdatedConsumer : IConsumer<AlphabetUpdated>
                 x.Description,
                 x.CreatedAt,
                 x.UpdatedAt,
-                x.Author,
+                x.AuthorName,
                 x.Glyphs
             }, AlphabetDto.ToEntity(context.Message)).ExecuteAsync();
 

@@ -42,8 +42,8 @@ public class ArtworksController(IArtworksRepository artworksRepository)
             return BadRequest(ModelState);
 
         var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        var now = DateTime.UtcNow;
-        var artwork = await artworksRepository.AddAsync(request.ToEntity(userId, now, now));
+        var userName = User.Identity?.Name;
+        var artwork = await artworksRepository.AddAsync(request.ToEntity(userId, userName));
 
         return CreatedAtAction(nameof(GetArtworkById), new { id = artwork.Id },
             ArtworkDetailsDto.FromEntity(artwork));
@@ -68,9 +68,10 @@ public class ArtworksController(IArtworksRepository artworksRepository)
         if (artwork.AuthorId != User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value)
             return Forbid(Messages.Error.ForbiddenUpdateArtwork(id));
 
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var userName = User.Identity?.Name;
         var artworkUpdate =
-            await artworksRepository.UpdateAsync(request.ToEntity(id, artwork.AuthorId, artwork.CreatedAt,
-                DateTime.UtcNow));
+            await artworksRepository.UpdateAsync(request.ToEntity(id, userId, userName, artwork.CreatedAt));
 
         return Ok(ArtworkDetailsDto.FromEntity(artworkUpdate));
     }
