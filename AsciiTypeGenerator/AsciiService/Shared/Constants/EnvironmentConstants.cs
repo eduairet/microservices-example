@@ -8,6 +8,10 @@ public class EnvironmentConstants(IConfiguration configuration)
                                       ?? throw new NullReferenceException(
                                           Messages.Messages.Error.KeyNotSet("DefaultConnection"));
 
+    #endregion
+
+    #region Service URLs
+
     public string IdentityServiceUrl => configuration.GetConnectionString("IDENTITY_SERVICE_URL")
                                         ?? throw new NullReferenceException(
                                             Messages.Messages.Error.KeyNotSet("IDENTITY_SERVICE_URL"));
