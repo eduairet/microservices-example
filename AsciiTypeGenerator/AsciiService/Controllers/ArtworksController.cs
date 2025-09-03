@@ -31,6 +31,24 @@ public class ArtworksController(IArtworksRepository artworksRepository)
         return Ok(ArtworkDetailsDto.FromEntity(artwork));
     }
 
+    [HttpGet(ApiRoutes.Artworks.UserArtworks)]
+    public async Task<ActionResult<List<ArtworkDetailsDto>>> GetUserArtworks([FromRoute] string username)
+    {
+        var artworks = await artworksRepository.GetUserArtworksAsync(username);
+
+        return Ok(artworks.Select(ArtworkDetailsDto.FromEntity).ToList());
+    }
+
+    [Authorize]
+    [HttpGet(ApiRoutes.Artworks.UserPrivateArtworks)]
+    public async Task<ActionResult<List<ArtworkDetailsDto>>> GetUserPrivateArtworks()
+    {
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var artworks = await artworksRepository.GetUserPrivateArtworksAsync(userId);
+
+        return Ok(artworks.Select(ArtworkDetailsDto.FromEntity).ToList());
+    }
+
     [Authorize]
     [HttpPost(ApiRoutes.Artworks.Create)]
     public async Task<ActionResult<ArtworkDetailsDto>> CreateArtwork([FromBody] ArtworkUpsertDto request)

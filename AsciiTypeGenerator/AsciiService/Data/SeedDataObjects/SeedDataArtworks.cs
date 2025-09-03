@@ -10,6 +10,7 @@ public abstract class SeedDataArtworks
         Description = "A simple hello world artwork",
         CreatedAt = DateTime.UtcNow,
         UpdatedAt = DateTime.UtcNow,
+        IsActive = true,
         ArtworkGlyphs = "HELLO".Select((c, i) => new ArtworkGlyph
         {
             Index = i,

@@ -15,6 +15,7 @@ public sealed class Alphabet
     [Required] public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     [MaxLength(int.MaxValue)] public string AuthorId { get; set; }
     [MaxLength(int.MaxValue)] public string AuthorName { get; set; }
+    public bool? IsActive { get; set; }
 
     [System.Text.Json.Serialization.JsonIgnore]
     public ICollection<Glyph> Glyphs { get; set; } = new List<Glyph>();

@@ -27,6 +27,7 @@ public class ArtworksRepository(AppDbContext context, IPublishEndpoint publishEn
         var artworks = await context.Artworks
             .Include(a => a.ArtworkGlyphs)
             .ThenInclude(ag => ag.Glyph)
+            .Where(a => a.IsActive == true)
             .AsNoTracking()
             .ToListAsync();
 
@@ -55,7 +56,19 @@ public class ArtworksRepository(AppDbContext context, IPublishEndpoint publishEn
         return entity;
     }
 
-    public async Task<List<Artwork>> GetUserArtworksAsync(string userId)
+    public async Task<List<Artwork>> GetUserArtworksAsync(string userName)
+    {
+        var artwork = await context.Artworks
+            .Where(a => a.AuthorName == userName && a.IsActive == true)
+            .Include(a => a.ArtworkGlyphs)
+            .ThenInclude(ag => ag.Glyph)
+            .AsNoTracking()
+            .ToListAsync();
+
+        return artwork;
+    }
+
+    public async Task<List<Artwork>> GetUserPrivateArtworksAsync(string userId)
     {
         var artwork = await context.Artworks
             .Where(a => a.AuthorId == userId)

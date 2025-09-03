@@ -15,6 +15,7 @@ public sealed class Artwork
     [Required] public DateTime UpdatedAt { get; set; }
     [MaxLength(int.MaxValue)] public string AuthorId { get; set; }
     [MaxLength(int.MaxValue)] public string AuthorName { get; set; }
+    public bool? IsActive { get; set; }
 
     [System.Text.Json.Serialization.JsonIgnore]
     public ICollection<ArtworkGlyph> ArtworkGlyphs { get; set; } = new List<ArtworkGlyph>();

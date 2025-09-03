@@ -24,6 +24,7 @@ public class AlphabetsRepository(AppDbContext context, IPublishEndpoint publishE
     {
         var alphabets = await context.Alphabets
             .Include(a => a.Glyphs)
+            .Where(a => a.IsActive == true)
             .AsNoTracking()
             .ToListAsync();
 
@@ -52,6 +53,7 @@ public class AlphabetsRepository(AppDbContext context, IPublishEndpoint publishE
         alphabet.UpdatedAt = DateTime.UtcNow;
         alphabet.AuthorName = authorName;
         alphabet.AuthorId = authorId;
+        alphabet.IsActive = updateDto.IsActive ?? alphabet.IsActive ?? false;
 
         var glyphsToKeep = new List<Glyph>();
         foreach (var glyphDto in updateDto.Glyphs)
@@ -92,7 +94,18 @@ public class AlphabetsRepository(AppDbContext context, IPublishEndpoint publishE
         return alphabet;
     }
 
-    public async Task<IEnumerable<Alphabet>> GetUserAlphabetsAsync(string userId)
+    public async Task<IEnumerable<Alphabet>> GetUserAlphabetsAsync(string userName)
+    {
+        var alphabets = await context.Alphabets
+            .Where(a => a.AuthorName == userName && a.IsActive == true)
+            .Include(a => a.Glyphs)
+            .AsNoTracking()
+            .ToListAsync();
+
+        return alphabets;
+    }
+
+    public async Task<IEnumerable<Alphabet>> GetUserPrivateAlphabetsAsync(string userId)
     {
         var alphabets = await context.Alphabets
             .Where(a => a.AuthorId == userId)

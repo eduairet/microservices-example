@@ -6,6 +6,7 @@ public class ArtworkUpsertDto
 {
     [Required] [MaxLength(100)] public string Title { get; set; } = string.Empty;
     [Required] [MaxLength(2000)] public string Description { get; set; } = string.Empty;
+    public bool? IsActive { get; set; }
 
     [Required]
     public List<int> ArtworkGlyphsIds { get; set; } = [];
@@ -19,6 +20,7 @@ public class ArtworkUpsertDto
             UpdatedAt = DateTime.UtcNow,
             AuthorId = authorId,
             AuthorName = authorName,
+            IsActive = IsActive ?? false,
             ArtworkGlyphs = ArtworkGlyphsIds.Select((glyphId, i) => new Entities.ArtworkGlyph
             {
                 Index = i,
@@ -36,6 +38,7 @@ public class ArtworkUpsertDto
             UpdatedAt = DateTime.UtcNow,
             AuthorId = authorId,
             AuthorName = authorName,
+            IsActive = IsActive ?? false,
             ArtworkGlyphs = ArtworkGlyphsIds.Select((glyphId, i) => new Entities.ArtworkGlyph
             {
                 Index = i,

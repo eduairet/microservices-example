@@ -10,6 +10,7 @@ public static class SeedDataAlphabets
         Description = "Default alphabet with basic ASCII characters.",
         CreatedAt = DateTime.UtcNow,
         UpdatedAt = DateTime.UtcNow,
+        IsActive = true,
         Glyphs = DefaultAlphabetGlyphs()
     };
 

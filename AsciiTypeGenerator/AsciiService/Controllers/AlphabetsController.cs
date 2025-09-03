@@ -31,6 +31,24 @@ public class AlphabetsController(IAlphabetsRepository alphabetsRepository)
         return Ok(AlphabetDetailsDto.FromEntity(alphabet));
     }
 
+    [HttpGet(ApiRoutes.Alphabets.UserAlphabets)]
+    public async Task<ActionResult<List<AlphabetDetailsDto>>> GetUserAlphabets([FromRoute] string username)
+    {
+        var alphabets = await alphabetsRepository.GetUserAlphabetsAsync(username);
+
+        return Ok(alphabets.Select(AlphabetDetailsDto.FromEntity).ToList());
+    }
+
+    [Authorize]
+    [HttpGet(ApiRoutes.Alphabets.UserPrivateAlphabets)]
+    public async Task<ActionResult<List<AlphabetDetailsDto>>> GetUserPrivateAlphabets()
+    {
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        var alphabets = await alphabetsRepository.GetUserPrivateAlphabetsAsync(userId);
+
+        return Ok(alphabets.Select(AlphabetDetailsDto.FromEntity).ToList());
+    }
+
     [Authorize]
     [HttpPost(ApiRoutes.Alphabets.Create)]
     public async Task<ActionResult<AlphabetDetailsDto>> CreateAlphabet([FromBody] AlphabetCreateDto request)
