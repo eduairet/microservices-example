@@ -17,4 +17,14 @@ public class EnvironmentConstants(IConfiguration configuration)
                                             Messages.Messages.Error.KeyNotSet("IDENTITY_SERVICE_URL"));
 
     #endregion
+
+    #region RabbitMQ Settings
+    public string RabbitMqHost => configuration["RABBIT_MQ_HOST"]
+                                 ?? throw new NullReferenceException(
+                                     Messages.Messages.Error.KeyNotSet("RABBIT_MQ_HOST"));
+
+    public string RabbitMqUsername => configuration["RABBIT_MQ_USERNAME"] ?? "guest";
+    public string RabbitMqPassword => configuration["RABBIT_MQ_PASSWORD"] ?? "guest";
+
+    #endregion
 }

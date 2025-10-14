@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var env = new EnvironmentConstants(builder.Configuration);
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -15,7 +16,7 @@ builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(new EnvironmentConstants(builder.Configuration).ConnectionString)
+    options.UseNpgsql(env.ConnectionString)
 );
 
 builder.Services.AddMassTransit(config =>
@@ -29,7 +30,16 @@ builder.Services.AddMassTransit(config =>
         o.UseBusOutbox();
     });
 
-    config.UsingRabbitMq((context, cfg) => { cfg.ConfigureEndpoints(context); });
+    config.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host(env.RabbitMqHost, "/", h =>
+        {
+            h.Username(env.RabbitMqUsername);
+            h.Password(env.RabbitMqPassword);
+        });
+
+        cfg.ConfigureEndpoints(context);
+    });
 });
 
 builder.Services.AddRepositories();
@@ -37,7 +47,7 @@ builder.Services.AddRepositories();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = new EnvironmentConstants(builder.Configuration).IdentityServiceUrl;
+        options.Authority = env.IdentityServiceUrl;
         options.RequireHttpsMetadata = false;
         options.TokenValidationParameters.ValidateAudience = false;
         options.TokenValidationParameters.NameClaimType = "username";

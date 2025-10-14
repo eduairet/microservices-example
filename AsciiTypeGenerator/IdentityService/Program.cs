@@ -10,6 +10,7 @@ using Scalar.AspNetCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+var env = new EnvironmentConstants(builder.Configuration);
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -18,7 +19,7 @@ builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true
 builder.Services.AddOpenApi();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(new EnvironmentConstants(builder.Configuration).ConnectionString)
+    options.UseNpgsql(env.ConnectionString)
 );
 
 builder.Services.AddAuthentication(options =>

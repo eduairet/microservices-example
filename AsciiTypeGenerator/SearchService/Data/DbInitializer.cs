@@ -14,11 +14,11 @@ public class DbInitializer(WebApplication app)
         if (configuration == null)
             throw new ArgumentNullException(nameof(configuration), ErrorMessages.InvalidConfiguration);
 
-        var environmentConstants = new EnvironmentConstants(configuration);
+        var env = new EnvironmentConstants(configuration);
 
         await DB.InitAsync(
-            environmentConstants.DatabaseName,
-            MongoClientSettings.FromConnectionString(environmentConstants.ConnectionString)
+            env.DatabaseName,
+            MongoClientSettings.FromConnectionString(env.ConnectionString)
         );
 
         await DB.Index<Alphabet>()

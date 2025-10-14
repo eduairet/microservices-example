@@ -1,12 +1,11 @@
 using MassTransit;
 using Scalar.AspNetCore;
-using SearchService.Consumers.Alphabet;
-using SearchService.Consumers.Artwork;
 using SearchService.Data;
 using SearchService.Shared.Constants;
 using SearchService.Shared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+var env = new EnvironmentConstants(builder.Configuration);
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -19,6 +18,12 @@ builder.Services.AddMassTransit(config =>
     config.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter(RabbitMqEndpoints.Prefix, false));
     config.UsingRabbitMq((context, cfg) =>
     {
+        cfg.Host(env.RabbitMqHost, "/", h =>
+        {
+            h.Username(env.RabbitMqUsername);
+            h.Password(env.RabbitMqPassword);
+        });
+
         cfg.ConfigureMessageRetries(context);
         cfg.ConfigureEndpoints(context);
     });

@@ -8,8 +8,10 @@ public class SeedDataUsers(IConfiguration configuration)
 {
     public User SuperAdmin()
     {
-        var superAdminEmail = new EnvironmentConstants(configuration).SuperAdminEmail;
-        var superAdminPassword = new EnvironmentConstants(configuration).SuperAdminPassword;
+        var env = new EnvironmentConstants(configuration);
+
+        var superAdminEmail = env.SuperAdminEmail;
+        var superAdminPassword = env.SuperAdminPassword;
 
         var superAdmin = new User
         {

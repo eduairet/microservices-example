@@ -2,6 +2,7 @@ using GatewayService.Shared.Constants;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
+var env = new EnvironmentConstants(builder.Configuration);
 
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
@@ -9,7 +10,7 @@ builder.Services.AddReverseProxy()
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = new EnvironmentConstants(builder.Configuration).IdentityServiceUrl;
+        options.Authority = env.IdentityServiceUrl;
         options.RequireHttpsMetadata = false;
         options.TokenValidationParameters.ValidateAudience = false;
         options.TokenValidationParameters.NameClaimType = "username";

@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_PASSWORD: postgrespw
     ports:
-      - '5432:5432'
+      - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
   mongodb:
@@ -15,7 +15,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: mongopw
     ports:
-      - '27017:27017'
+      - 27017:27017
     volumes:
       - mongodb_data:/data/db
   rabbitmq:
@@ -23,6 +23,21 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+  search-service:
+    image: ${DOCKER_USERNAME}/search-service:latest
+    container_name: search_service_container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__MongoDbConnection=mongodb://root:mongopw@mongodb
+      - DB_NAME=SearchServiceDb
+      - ASCII_SERVICE_URL=http://ascii-service/api/v1
+      - RABBIT_MQ_HOST=rabbitmq
+    ports:
+      - 5102:80
+    depends_on:
+      - mongodb
+      - rabbitmq
 
 volumes:
   postgres_data:
