@@ -30,7 +30,7 @@
 - It's important to secure the identity service and protect user credentials, using techniques like hashing passwords and implementing HTTPS.
 - Nowadays most users expect SSO (Single Sign-On) capabilities, allowing them to authenticate once and gain access to multiple services without re-entering credentials.
 
-# Reverse Proxy
+## Reverse Proxy
 
 - A reverse proxy is a server that sits between client devices and a web server, forwarding client requests to the appropriate backend server and returning the server's response to the client.
 - In a microservices architecture, a reverse proxy can be used to route requests to different services based on the request URL, enabling service discovery and load balancing.
@@ -40,3 +40,28 @@
   - SSL termination: Handling SSL/TLS encryption and decryption at the proxy level, offloading this work from backend servers.
   - Caching: Storing copies of frequently requested resources to reduce latency and improve response times.
   - Request/response modification: Altering requests or responses on the fly, such as adding headers or transforming payloads.
+
+## Debugging in Docker
+
+- To debug a .NET application running inside a Docker container, we can use Visual Studio or Visual Studio Code with the appropriate extensions.
+- First, ensure that the Docker container is running and that the application is built with debugging symbols enabled (typically done by using the `Debug` configuration).
+- In Visual Studio, we can attach the debugger to the running container by using the "Attach to Process" feature and selecting the appropriate process inside the container.
+- In Visual Studio Code, we can use the "ContainerContainers .NET Attach (Preview)" launch configuration to attach the debugger to the .NET application running in the container.
+  ```json
+  {
+    // .vscode/launch.json
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Containers .NET Attach (Preview)",
+        "type": "docker",
+        "request": "attach",
+        "platform": "netCore",
+        "sourceFileMap": {
+          "/app": "${workspaceFolder}"
+        }
+      }
+    ]
+  }
+  ```
+- Once attached, we can set breakpoints, inspect variables, and step through the code as we would with a local application.
