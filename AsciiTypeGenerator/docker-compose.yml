@@ -29,11 +29,13 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=postgres:5432;Database=AsciiServiceDb;User Id=postgres;Password=postgrespw
       - RABBIT_MQ_HOST=rabbitmq
       - IDENTITY_SERVICE_URL=http://identity-service/api/v1
     ports:
       - 5100:80
     depends_on:
+      - postgres
       - rabbitmq
       - identity-service
   gateway-service:
@@ -53,6 +55,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=http://+:80
+      - ConnectionStrings__DefaultConnection=Server=postgres:5432;Database=IdentityServiceDb;User Id=postgres;Password=postgrespw
       - SUPER_ADMIN_EMAIL=${SUPER_ADMIN_EMAIL}
       - SUPER_ADMIN_PASSWORD=${SUPER_ADMIN_PASSWORD}
       - JWT_KEY=${JWT_KEY}
@@ -60,6 +63,8 @@ services:
       - JWT_AUDIENCE=${JWT_AUDIENCE}
     ports:
       - 5101:80
+    depends_on:
+      - postgres
   search-service:
     image: ${DOCKER_USERNAME}/search-service:latest
     container_name: search_service_container

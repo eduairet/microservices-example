@@ -13,7 +13,7 @@ public static class ApiRoutes
         public const string Create = "";
         public const string Update = "{id:int}";
         public const string Delete = "{id:int}";
-        public const string UserAlphabets = "user/{username:string}";
+        public const string UserAlphabets = "user/{username}";
         public const string UserPrivateAlphabets = "user";
     }
 
@@ -24,7 +24,7 @@ public static class ApiRoutes
         public const string Create = "";
         public const string Update = "{id:int}";
         public const string Delete = "{id:int}";
-        public const string UserArtworks = "user/{username:string}";
+        public const string UserArtworks = "user/{username}";
         public const string UserPrivateArtworks = "user";
     }
 }
