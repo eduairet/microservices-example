@@ -23,6 +23,43 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+  ascii-service:
+    image: ${DOCKER_USERNAME}/ascii-service:latest
+    container_name: ascii_service_container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - RABBIT_MQ_HOST=rabbitmq
+      - IDENTITY_SERVICE_URL=http://identity-service/api/v1
+    ports:
+      - 5100:80
+    depends_on:
+      - rabbitmq
+      - identity-service
+  gateway-service:
+    image: ${DOCKER_USERNAME}/gateway-service:latest
+    container_name: gateway_service_container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - IDENTITY_SERVICE_URL=http://identity-service/api/v1
+    ports:
+      - 5103:80
+    depends_on:
+      - identity-service
+  identity-service:
+    image: ${DOCKER_USERNAME}/identity-service:latest
+    container_name: identity_service_container
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - SUPER_ADMIN_EMAIL=${SUPER_ADMIN_EMAIL}
+      - SUPER_ADMIN_PASSWORD=${SUPER_ADMIN_PASSWORD}
+      - JWT_KEY=${JWT_KEY}
+      - JWT_ISSUER=${JWT_ISSUER}
+      - JWT_AUDIENCE=${JWT_AUDIENCE}
+    ports:
+      - 5101:80
   search-service:
     image: ${DOCKER_USERNAME}/search-service:latest
     container_name: search_service_container

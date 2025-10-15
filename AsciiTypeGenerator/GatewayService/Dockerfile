@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /app
+
+COPY AsciiTypeGenerator.sln .
+COPY GatewayService/GatewayService.csproj ./GatewayService/
+COPY Contracts/Contracts.csproj ./Contracts/
+
+RUN dotnet restore ./GatewayService/GatewayService.csproj
+
+COPY . .
+RUN dotnet publish ./GatewayService/GatewayService.csproj -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+WORKDIR /app
+EXPOSE 80
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "GatewayService.dll"]

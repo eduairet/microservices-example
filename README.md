@@ -20,15 +20,36 @@ This repository contains resources and notes related to microservices architectu
 ## Containerization and Deployment
 
 - In the root of the project (`AsciiTypeGenerator`), run the following commands to build the Docker images for the different services and push them to Docker Hub:
-  - Search Service:
-    - Build the Docker image:
+
+  - Build and push Docker images for the services:
+
+    - Ascii Service:
+
       ```bash
-      docker build --no-cache -f SearchService/Dockerfile -t ${DOCKER_USERNAME}/search-service:latest . 
+      docker build --no-cache -f AsciiService/Dockerfile -t ${DOCKER_USERNAME}/ascii-service:latest .
+      docker push ${DOCKER_USERNAME}/ascii-service:latest
       ```
-    - Push the Docker image to Docker Hub:
+
+    - Gateway Service:
+
       ```bash
+      docker build --no-cache -f GatewayService/Dockerfile -t ${DOCKER_USERNAME}/gateway-service:latest .
+      docker push ${DOCKER_USERNAME}/gateway-service:latest
+      ```
+
+    - Identity Service:
+
+      ```bash
+      docker build --no-cache -f IdentityService/Dockerfile -t ${DOCKER_USERNAME}/identity-service:latest .
+      docker push ${DOCKER_USERNAME}/identity-service:latest
+      ```
+
+    - Search Service:
+      ```bash
+      docker build --no-cache -f SearchService/Dockerfile -t ${DOCKER_USERNAME}/search-service:latest .
       docker push ${DOCKER_USERNAME}/search-service:latest
       ```
+
 - Run the containers using Docker Compose:
   ```bash
   docker-compose up -d
