@@ -3,7 +3,6 @@ WORKDIR /app
 
 COPY AsciiTypeGenerator.sln .
 COPY IdentityService/IdentityService.csproj ./IdentityService/
-COPY Contracts/Contracts.csproj ./Contracts/
 
 RUN dotnet restore ./IdentityService/IdentityService.csproj
 

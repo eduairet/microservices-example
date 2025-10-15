@@ -3,7 +3,6 @@ WORKDIR /app
 
 COPY AsciiTypeGenerator.sln .
 COPY GatewayService/GatewayService.csproj ./GatewayService/
-COPY Contracts/Contracts.csproj ./Contracts/
 
 RUN dotnet restore ./GatewayService/GatewayService.csproj
 
