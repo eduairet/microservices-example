@@ -8,6 +8,11 @@ services:
       - 5432:5432
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   mongodb:
     image: mongo:latest
     container_name: mongodb_container
@@ -18,11 +23,30 @@ services:
       - 27017:27017
     volumes:
       - mongodb_data:/data/db
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mongosh",
+          "--quiet",
+          "127.0.0.1/test",
+          "--eval",
+          "'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)'",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
   rabbitmq:
     image: rabbitmq:management-alpine
+    container_name: rabbitmq_container
     ports:
       - 5672:5672
       - 15672:15672
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 5s
+      timeout: 5s
+      retries: 5
   ascii-service:
     image: ${DOCKER_USERNAME}/ascii-service:latest
     container_name: ascii_service_container
@@ -35,9 +59,12 @@ services:
     ports:
       - 5100:80
     depends_on:
-      - postgres
-      - rabbitmq
-      - identity-service
+      postgres:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      identity-service:
+        condition: service_started
   gateway-service:
     image: ${DOCKER_USERNAME}/gateway-service:latest
     container_name: gateway_service_container
@@ -49,6 +76,8 @@ services:
       - 5103:80
     depends_on:
       - identity-service
+      - ascii-service
+      - search-service
   identity-service:
     image: ${DOCKER_USERNAME}/identity-service:latest
     container_name: identity_service_container
@@ -64,7 +93,8 @@ services:
     ports:
       - 5101:80
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
   search-service:
     image: ${DOCKER_USERNAME}/search-service:latest
     container_name: search_service_container
@@ -78,8 +108,12 @@ services:
     ports:
       - 5102:80
     depends_on:
-      - mongodb
-      - rabbitmq
+      mongodb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      ascii-service:
+        condition: service_started
 
 volumes:
   postgres_data:
