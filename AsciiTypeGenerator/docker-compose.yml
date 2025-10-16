@@ -42,7 +42,7 @@ services:
     image: ${DOCKER_USERNAME}/gateway-service:latest
     container_name: gateway_service_container
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
       - IDENTITY_SERVICE_URL=http://identity-service/api/v1
     ports:
