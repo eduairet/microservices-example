@@ -1,0 +1,34 @@
+@import 'tailwindcss';
+
+:root {
+  --dark-cyan: #071b1b;
+  --white-smoke: #f2f2f2;
+  --aquamarine: #00ffe1;
+  --background: var(--dark-cyan);
+  --foreground: var(--white-smoke);
+  --accent: var(--aquamarine);
+  --default-font-family: var(--font-asap), sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-asap);
+  --font-mono: var(--font-azeret-mono);
+  --font-heading: Rubik Mono One;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--dark-cyan);
+    --foreground: var(--white-smoke);
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
+  min-height: 100vh;
+}
