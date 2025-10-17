@@ -2,11 +2,14 @@
   "name": "web-app",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@9.0.0",
+  "packageManager": "pnpm@10.15.1",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
-    "start": "next start"
+    "start": "next start",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.css",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx,.css --fix",
+    "format": "prettier --write . \"**/*.{js,jsx,ts,tsx,css}\""
   },
   "dependencies": {
     "next": "15.5.5",
@@ -18,6 +21,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "eslint": "^9.37.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "lint-staged": "^16.2.4",
+    "prettier": "^3.6.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
