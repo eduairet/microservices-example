@@ -15,7 +15,15 @@ const compat = new FlatCompat({
 });
 
 export default defineConfig([
-  globalIgnores(['.next/**', 'node_modules/**', 'dist/**', 'build/**', 'out/**']),
+  globalIgnores([
+    '.next/**',
+    'dist/**',
+    'build/**',
+    'node_modules/**',
+    'pnpm-lock.yaml',
+    '*.d.ts',
+    'public/**',
+  ]),
   {
     extends: compat.extends('eslint:recommended', 'next', 'prettier'),
 
