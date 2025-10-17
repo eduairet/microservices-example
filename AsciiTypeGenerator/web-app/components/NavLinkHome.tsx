@@ -1,8 +1,8 @@
 'use client';
 
-import { type FC } from 'react';
-import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { type FC } from 'react';
 import { PAGE_URLS } from '@/shared/constants/pageUrls';
 
 const NavLinkHome: FC = () => {

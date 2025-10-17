@@ -6,11 +6,7 @@ interface ParagraphProps {
 }
 
 const Paragraph: FC<ParagraphProps> = ({ children, className = '' }) => {
-  return (
-    <p className={`text-lg text-balance max-w-[65ch] ${className}`}>
-      {children}
-    </p>
-  );
+  return <p className={`text-lg text-balance max-w-[65ch] ${className}`}>{children}</p>;
 };
 
 export default Paragraph;

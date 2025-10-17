@@ -29,9 +29,7 @@ const Heading: FC<IProps> = ({ level, children, className }) => {
   const headingClassName = headingClasses[level];
 
   return (
-    <Tag
-      className={`font-heading text-accent ${headingClassName} ${className}`.trim()}
-    >
+    <Tag className={`font-heading text-accent ${headingClassName} ${className}`.trim()}>
       {children}
     </Tag>
   );

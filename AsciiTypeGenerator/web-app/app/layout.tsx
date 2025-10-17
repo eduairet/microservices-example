@@ -1,14 +1,13 @@
 import type { Metadata } from 'next';
-import { asap, azeretMono } from '@/shared/fonts';
 import '@/app/globals.css';
-import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import Header from '@/components/Header';
 import MainContainer from '@/components/MainContainer';
+import { asap, azeretMono } from '@/shared/fonts';
 
 export const metadata: Metadata = {
   title: 'AsciiTypeGenerator',
-  description:
-    'Generate ASCII art from text using different fonts created by the community.',
+  description: 'Generate ASCII art from text using different fonts created by the community.',
   icons: {
     icon: '/favicon.svg',
   },

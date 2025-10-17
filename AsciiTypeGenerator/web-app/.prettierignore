@@ -1,0 +1,16 @@
+# Ignore build output
+.next/
+dist/
+build/
+
+# Ignore dependencies
+node_modules/
+
+# Ignore lock files
+pnpm-lock.yaml
+
+# Ignore generated TypeScript files
+*.d.ts
+
+# Ignore public assets (if any)
+public/

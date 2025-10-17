@@ -1,7 +1,7 @@
+import Link from 'next/link';
 import Heading, { HeadingLevel } from '@/components/Heading';
 import Paragraph from '@/components/Paragraph';
 import { PAGE_URLS } from '@/shared/constants/pageUrls';
-import Link from 'next/link';
 
 export default function NotFound() {
   return (
