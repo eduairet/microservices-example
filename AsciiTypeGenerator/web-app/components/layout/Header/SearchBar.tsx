@@ -1,7 +1,7 @@
 'use client';
 
-import { type FC, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { type FC, useState } from 'react';
 import IconSearch from '@/components/icons/IconSearch';
 
 const SearchBar: FC = () => {
