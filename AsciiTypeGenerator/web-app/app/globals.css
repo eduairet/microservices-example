@@ -4,9 +4,13 @@
   --dark-cyan: #071b1b;
   --white-smoke: #f2f2f2;
   --aquamarine: #00ffe1;
+  --aquamarine-fade: #00e2c8;
+  --aquamarine-contrast: #00332e;
   --background: var(--dark-cyan);
   --foreground: var(--white-smoke);
   --accent: var(--aquamarine);
+  --accent-fade: var(--aquamarine-fade);
+  --accent-contrast: var(--aquamarine-contrast);
   --default-font-family: var(--font-asap), sans-serif;
 }
 
@@ -14,17 +18,20 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
+  --color-accent-fade: var(--accent-fade);
+  --color-accent-contrast: var(--accent-contrast);
   --font-sans: var(--font-asap);
   --font-mono: var(--font-azeret-mono);
   --font-heading: Rubik Mono One;
 }
 
+/* This website only supports dark mode for now, when light mode is added, uncomment this code and adjust colors as needed
 @media (prefers-color-scheme: dark) {
   :root {
     --background: var(--dark-cyan);
     --foreground: var(--white-smoke);
   }
-}
+} */
 
 body {
   background: var(--background);

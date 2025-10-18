@@ -9,8 +9,9 @@ export default function Footer() {
         href="https://github.com/eduairet/microservices-example/tree/main/AsciiTypeGenerator/web-app"
         target="_blank"
         rel="noopener noreferrer"
+        aria-label="Link to the GitHub repository (opens in a new tab)"
       >
-        <IconGitHub aria-hidden width={24} height={24} />
+        <IconGitHub width={24} height={24} aria-hidden focusable="false" />
         GitHub
       </a>
     </footer>
