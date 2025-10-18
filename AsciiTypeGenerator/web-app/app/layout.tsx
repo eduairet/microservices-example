@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import '@/app/globals.css';
-import Footer from '@/components/Footer';
-import Header from '@/components/Header';
-import MainContainer from '@/components/MainContainer';
+import Footer from '@/components/layout/Footer';
+import Header from '@/components/layout/Header';
+import MainContainer from '@/components/layout/MainContainer';
 import { asap, azeretMono } from '@/shared/fonts';
 
 export const metadata: Metadata = {

@@ -5,7 +5,7 @@ interface IProps extends React.SVGProps<SVGSVGElement> {
   height?: number;
 }
 
-const Atg: FC<IProps> = ({ width = 32, height = 32, ...props }) => {
+const AsciiTypeGeneratorShort: FC<IProps> = ({ width = 32, height = 32, ...props }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -23,4 +23,4 @@ const Atg: FC<IProps> = ({ width = 32, height = 32, ...props }) => {
   );
 };
 
-export default Atg;
+export default AsciiTypeGeneratorShort;
