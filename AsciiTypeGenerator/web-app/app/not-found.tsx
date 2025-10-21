@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Heading, { HeadingLevel } from '@/components/text/Heading';
 import Paragraph from '@/components/text/Paragraph';
-import { PAGE_URLS } from '@/shared/constants/pageUrls';
+import { pageUrls } from '@/shared/constants/pageUrls';
 
 export default function NotFound() {
   return (
@@ -10,7 +10,7 @@ export default function NotFound() {
       <Paragraph>Could not find requested resource</Paragraph>
       <Link
         className="text-accent hover:text-foreground underline transition-colors"
-        href={PAGE_URLS.HOME}
+        href={pageUrls.HOME}
       >
         Return Home
       </Link>

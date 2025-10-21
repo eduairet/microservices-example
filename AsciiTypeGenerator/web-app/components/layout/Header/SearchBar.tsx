@@ -1,27 +1,45 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { type FC, useState } from 'react';
+import { type FC, useRef, useState, type MouseEvent, type FormEvent } from 'react';
 import IconSearch from '@/components/icons/IconSearch';
+import { pageUrls } from '@/shared/constants/pageUrls';
 
 const SearchBar: FC = () => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const [isFocused, setIsFocused] = useState(false);
-  const [query, setQuery] = useState('');
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    if (inputRef.current?.value.trim()) {
+      router.push(pageUrls.HOME_(encodeURIComponent(inputRef.current.value.trim())));
+      inputRef.current.value = '';
+    }
+    setIsFocused(false);
+    inputRef.current?.blur();
+  };
 
-    if (query.trim()) {
-      router.push(`?query=${encodeURIComponent(query.trim())}`);
-      setQuery('');
+  const handleButtonClick = (e: MouseEvent<HTMLButtonElement>) => {
+    if (!isFocused) {
+      e.preventDefault();
+      inputRef.current?.focus();
+      return;
     }
 
-    setIsFocused(false);
+    formRef.current?.requestSubmit();
+    (e.target as HTMLButtonElement).blur();
+  };
+
+  const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (!e.relatedTarget || (e.relatedTarget as HTMLElement).tagName !== 'BUTTON') {
+      setIsFocused(false);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form ref={formRef} onSubmit={handleSubmit} aria-label="Home Search Form">
       <div
         className={`transition-[grid-template-columns,box-shadow] duration-300 grid items-center justify-between gap-2 p-2 ps-4 text-sm bg-foreground border-accent rounded-4xl ring-2 ${isFocused ? 'ring-accent grid-cols-[auto_1fr_auto]' : 'ring-transparent grid-cols-[auto_0fr_auto]'}`}
       >
@@ -33,6 +51,7 @@ const SearchBar: FC = () => {
           <IconSearch width={24} height={24} aria-hidden="true" focusable="false" />
         </label>
         <input
+          ref={inputRef}
           type="search"
           id="home-search"
           className={`font-medium transition-colors delay-300 focus:ring-0 focus:outline-none bg-transparent w-full ${isFocused ? 'placeholder:text-gray-500 text-accent-contrast' : 'placeholder:text-transparent text-transparent'}`}
@@ -40,18 +59,17 @@ const SearchBar: FC = () => {
           placeholder="Search ASCII..."
           autoComplete="off"
           aria-labelledby="home-search-description"
-          value={query}
-          onChange={e => setQuery(e.target.value)}
           onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
+          onBlur={handleInputBlur}
         />
         <div id="home-search-description" className="sr-only">
           Search bar to find Alphabets, Artworks, and Creators
         </div>
         <button
           tabIndex={isFocused ? 0 : -1}
-          type="submit"
+          type="button"
           className="cursor-pointer transition-colors text-accent-contrast bg-accent hover:bg-accent-fade focus:ring-2 focus:outline-none focus:ring-accent-contrast font-medium rounded-4xl text-sm px-4 py-2 w-24"
+          onClick={handleButtonClick}
         >
           Search
         </button>
