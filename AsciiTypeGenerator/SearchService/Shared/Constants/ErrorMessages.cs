@@ -14,18 +14,4 @@ public static class ErrorMessages
     public const string PositivePageNumber = "Page must be a positive integer.";
 
     #endregion
-
-    #region Search
-
-    public static string AlphabetsNotFound(string searchText)
-        => string.IsNullOrWhiteSpace(searchText)
-            ? "No alphabets found."
-            : $"No alphabets found for search text '{searchText}'.";
-
-    public static string ArtworksNotFound(string searchText)
-        => string.IsNullOrWhiteSpace(searchText)
-            ? "No artworks found."
-            : $"No artworks found for search text '{searchText}'.";
-
-    #endregion
 }

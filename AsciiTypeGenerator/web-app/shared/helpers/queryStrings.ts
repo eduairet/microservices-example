@@ -1,18 +1,13 @@
-import { SortBy } from '@/shared/models';
+import { SearchQuery } from '@/shared/models';
 
-export const buildSearchQuery = (
-  searchText?: string,
-  startIndex?: number,
-  pageSize?: number,
-  sortBy?: SortBy
-) => {
-  const searchTextQuery = searchText ? `SearchText=${encodeURIComponent(searchText)}` : '';
-  const startIndexQuery = startIndex ? `StartIndex=${startIndex}` : '';
-  const pageSizeQuery = pageSize ? `PageSize=${pageSize}` : '';
-  const sortByFieldQuery = sortBy ? `SortBy.Field=${encodeURIComponent(sortBy.Field)}` : '';
-  const sortByDirectionQuery = sortBy
-    ? `SortBy.Descending=${sortBy.Descending ? 'true' : 'false'}`
+export const buildSearchQuery = (query: SearchQuery) => {
+  const searchTextQuery = query.SearchText
+    ? `SearchText=${encodeURIComponent(query.SearchText)}`
     : '';
+  const startIndexQuery = query.StartIndex ? `StartIndex=${query.StartIndex}` : '';
+  const pageSizeQuery = query.PageSize ? `PageSize=${query.PageSize}` : '';
+  const sortByFieldQuery = query.SortBy ? `SortBy=${encodeURIComponent(query.SortBy)}` : '';
+  const sortByDirectionQuery = query.SortDirection ? `SortDirection=${query.SortDirection}` : '';
 
   const queryParams = [
     searchTextQuery,

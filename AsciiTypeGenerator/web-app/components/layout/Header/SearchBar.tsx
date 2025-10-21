@@ -5,8 +5,8 @@ import { type FC, useRef, useState, type MouseEvent, type FormEvent } from 'reac
 import IconSearch from '@/components/icons/IconSearch';
 import {
   pageUrls,
-  SEARCH_PAGE_SIZE_DEFAULT,
   SEARCH_SORT_BY_DEFAULT,
+  SEARCH_SORT_DIRECTION_DEFAULT,
   SEARCH_START_INDEX_DEFAULT,
 } from '@/shared/constants';
 
@@ -23,9 +23,9 @@ const SearchBar: FC = () => {
       router.push(
         pageUrls.HOME_(
           encodeURIComponent(inputRef.current.value.trim()),
-          SEARCH_PAGE_SIZE_DEFAULT,
           SEARCH_START_INDEX_DEFAULT,
-          SEARCH_SORT_BY_DEFAULT
+          SEARCH_SORT_BY_DEFAULT,
+          SEARCH_SORT_DIRECTION_DEFAULT
         )
       );
 

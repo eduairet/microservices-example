@@ -7,12 +7,12 @@ public class VirtualizeQueryParameters
     public string SearchText { get; set; } = string.Empty;
     public int StartIndex { get; set; }
     public int PageSize { get; set; } = ModelConstants.VirtualizeDefaultPageSize;
-    public SortByParameter SortBy { get; set; }
-    public List<Func<bool>> Filter { get; set; } = [];
+    public string SortBy { get; set; }
+    public SortDirection SortDirection { get; set; }
 }
 
-public abstract class SortByParameter
+public enum SortDirection
 {
-    public string Field { get; set; }
-    public bool Descending { get; set; }
+    Asc,
+    Desc
 }

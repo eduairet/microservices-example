@@ -1,26 +1,22 @@
 import Heading, { HeadingLevel } from '@/components/text/Heading';
 import Paragraph from '@/components/text/Paragraph';
-import { gatewayService } from '@/shared/constants/endpoints';
-import { fetchData } from '@/shared/helpers';
-import { ArtworkListResponse } from '@/shared/models';
+import { ArtworkListResponse, SearchQuery } from '@/shared/models';
+import { searchArtworks } from '@/shared/services';
 
-export default async function Home() {
-  const searchParams = new URLSearchParams(
-    typeof window !== 'undefined' ? window.location.search : ''
-  );
+type Props = {
+  searchParams: Promise<{ [key: string]: string } | undefined>;
+};
 
-  const searchText = searchParams.get('SearchText') || '';
-  const startIndex = Number(searchParams.get('StartIndex')) || 0;
-  const pageSize = Number(searchParams.get('PageSize')) || 10;
+export default async function Home({ searchParams }: Props) {
+  const searchParamsObj = await searchParams;
 
-  /* TODO: Fix API to accept SortBy properly
-  const sortByField = searchParams.get('SortBy.Field') || 'SearchText';
-  const sortByDescending = searchParams.get('SortBy.Descending') === 'true';
-  */
+  const searchText = searchParamsObj?.SearchText;
+  const startIndex = parseInt(searchParamsObj?.StartIndex ?? '', 10) || undefined;
+  const sortBy = searchParamsObj?.SortBy;
+  const sortDirection = searchParamsObj?.SortDirection as 'Asc' | 'Desc' | undefined;
 
-  const artworks: ArtworkListResponse = await fetchData(
-    gatewayService.search.artworks(searchText, startIndex, pageSize),
-    { cache: 'force-cache' }
+  const artworks: ArtworkListResponse = await searchArtworks(
+    new SearchQuery(searchText, startIndex, sortBy, sortDirection)
   );
 
   return (

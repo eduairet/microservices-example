@@ -18,10 +18,6 @@ public class SearchController(
         [FromQuery] VirtualizeQueryParameters request)
     {
         var alphabets = await searchAlphabetsRepository.SearchAsync(request);
-
-        if (alphabets.TotalCount == 0)
-            return NotFound(ErrorMessages.AlphabetsNotFound(request.SearchText));
-
         return Ok(alphabets);
     }
 
@@ -30,10 +26,6 @@ public class SearchController(
         [FromQuery] VirtualizeQueryParameters request)
     {
         var artworks = await searchArtworksRepository.SearchAsync(request);
-
-        if (artworks.TotalCount == 0)
-            return NotFound(ErrorMessages.ArtworksNotFound(request.SearchText));
-
         return Ok(artworks);
     }
 }

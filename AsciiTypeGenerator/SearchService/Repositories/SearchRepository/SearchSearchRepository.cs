@@ -28,21 +28,17 @@ public class SearchRepository<T> : ISearchRepository<T>
         if (!string.IsNullOrWhiteSpace(queryParameters.SearchText))
             query.Match(Search.Full, queryParameters.SearchText).SortByTextScore();
 
-        if (queryParameters.SortBy is not null && !string.IsNullOrWhiteSpace(queryParameters.SortBy.Field))
+        if (queryParameters.SortBy is not null && !string.IsNullOrWhiteSpace(queryParameters.SortBy))
         {
             query.Sort(x =>
-                queryParameters.SortBy.Descending
-                    ? x.Descending(queryParameters.SortBy.Field)
-                    : x.Ascending(queryParameters.SortBy.Field));
+                queryParameters.SortDirection == SortDirection.Desc
+                    ? x.Descending(queryParameters.SortBy)
+                    : x.Ascending(queryParameters.SortBy));
         }
         else
         {
             query.Sort(x => x.Descending(nameof(Entity.ID)));
         }
-
-        if (queryParameters.Filter?.Count > 0)
-            foreach (var filter in queryParameters.Filter)
-                query.Match(x => filter.Invoke());
 
         var result = await query
             .PageNumber(startIndex)
