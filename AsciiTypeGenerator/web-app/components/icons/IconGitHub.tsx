@@ -1,5 +1,5 @@
 import { SVGProps, type FC } from 'react';
-import IconWrapper from './IconWrapper';
+import IconWrapper from '@/components/icons/IconWrapper';
 
 interface IProps extends SVGProps<SVGSVGElement> {
   width?: number;

@@ -31,6 +31,11 @@ export default defineConfig([
       globals: {
         React: true,
         JSX: true,
+        RequestInit: 'readonly',
+        fetch: 'readonly',
+        window: 'readonly',
+        document: 'readonly',
+        navigator: 'readonly',
       },
     },
 

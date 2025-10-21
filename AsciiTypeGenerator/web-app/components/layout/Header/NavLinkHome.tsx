@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { type FC } from 'react';
-import { pageUrls } from '@/shared/constants/pageUrls';
+import { pageUrls } from '@/shared/constants';
 
 const NavLinkHome: FC = () => {
   const pathname = usePathname();

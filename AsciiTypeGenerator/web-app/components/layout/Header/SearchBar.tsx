@@ -3,7 +3,12 @@
 import { useRouter } from 'next/navigation';
 import { type FC, useRef, useState, type MouseEvent, type FormEvent } from 'react';
 import IconSearch from '@/components/icons/IconSearch';
-import { pageUrls } from '@/shared/constants/pageUrls';
+import {
+  pageUrls,
+  SEARCH_PAGE_SIZE_DEFAULT,
+  SEARCH_SORT_BY_DEFAULT,
+  SEARCH_START_INDEX_DEFAULT,
+} from '@/shared/constants';
 
 const SearchBar: FC = () => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -13,8 +18,17 @@ const SearchBar: FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+
     if (inputRef.current?.value.trim()) {
-      router.push(pageUrls.HOME_(encodeURIComponent(inputRef.current.value.trim())));
+      router.push(
+        pageUrls.HOME_(
+          encodeURIComponent(inputRef.current.value.trim()),
+          SEARCH_PAGE_SIZE_DEFAULT,
+          SEARCH_START_INDEX_DEFAULT,
+          SEARCH_SORT_BY_DEFAULT
+        )
+      );
+
       inputRef.current.value = '';
     }
     setIsFocused(false);
@@ -33,9 +47,8 @@ const SearchBar: FC = () => {
   };
 
   const handleInputBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    if (!e.relatedTarget || (e.relatedTarget as HTMLElement).tagName !== 'BUTTON') {
+    if (!e.relatedTarget || (e.relatedTarget as HTMLElement).tagName !== 'BUTTON')
       setIsFocused(false);
-    }
   };
 
   return (
