@@ -58,3 +58,4 @@ This repository contains resources and notes related to microservices architectu
 ### References
 
 - [Microservices Architecture - The Complete Guide](https://www.udemy.com/course/microservices-architecture-the-complete-guide/)
+- [Build a Microservices app with .Net and NextJS from scratch](https://www.udemy.com/course/build-a-microservices-app-with-dotnet-and-nextjs-from-scratch/)
