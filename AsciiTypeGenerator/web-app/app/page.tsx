@@ -1,6 +1,8 @@
+import HomePagination from '@/components/layout/HomePagination';
 import Heading, { HeadingLevel } from '@/components/text/Heading';
 import Paragraph from '@/components/text/Paragraph';
-import { ArtworkListResponse, SearchQuery } from '@/shared/models';
+import { useParamsStore } from '@/hooks/useParamsStore';
+import { ArtworkListResponse, SearchQueryApi } from '@/shared/models';
 import { searchArtworks } from '@/shared/services';
 
 type Props = {
@@ -10,14 +12,24 @@ type Props = {
 export default async function Home({ searchParams }: Props) {
   const searchParamsObj = await searchParams;
 
-  const searchText = searchParamsObj?.SearchText;
-  const startIndex = parseInt(searchParamsObj?.StartIndex ?? '', 10) || undefined;
+  const searchText = searchParamsObj?.searchText;
+  const page = parseInt(searchParamsObj?.page ?? '', 10);
+  const pageSize = parseInt(searchParamsObj?.pageSize ?? '', 10);
   const sortBy = searchParamsObj?.SortBy;
   const sortDirection = searchParamsObj?.SortDirection as 'Asc' | 'Desc' | undefined;
 
   const artworks: ArtworkListResponse = await searchArtworks(
-    new SearchQuery(searchText, startIndex, sortBy, sortDirection)
+    new SearchQueryApi(searchText, page * pageSize, sortBy, sortDirection)
   );
+
+  useParamsStore.setState({
+    searchText,
+    page,
+    pageSize,
+    pageCount: artworks.totalCount,
+    sortBy,
+    sortDirection,
+  });
 
   return (
     <div className="flex flex-col gap-6 justify-center w-full h-full">
@@ -30,6 +42,7 @@ export default async function Home({ searchParams }: Props) {
         Generate ASCII art from text using different fonts created by the community.
       </Paragraph>
       <p>{JSON.stringify(artworks)}</p>
+      <HomePagination />
     </div>
   );
 }

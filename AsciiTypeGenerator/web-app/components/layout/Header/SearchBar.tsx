@@ -3,14 +3,11 @@
 import { useRouter } from 'next/navigation';
 import { type FC, useRef, useState, type MouseEvent, type FormEvent } from 'react';
 import IconSearch from '@/components/icons/IconSearch';
-import {
-  pageUrls,
-  SEARCH_SORT_BY_DEFAULT,
-  SEARCH_SORT_DIRECTION_DEFAULT,
-  SEARCH_START_INDEX_DEFAULT,
-} from '@/shared/constants';
+import { useParamsStore } from '@/hooks/useParamsStore';
+import { pageUrls } from '@/shared/constants';
 
 const SearchBar: FC = () => {
+  const params = useParamsStore.getState();
   const inputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [isFocused, setIsFocused] = useState(false);
@@ -23,9 +20,10 @@ const SearchBar: FC = () => {
       router.push(
         pageUrls.HOME_(
           encodeURIComponent(inputRef.current.value.trim()),
-          SEARCH_START_INDEX_DEFAULT,
-          SEARCH_SORT_BY_DEFAULT,
-          SEARCH_SORT_DIRECTION_DEFAULT
+          undefined,
+          params.pageSize,
+          params.sortBy,
+          params.sortDirection
         )
       );
 
@@ -51,6 +49,14 @@ const SearchBar: FC = () => {
       setIsFocused(false);
   };
 
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Escape') {
+      setIsFocused(false);
+      inputRef.current?.blur();
+      inputRef.current!.value = '';
+    }
+  };
+
   return (
     <form ref={formRef} onSubmit={handleSubmit} aria-label="Home Search Form">
       <div
@@ -74,6 +80,7 @@ const SearchBar: FC = () => {
           aria-labelledby="home-search-description"
           onFocus={() => setIsFocused(true)}
           onBlur={handleInputBlur}
+          onKeyDown={handleInputKeyDown}
         />
         <div id="home-search-description" className="sr-only">
           Search bar to find Alphabets, Artworks, and Creators
