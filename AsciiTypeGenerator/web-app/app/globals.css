@@ -39,3 +39,30 @@ body {
   font-family: var(--font-sans), sans-serif;
   min-height: 100vh;
 }
+
+/* Custom subtle scrollbar for all elements */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--white-smoke) var(--background);
+}
+
+/* For Webkit browsers */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background: var(--background);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--white-smoke);
+  border-radius: 4px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 4px;
+}

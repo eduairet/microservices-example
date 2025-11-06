@@ -1,8 +1,8 @@
 import { Artwork } from '@/shared/models';
 
-export class ArtworkListResponse {
+export class SearchResponse<T> {
   constructor(
-    public items: Artwork[],
+    public items: T[],
     public pageCount: number,
     public totalCount: number
   ) {}

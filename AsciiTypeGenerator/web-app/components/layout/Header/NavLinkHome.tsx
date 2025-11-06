@@ -11,20 +11,30 @@ const NavLinkHome: FC = () => {
 
   return (
     <Link
-      className={`group font-heading transition-colors ${
+      className={`group font-heading text-2xl transition-colors ${
         isActive ? 'text-accent' : 'text-white hover:text-accent'
       }`}
       href={pageUrls.HOME}
     >
-      Ascii
+      {'Ascii Type Generator'.split(' ').map((word, index) => (
+        <span
+          key={index}
+          className={
+            index === 1 ? (isActive ? 'text-white' : 'text-accent group-hover:text-white') : ''
+          }
+        >
+          {[...word].map((char, charIndex) => (
+            <span key={charIndex} className={charIndex > 0 ? 'hidden md:inline' : ''}>
+              {char}
+            </span>
+          ))}
+        </span>
+      ))}
       <span
-        className={`transition-colors ${
-          isActive ? 'text-white' : 'text-accent group-hover:text-white'
-        }`}
+        className={`inline md:hidden ${isActive ? ' text-white' : ' text-accent group-hover:text-white'}`}
       >
-        Type
+        _
       </span>
-      Generator
     </Link>
   );
 };

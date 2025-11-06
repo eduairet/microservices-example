@@ -1,8 +1,10 @@
+import ArtworkCard from '@/components/artworks/ArtworkCard';
 import HomePagination from '@/components/layout/HomePagination';
+import ItemsGrid from '@/components/layout/ItemsGrid';
 import Heading, { HeadingLevel } from '@/components/text/Heading';
 import Paragraph from '@/components/text/Paragraph';
 import { useParamsStore } from '@/hooks/useParamsStore';
-import { ArtworkListResponse, SearchQueryApi } from '@/shared/models';
+import { SearchResponse, SearchQueryApi, Artwork } from '@/shared/models';
 import { searchArtworks } from '@/shared/services';
 
 type Props = {
@@ -18,7 +20,7 @@ export default async function Home({ searchParams }: Props) {
   const sortBy = searchParamsObj?.SortBy;
   const sortDirection = searchParamsObj?.SortDirection as 'Asc' | 'Desc' | undefined;
 
-  const artworks: ArtworkListResponse = await searchArtworks(
+  const artworks: SearchResponse<Artwork> = await searchArtworks(
     new SearchQueryApi(searchText, page * pageSize, sortBy, sortDirection)
   );
 
@@ -41,7 +43,13 @@ export default async function Home({ searchParams }: Props) {
       <Paragraph>
         Generate ASCII art from text using different fonts created by the community.
       </Paragraph>
-      <p>{JSON.stringify(artworks)}</p>
+      {artworks.items.length && (
+        <ItemsGrid>
+          {artworks.items.map(artwork => (
+            <ArtworkCard key={`artwork-card-${artwork.id}`} artwork={artwork} />
+          ))}
+        </ItemsGrid>
+      )}
       <HomePagination />
     </div>
   );

@@ -1,6 +1,6 @@
 import { gatewayService } from '@/shared/constants';
 import { fetchData } from '@/shared/helpers';
-import { ArtworkListResponse, SearchQueryApi } from '@/shared/models';
+import { SearchResponse, SearchQueryApi, Artwork } from '@/shared/models';
 
-export const searchArtworks = async (query: SearchQueryApi): Promise<ArtworkListResponse> =>
+export const searchArtworks = async (query: SearchQueryApi): Promise<SearchResponse<Artwork>> =>
   await fetchData(gatewayService.search.artworks(query), { cache: 'force-cache' });
