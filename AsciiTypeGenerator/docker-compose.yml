@@ -90,6 +90,7 @@ services:
       - JWT_KEY=${JWT_KEY}
       - JWT_ISSUER=${JWT_ISSUER}
       - JWT_AUDIENCE=${JWT_AUDIENCE}
+      - WEB_APP_URL=${WEB_APP_URL}
     ports:
       - 5101:80
     depends_on:

@@ -15,26 +15,24 @@ const NavLinkHome: FC = () => {
         isActive ? 'text-accent' : 'text-white hover:text-accent'
       }`}
       href={pageUrls.HOME}
+      title="AsciiTypeGenerator Home"
     >
-      {'Ascii Type Generator'.split(' ').map((word, index) => (
+      {[...'ATG_'].map((char, index) => (
         <span
           key={index}
           className={
-            index === 1 ? (isActive ? 'text-white' : 'text-accent group-hover:text-white') : ''
+            index % 2 === 0
+              ? isActive
+                ? 'text-white'
+                : 'text-accent group-hover:text-white'
+              : isActive
+                ? 'text-accent'
+                : 'text-white group-hover:text-white'
           }
         >
-          {[...word].map((char, charIndex) => (
-            <span key={charIndex} className={charIndex > 0 ? 'hidden md:inline' : ''}>
-              {char}
-            </span>
-          ))}
+          {char}
         </span>
       ))}
-      <span
-        className={`inline md:hidden ${isActive ? ' text-white' : ' text-accent group-hover:text-white'}`}
-      >
-        _
-      </span>
     </Link>
   );
 };

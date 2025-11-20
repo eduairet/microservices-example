@@ -6,7 +6,7 @@ interface IProps {
 
 const MainContainer: FC<IProps> = ({ children }) => {
   return (
-    <main className="flex flex-col gap-8 items-center w-full max-w-5xl px-10 pb-4 mx-auto">
+    <main className="flex flex-col gap-8 items-center w-full max-w-5xl px-10 pt-16 pb-8 mx-auto">
       {children}
     </main>
   );

@@ -32,4 +32,9 @@ public class EnvironmentConstants(IConfiguration configuration)
                                  throw new NullReferenceException(Messages.Messages.Error.KeyNotSet("JWT_AUDIENCE"));
 
     #endregion
+
+    #region Application Settings
+    public string WebAppUrl => configuration["WEB_APP_URL"] ??
+                               throw new NullReferenceException(Messages.Messages.Error.KeyNotSet("WEB_APP_URL"));
+    #endregion
 }

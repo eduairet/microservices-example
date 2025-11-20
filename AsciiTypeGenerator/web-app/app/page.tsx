@@ -35,7 +35,7 @@ export default async function Home({ searchParams }: Props) {
 
   return (
     <div className="flex flex-col gap-6 justify-center w-full h-full">
-      <Heading level={HeadingLevel.H1} className="flex flex-col gap-2 justify-center">
+      <Heading level={HeadingLevel.H1} className="flex gap-2 justify-center flex-wrap">
         <span>Ascii</span>
         <span className="text-foreground">Type</span>
         <span>Generator</span>

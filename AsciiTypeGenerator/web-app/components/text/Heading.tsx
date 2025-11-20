@@ -16,12 +16,12 @@ interface IProps {
 }
 
 const headingClasses: Record<HeadingLevel, string> = {
-  [HeadingLevel.H1]: 'text-6xl font-bold',
-  [HeadingLevel.H2]: 'text-5xl font-semibold',
-  [HeadingLevel.H3]: 'text-4xl font-medium',
-  [HeadingLevel.H4]: 'text-3xl font-medium',
-  [HeadingLevel.H5]: 'text-2xl font-normal',
-  [HeadingLevel.H6]: 'text-xl font-normal',
+  [HeadingLevel.H1]: 'text-5xl font-bold',
+  [HeadingLevel.H2]: 'text-4xl font-semibold',
+  [HeadingLevel.H3]: 'text-3xl font-medium',
+  [HeadingLevel.H4]: 'text-2xl font-medium',
+  [HeadingLevel.H5]: 'text-xl font-normal',
+  [HeadingLevel.H6]: 'text-lg font-normal',
 };
 
 const Heading: FC<IProps> = ({ level, children, className }) => {
@@ -29,7 +29,9 @@ const Heading: FC<IProps> = ({ level, children, className }) => {
   const headingClassName = headingClasses[level];
 
   return (
-    <Tag className={`font-heading text-accent ${headingClassName} ${className}`.trim()}>
+    <Tag
+      className={`font-heading text-accent break-all text-center ${headingClassName} ${className}`.trim()}
+    >
       {children}
     </Tag>
   );

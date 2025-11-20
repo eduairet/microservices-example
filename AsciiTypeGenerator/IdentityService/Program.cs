@@ -12,6 +12,17 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 var env = new EnvironmentConstants(builder.Configuration);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(ConfigConstants.FrontendCorsPolicy, policy =>
+    {
+        policy.WithOrigins(env.WebAppUrl)
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+    });
+});
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
@@ -59,6 +70,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCors(ConfigConstants.FrontendCorsPolicy);
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
