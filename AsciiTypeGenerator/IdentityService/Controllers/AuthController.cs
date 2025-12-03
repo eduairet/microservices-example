@@ -3,6 +3,8 @@ using IdentityService.Models.User;
 using IdentityService.Shared.Constants;
 using IdentityService.Shared.Constants.Messages;
 using IdentityService.Shared.Helpers;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -89,6 +91,43 @@ public class AuthController(
         finally
         {
             logger.LogInformation(Messages.Info.LoggedInUserLog, userLogin?.Email);
+        }
+    }
+
+    [Authorize]
+    [HttpGet(ApiRoutes.Auth.UserData)]
+    public async Task<ActionResult<UserData>> GetUserData()
+    {
+        logger.LogInformation(Messages.Info.UserDataAttemptLog);
+
+        try
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId is null)
+                return Unauthorized(Messages.Error.InvalidUserData);
+
+            var user = await userManager.FindByIdAsync(userId);
+
+            if (user is null)
+                return NotFound(Messages.Error.UserNotFound);
+
+            var userData = new UserData
+            {
+                Email = user.Email,
+                Username = user.UserName
+            };
+
+            return Ok(userData);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, Messages.Error.UserDataErrorLog, ex.Message);
+            return StatusCode(500, Messages.Error.InternalServerError);
+        }
+        finally
+        {
+            logger.LogInformation(Messages.Info.UserDataRetrievedLog);
         }
     }
 }

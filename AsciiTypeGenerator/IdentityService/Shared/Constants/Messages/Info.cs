@@ -16,6 +16,8 @@ public static partial class Messages
         public const string RegisteredUserLog = "User with email {Email} registered successfully.";
         public const string LoginAttemptUserLog = "User login attempt with email: {Email}";
         public const string LoggedInUserLog = "User with email {Email} logged in successfully.";
+        public const string UserDataAttemptLog = "Attempting to retrieve user data.";
+        public const string UserDataRetrievedLog = "User data retrieved successfully.";
 
         #endregion
     }

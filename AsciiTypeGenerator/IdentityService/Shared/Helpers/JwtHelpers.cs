@@ -25,10 +25,10 @@ public static class JwtHelpers
 
         var claims = new List<Claim>
             {
-                new(JwtRegisteredClaimNames.Sub, user.UserName),
+                new(JwtRegisteredClaimNames.Sub, user.Id),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), // JTI is the JWT ID
                 new(JwtRegisteredClaimNames.Email, user.Email),
-                new(ClaimTypes.NameIdentifier, user.Id)
+                new(JwtRegisteredClaimNames.Name, user.UserName)
             }
             .Union(rolesSelect)
             .Union(userClaims);
